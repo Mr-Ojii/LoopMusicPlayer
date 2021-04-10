@@ -159,6 +159,7 @@ namespace LoopMusicPlayer
                 this.player = new Player(path, _volumebutton.Value);
             }catch(Exception e)
             {
+                Trace.TraceError(e.ToString());
                 this.player?.Dispose();
                 this.player = null;
 
@@ -166,7 +167,6 @@ namespace LoopMusicPlayer
                 this._labelpath.Text = "";
                 this._labellooptime.Text = "";
                 this._labelnowtime.Text = "";
-
 
                 return;
             }
@@ -245,7 +245,7 @@ namespace LoopMusicPlayer
                     this._labelnowtime.Text = this.player.TimePosition.ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
                 else if (this._labelelpsedtimemenu.Active)
                     this._labelnowtime.Text = "+" + (this.player.LoopCount * (this.player.LoopEndTime - this.player.LoopStartTime) + this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
-                else
+                else if (this._labelremainingtimemenu.Active)
                     this._labelnowtime.Text = "-" + (this.player.TotalTime - this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
             }
             _seekbararea.QueueDraw();

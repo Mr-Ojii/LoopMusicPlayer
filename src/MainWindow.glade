@@ -2,6 +2,16 @@
 <!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.18"/>
+  <object class="GtkImage" id="_addimage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-add</property>
+  </object>
+  <object class="GtkImage" id="_clearimage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-clear</property>
+  </object>
   <object class="GtkListStore" id="_liststore">
     <columns>
       <!-- column-name gchararray1 -->
@@ -21,10 +31,25 @@
     <property name="can_focus">False</property>
     <property name="draw_as_radio">True</property>
   </object>
+  <object class="GtkImage" id="_quitimage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-quit</property>
+  </object>
+  <object class="GtkImage" id="_removeimage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-remove</property>
+  </object>
   <object class="GtkRadioMenuItem" id="_timeshowmethod">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="draw_as_radio">True</property>
+  </object>
+  <object class="GtkImage" id="_versioninfoimage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-dialog-info</property>
   </object>
   <object class="GtkAdjustment" id="adjustment1">
     <property name="upper">100</property>
@@ -70,11 +95,13 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem" id="_listaddmenu">
-                        <property name="label">gtk-add</property>
+                        <property name="label">追加(_A)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="image">_addimage</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
                       </object>
                     </child>
                     <child>
@@ -85,20 +112,24 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="_listdeletemenu">
-                        <property name="label">gtk-remove</property>
+                        <property name="label">削除(_R)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="image">_removeimage</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="_listclearmenu">
-                        <property name="label">gtk-clear</property>
+                        <property name="label">クリア(_C)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="image">_clearimage</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
                       </object>
                     </child>
                     <child>
@@ -109,11 +140,13 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="_quitmenu">
-                        <property name="label">gtk-quit</property>
+                        <property name="label">終了(_Q)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="image">_quitimage</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
                       </object>
                     </child>
                   </object>
@@ -201,11 +234,12 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem" id="_aboutmenu">
-                        <property name="label">gtk-about</property>
+                        <property name="label">バージョン情報(_V)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="image">_versioninfoimage</property>
+                        <property name="use_stock">False</property>
                       </object>
                     </child>
                   </object>
