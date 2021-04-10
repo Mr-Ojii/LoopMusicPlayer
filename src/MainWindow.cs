@@ -326,10 +326,12 @@ namespace LoopMusicPlayer
                     cr.Rectangle((int)((widget.Allocation.Width - 10) * ((double)this.player.LoopStart / player.TotalSamples)) + 5, 5, (int)((widget.Allocation.Width - 10) * ((double)(this.player.LoopEnd - this.player.LoopStart) / player.TotalSamples)), widget.Allocation.Height - 10);
                     cr.Fill();
                 }
+                cr.SetSourceRGB(0, 0, 0);
+                cr.Rectangle(((widget.Allocation.Width - 10) * ((double)player.SamplePosition / player.TotalSamples)), 0, 10, widget.Allocation.Height);
+                cr.Fill();
 
                 cr.SetSourceRGB(1.0, 1.0, 1.0);
-                cr.Rectangle(((widget.Allocation.Width - 10) * ((double)player.SamplePosition / player.TotalSamples)), 0, 10, widget.Allocation.Height);
-
+                cr.Rectangle(((widget.Allocation.Width - 10) * ((double)player.SamplePosition / player.TotalSamples)) + 1, 1, 8, widget.Allocation.Height - 2);
                 cr.Fill();
             }
         }
