@@ -74,7 +74,7 @@ namespace LoopMusicPlayer
             Bass.Init();
 
             Bass.Configure(Configuration.UpdatePeriod, 1);
-            Bass.Configure(Configuration.PlaybackBufferLength, 15);
+            Bass.Configure(Configuration.PlaybackBufferLength, 50);
 
             builder.Autoconnect(this);
 
