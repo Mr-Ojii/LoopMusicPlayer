@@ -12,6 +12,11 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-clear</property>
   </object>
+  <object class="GtkImage" id="_ejectimage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-stop</property>
+  </object>
   <object class="GtkListStore" id="_liststore">
     <columns>
       <!-- column-name gchararray1 -->
@@ -31,6 +36,26 @@
     <property name="can_focus">False</property>
     <property name="draw_as_radio">True</property>
   </object>
+  <object class="GtkImage" id="_nextimage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-media-next</property>
+  </object>
+  <object class="GtkImage" id="_pauseimage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-media-pause</property>
+  </object>
+  <object class="GtkImage" id="_playimage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-media-play</property>
+  </object>
+  <object class="GtkImage" id="_previousimage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-media-previous</property>
+  </object>
   <object class="GtkImage" id="_quitimage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -40,6 +65,11 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-remove</property>
+  </object>
+  <object class="GtkImage" id="_stopimage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-media-stop</property>
   </object>
   <object class="GtkRadioMenuItem" id="_timeshowmethod">
     <property name="visible">True</property>
@@ -454,11 +484,10 @@
             <property name="homogeneous">True</property>
             <child>
               <object class="GtkButton" id="_playbutton">
-                <property name="label">gtk-media-play</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
+                <property name="image">_playimage</property>
                 <property name="always_show_image">True</property>
               </object>
               <packing>
@@ -469,11 +498,10 @@
             </child>
             <child>
               <object class="GtkButton" id="_pausebutton">
-                <property name="label">gtk-media-pause</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
+                <property name="image">_pauseimage</property>
                 <property name="always_show_image">True</property>
               </object>
               <packing>
@@ -484,11 +512,10 @@
             </child>
             <child>
               <object class="GtkButton" id="_stopbutton">
-                <property name="label">gtk-media-stop</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
+                <property name="image">_stopimage</property>
                 <property name="always_show_image">True</property>
               </object>
               <packing>
@@ -499,11 +526,10 @@
             </child>
             <child>
               <object class="GtkButton" id="_previousbutton">
-                <property name="label">gtk-media-previous</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
+                <property name="image">_previousimage</property>
                 <property name="always_show_image">True</property>
               </object>
               <packing>
@@ -514,11 +540,10 @@
             </child>
             <child>
               <object class="GtkButton" id="_nextbutton">
-                <property name="label">gtk-media-next</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
+                <property name="image">_nextimage</property>
                 <property name="always_show_image">True</property>
               </object>
               <packing>
@@ -529,11 +554,11 @@
             </child>
             <child>
               <object class="GtkButton" id="_ejectbutton">
-                <property name="label">gtk-disconnect</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
+                <property name="image">_ejectimage</property>
+                <property name="use_underline">True</property>
                 <property name="always_show_image">True</property>
               </object>
               <packing>
