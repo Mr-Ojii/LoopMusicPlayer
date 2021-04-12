@@ -241,6 +241,21 @@ namespace LoopMusicPlayer
         {
             if (this.player != null)
             {
+                if (!this.player.CheckDeviceEnable()) 
+                {
+                    this.player.Dispose();
+                    this.player = null;
+                    Bass.Free();
+                    Bass.Init();
+
+                    this._labeltitle.Text = "Device Disconnected";
+                    this._labelpath.Text = "";
+                    this._labellooptime.Text = "";
+                    this._labelnowtime.Text = "";
+
+                    return true;
+                }
+
                 if (this._labelseektimemenu.Active)
                     this._labelnowtime.Text = this.player.TimePosition.ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
                 else if (this._labelelpsedtimemenu.Active)
@@ -388,19 +403,21 @@ namespace LoopMusicPlayer
 
         private void ShowAbout(object sender, EventArgs a)
         {
-            var dia = new AboutDialog();
-            dia.Icon = this.Icon;
-            dia.Logo = this.Icon;
-            dia.Documenters = new string[] { "Mr-Ojii" };
-            dia.Authors = new string[] { "Mr-Ojii" };
-            dia.LicenseType = License.MitX11;
-            dia.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            dia.Title = "About LoopMusicPlayer";
-            dia.ProgramName = "LoopMusicPlayer";
-            dia.Comments = "MusicPlayer";
-            dia.Copyright = "© 2021 Mr-Ojii";
-            dia.Run();
-            dia.Destroy();
+            using (var dia = new AboutDialog())
+            {
+                dia.Icon = this.Icon;
+                dia.Logo = this.Icon;
+                dia.Documenters = new string[] { "Mr-Ojii" };
+                dia.Authors = new string[] { "Mr-Ojii" };
+                dia.LicenseType = License.MitX11;
+                dia.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                dia.Title = "About LoopMusicPlayer";
+                dia.ProgramName = "LoopMusicPlayer";
+                dia.Comments = "MusicPlayer";
+                dia.Copyright = "© 2021 Mr-Ojii";
+                dia.Run();
+                dia.Destroy();
+            }
         }
     }
 }

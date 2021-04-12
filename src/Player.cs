@@ -171,6 +171,15 @@ namespace LoopMusicPlayer
 			this.reader.SamplePosition = 0;
 		}
 
+		public bool CheckDeviceEnable() 
+		{
+			if (Bass.GetDeviceInfo(Bass.CurrentDevice, out DeviceInfo info))
+			{
+				return info.IsEnabled;
+			}
+			return false;
+		}
+
 		public int StreamProc(int handle, IntPtr buffer, int length, IntPtr user)
 		{
 			int num;
