@@ -92,6 +92,16 @@ namespace LoopMusicPlayer
 			}
 		}
 
+		public string Artist
+		{
+			get
+			{
+				return !string.IsNullOrEmpty(reader.Tags.Artist) ? reader.Tags.Artist : "";
+			}
+		}
+
+		public event EventHandler LoopAction;
+
 		public readonly string FilePath;
 
 		public Player(string filepath, double volume)

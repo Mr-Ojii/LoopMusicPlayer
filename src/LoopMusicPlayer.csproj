@@ -29,7 +29,7 @@
   <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.*" />
     <PackageReference Include="ManagedBass" Version="3.0.0" />
-    <PackageReference Include="NVorbis" Version="0.10.1" />
+    <PackageReference Include="NVorbis" Version="0.10.3" />
   </ItemGroup>
 
 </Project>

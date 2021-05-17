@@ -127,7 +127,6 @@ namespace LoopMusicPlayer
             _seekbararea.ButtonReleaseEvent += SeekBarButtonRelease;
             _windowkeepabovemenu.Toggled += WindowAboveToggled;
             _showgridlinemenu.Toggled += ShowGridMenuToggled;
-
         }
 
 
@@ -171,6 +170,8 @@ namespace LoopMusicPlayer
                 return;
             }
             this._labeltitle.Text = this.player.Title;
+            if (!string.IsNullOrEmpty(this.player.Artist))
+                this._labeltitle.Text = this._labeltitle.Text + " / " + this.player.Artist;
             this._labelpath.Text = this.player.FilePath;
             this._labellooptime.Text = "Looptime: " + this.player.LoopStartTime.ToString(@"hh\:mm\:ss\.ff") + " - " + this.player.LoopEndTime.ToString(@"hh\:mm\:ss\.ff");
         }
