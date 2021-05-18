@@ -151,12 +151,25 @@ namespace LoopMusicPlayer
             this.KeepAbove = _windowkeepabovemenu.Active;
         }
 
+        private void OnLoop(object o, EventArgs args) 
+        {
+
+        }
+
+        private void OnEnd(object o, EventArgs args)
+        {
+
+        }
+
         private void CreatePlayer(string path)
         {
             try
             {
                 this.player = new Player(path, _volumebutton.Value);
-            }catch(Exception e)
+                this.player.LoopAction += OnLoop;
+                this.player.EndAction += OnEnd;
+            }
+            catch(Exception e)
             {
                 Trace.TraceError(e.ToString());
                 this.player?.Dispose();

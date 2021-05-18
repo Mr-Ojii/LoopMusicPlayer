@@ -13,6 +13,7 @@ namespace LoopMusicPlayer
 		private VorbisReader reader = null;
 		private int StreamHandle = -1;
 		private StreamProcedure tSTREAMPROC = null;
+		private SyncProcedure tSYNCPROC = null;
 		public readonly bool IsLoop = false;
 		public readonly long LoopStart = 0;
 		public readonly long LoopEnd = 0;
@@ -102,6 +103,8 @@ namespace LoopMusicPlayer
 
 		public event EventHandler LoopAction;
 
+		public event EventHandler EndAction;
+
 		public readonly string FilePath;
 
 		public Player(string filepath, double volume)
@@ -129,9 +132,9 @@ namespace LoopMusicPlayer
 			}
 
 			this.tSTREAMPROC = new StreamProcedure(this.StreamProc);
-
+			this.tSYNCPROC = new SyncProcedure(this.SyncProc);
 			this.StreamHandle = Bass.CreateStream(reader.SampleRate, reader.Channels, BassFlags.Float, this.tSTREAMPROC);
-
+			Bass.ChannelSetSync(this.StreamHandle, SyncFlags.End, 0, this.tSYNCPROC);
 			ChangeVolume(volume);
 
 			Bass.ChannelPlay(this.StreamHandle);
@@ -204,6 +207,7 @@ namespace LoopMusicPlayer
 				num = reader.ReadSamples(tmp, tmplength, floatlength - tmplength);
 				num = length;
 				this.LoopCount++;
+				if (LoopAction != null) LoopAction(this, EventArgs.Empty);
 			}
 			else
 			{
@@ -219,6 +223,11 @@ namespace LoopMusicPlayer
 			}
 
 			return num;
+		}
+
+		public void SyncProc(int handle, int channel, int data, IntPtr user) 
+		{
+			this.EndAction(data, EventArgs.Empty);
 		}
 
 		public void Dispose() 
