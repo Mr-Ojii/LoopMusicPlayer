@@ -129,7 +129,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="image">_addimage</property>
                         <property name="use_stock">False</property>
                         <property name="always_show_image">True</property>
                       </object>
@@ -146,7 +145,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="image">_removeimage</property>
                         <property name="use_stock">False</property>
                         <property name="always_show_image">True</property>
                       </object>
@@ -213,6 +211,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">経過時間(_T)</property>
                         <property name="use_underline">True</property>
+                        <property name="draw_as_radio">True</property>
                         <property name="group">_timeshowmethod</property>
                       </object>
                     </child>
@@ -222,6 +221,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">シーク時間(_S)</property>
                         <property name="use_underline">True</property>
+                        <property name="draw_as_radio">True</property>
                         <property name="group">_timeshowmethod</property>
                       </object>
                     </child>
@@ -231,6 +231,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">残り時間(_R)</property>
                         <property name="use_underline">True</property>
+                        <property name="draw_as_radio">True</property>
                         <property name="group">_timeshowmethod</property>
                       </object>
                     </child>
@@ -245,6 +246,74 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">常に最前面に表示(_A)</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">設定(_O)</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkRadioMenuItem" id="_singleplay">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">単曲再生(_S)</property>
+                        <property name="use_underline">True</property>
+                        <property name="draw_as_radio">True</property>
+                        <property name="group">_loopmethod</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkRadioMenuItem" id="_singlerepeat">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">単曲リピート(_R)</property>
+                        <property name="use_underline">True</property>
+                        <property name="draw_as_radio">True</property>
+                        <property name="group">_loopmethod</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkRadioMenuItem" id="_allrepeat">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">全曲リピート(_A)</property>
+                        <property name="use_underline">True</property>
+                        <property name="draw_as_radio">True</property>
+                        <property name="group">_loopmethod</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkRadioMenuItem" id="_randomplay">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">ランダム再生(_R)</property>
+                        <property name="use_underline">True</property>
+                        <property name="draw_as_radio">True</property>
+                        <property name="group">_loopmethod</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="_ignorelooprange">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">ループ範囲を無視(_L)</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -420,11 +489,48 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="_labellooptime">
+                      <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="single_line_mode">True</property>
-                        <property name="xalign">0</property>
+                        <child>
+                          <object class="GtkLabel" id="_labellooptime">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="single_line_mode">True</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="_loopcountdownbutton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">_removeimage</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="_loopcountupbutton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">_addimage</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using NVorbis;
@@ -18,15 +19,15 @@ namespace LoopMusicPlayer
 		public readonly long LoopStart = 0;
 		public readonly long LoopEnd = 0;
 		public bool NextIsLoop = true;
-		public int LoopCount
+		public uint LoopCount
 		{
 			get;
 			private set;
 		} = 0;
 
-		public TimeSpan LoopStartTime 
+		public TimeSpan LoopStartTime
 		{
-			get 
+			get
 			{
 				double time = (LoopStart / (double)reader.SampleRate);
 				int millisecond = (int)((time % 1) * 1000);
@@ -55,7 +56,7 @@ namespace LoopMusicPlayer
 
 		public long TotalSamples
 		{
-			get 
+			get
 			{
 				return reader.TotalSamples;
 			}
@@ -63,7 +64,7 @@ namespace LoopMusicPlayer
 
 		public long SamplePosition
 		{
-			get 
+			get
 			{
 				return reader.SamplePosition;
 			}
@@ -71,7 +72,7 @@ namespace LoopMusicPlayer
 
 		public TimeSpan TotalTime
 		{
-			get 
+			get
 			{
 				return reader.TotalTime;
 			}
@@ -79,17 +80,17 @@ namespace LoopMusicPlayer
 
 		public TimeSpan TimePosition
 		{
-			get 
+			get
 			{
 				return reader.TimePosition;
 			}
 		}
 
-		public string Title 
+		public string Title
 		{
-			get 
+			get
 			{
-				return !string.IsNullOrEmpty(reader.Tags.Title) ?reader.Tags.Title : System.IO.Path.GetFileName(FilePath);
+				return !string.IsNullOrEmpty(reader.Tags.Title) ? reader.Tags.Title : System.IO.Path.GetFileName(FilePath);
 			}
 		}
 
@@ -103,7 +104,7 @@ namespace LoopMusicPlayer
 
 		public event EventHandler LoopAction;
 
-		public event EventHandler EndAction;
+		public Action EndAction;
 
 		public readonly string FilePath;
 
@@ -125,30 +126,31 @@ namespace LoopMusicPlayer
 					LoopEnd = long.Parse(reader.Tags.GetTagSingle("LOOPEND"));
 				}
 			}
-			else 
+			else
 			{
 				LoopStart = 0;
 				LoopEnd = reader.TotalSamples;
 			}
 
 			this.tSTREAMPROC = new StreamProcedure(this.StreamProc);
-			this.tSYNCPROC = new SyncProcedure(this.SyncProc);
+			this.tSYNCPROC = new SyncProcedure(this.EndProc);
 			this.StreamHandle = Bass.CreateStream(reader.SampleRate, reader.Channels, BassFlags.Float, this.tSTREAMPROC);
-			Bass.ChannelSetSync(this.StreamHandle, SyncFlags.End, 0, this.tSYNCPROC);
 			ChangeVolume(volume);
+			Bass.ChannelSetSync(this.StreamHandle, SyncFlags.Stalled, 0, this.tSYNCPROC);
 
 			Bass.ChannelPlay(this.StreamHandle);
 		}
 
-		public void Seek(long sample) 
+		public void Seek(long sample)
 		{
 			PlaybackState state = Bass.ChannelIsActive(this.StreamHandle);
 			Bass.ChannelPause(this.StreamHandle);
 			this.reader.SamplePosition = sample;
 
-			this.NextIsLoop = sample < this.LoopEnd;
+			if (sample >= this.LoopEnd)
+				this.NextIsLoop = false;
 
-			if (state == PlaybackState.Playing) 
+			if (state == PlaybackState.Playing)
 				Bass.ChannelPlay(this.StreamHandle);
 		}
 
@@ -163,9 +165,9 @@ namespace LoopMusicPlayer
 			Bass.ChannelPlay(this.StreamHandle);
 		}
 
-		public void Pause() 
+		public void Pause()
 		{
-			switch (Bass.ChannelIsActive(this.StreamHandle)) 
+			switch (Bass.ChannelIsActive(this.StreamHandle))
 			{
 				case PlaybackState.Paused:
 					Bass.ChannelPlay(this.StreamHandle);
@@ -178,13 +180,18 @@ namespace LoopMusicPlayer
 			}
 		}
 
-		public void Stop() 
+		public void Stop()
 		{
 			Bass.ChannelStop(this.StreamHandle);
 			this.reader.SamplePosition = 0;
 		}
 
-		public bool CheckDeviceEnable() 
+		public PlaybackState Status()
+		{
+			return Bass.ChannelIsActive(this.StreamHandle);
+		}
+
+		public bool CheckDeviceEnable()
 		{
 			if (Bass.GetDeviceInfo(Bass.CurrentDevice, out DeviceInfo info))
 			{
@@ -215,6 +222,7 @@ namespace LoopMusicPlayer
 			}
 
 			if (num < 0) num = 0;
+			if (num != 0) num = length;
 
 			unsafe
 			{
@@ -225,18 +233,29 @@ namespace LoopMusicPlayer
 			return num;
 		}
 
-		public void SyncProc(int handle, int channel, int data, IntPtr user) 
+		public void EndProc(int handle, int channel, int data, IntPtr user)
 		{
-			this.EndAction(data, EventArgs.Empty);
+			this.EndAction();
 		}
 
 		public void Dispose() 
 		{
-			if(this.StreamHandle != -1){
-				Bass.ChannelStop(this.StreamHandle);
-				Bass.StreamFree(this.StreamHandle);
+			try
+			{
+				if (this.StreamHandle != -1)
+				{
+					Bass.ChannelStop(this.StreamHandle);
+					while (!Bass.StreamFree(this.StreamHandle))
+					{
+						Trace.WriteLine(Bass.LastError);
+					}
+				}
+				reader?.Dispose();
 			}
-			reader?.Dispose();
+			catch (Exception e) 
+			{
+				Trace.WriteLine(e);
+			}
 		}
 	}
 }

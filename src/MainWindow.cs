@@ -43,6 +43,12 @@ namespace LoopMusicPlayer
         [UI] private RadioMenuItem _labelremainingtimemenu = null;
         [UI] private CheckMenuItem _windowkeepabovemenu = null;
 
+
+        [UI] private RadioMenuItem _singleplay = null;
+        [UI] private RadioMenuItem _singlerepeat = null;
+        [UI] private RadioMenuItem _allrepeat = null;
+        [UI] private RadioMenuItem _randomplay = null;
+
         [UI] private ImageMenuItem _aboutmenu = null;
 
         [UI] private DrawingArea _seekbararea = null;
@@ -51,21 +57,12 @@ namespace LoopMusicPlayer
         [UI] private Label _labelpath = null;
         [UI] private Label _labelnowtime = null;
         [UI] private Label _labellooptime = null;
+        [UI] private Label _labelloopcount = null;
+        [UI] private Button _loopcountupbutton = null;
+        [UI] private Button _loopcountdownbutton = null;
 
-        private Player player
-        {
-            set
-            {
-                _player?.Dispose();
-                _player = value;
-            }
-            get
-            {
-                return _player;
-            }
-        }
-
-        private Player _player = null;
+        private Player player = null;
+        private uint LoopCount = 0;
 
         public MainWindow() : this(new Builder("MainWindow.glade")) { }
 
@@ -105,8 +102,11 @@ namespace LoopMusicPlayer
             };
             Drag.DestSet(this, DestDefaults.All, targets, Gdk.DragAction.Copy | Gdk.DragAction.Move);
             DragDataReceived += TreeViewDragDataReceived;
+            this.AddEvents((int)(Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask));
 
             _labelseektimemenu.Toggle();
+            _singlerepeat.Toggle();
+            UpdateLoopCountLabel();
             _aboutmenu.Activated += ShowAbout;
             _listaddmenu.Activated += OpenFileFromMenu;
             _seekbararea.Drawn += DrawingArea_OnDraw;
@@ -121,14 +121,18 @@ namespace LoopMusicPlayer
             _previousbutton.Clicked += PreviousClicked;
             _nextbutton.Clicked += NextClicked;
             _ejectbutton.Clicked += EjectClicked;
-            _seekbararea.AddEvents((int)Gdk.EventMask.ButtonPressMask);
-            _seekbararea.AddEvents((int)Gdk.EventMask.ButtonReleaseMask);
+            _seekbararea.AddEvents((int)(Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask));
             _seekbararea.ButtonPressEvent += SeekBarButtonPress;
             _seekbararea.ButtonReleaseEvent += SeekBarButtonRelease;
             _windowkeepabovemenu.Toggled += WindowAboveToggled;
             _showgridlinemenu.Toggled += ShowGridMenuToggled;
+            _loopcountupbutton.Clicked += LoopCountUpButtonClicked;
+            _loopcountdownbutton.Clicked += LoopCountDownButtonClicked;
+            _singleplay.Toggled += LoopMethodToggled;
+            _singlerepeat.Toggled += LoopMethodToggled;
+            _allrepeat.Toggled += LoopMethodToggled;
+            _randomplay.Toggled += LoopMethodToggled;
         }
-
 
         private void EjectClicked(object o, EventArgs args)
         {
@@ -151,13 +155,100 @@ namespace LoopMusicPlayer
             this.KeepAbove = _windowkeepabovemenu.Active;
         }
 
-        private void OnLoop(object o, EventArgs args) 
+        private void OnLoop(object o, EventArgs args)
         {
-
+            UpdateLoopCountLabel();
         }
 
-        private void OnEnd(object o, EventArgs args)
+        private void OnEnd()
         {
+            if (_randomplay.Active)
+            {
+
+            }
+            else if (_allrepeat.Active)
+            {
+                /*if (_liststore.GetIterFirst(out var iter))
+                {
+                    bool finded = false;
+                    for (int i = 0; i < _liststore.NColumns; i++) 
+                    {
+                        if (this.player.FilePath == (_liststore.GetValue(iter, 4) as string))
+                        {
+                            finded = true;
+                            break;
+                        }
+                        _liststore.IterNext(ref iter);
+                    }
+                    string path;
+                    if (finded)
+                    {
+                        var prev = iter;
+                        _liststore.IterNext(ref iter);
+                        
+                        if (TreeIter.Equals(prev, iter))
+                        {
+                            _liststore.GetIterFirst(out iter);
+                        }
+                        path = _treeview.Model.GetValue(iter, 4) as string;
+                    }
+                    else 
+                    {
+                        _liststore.GetIterFirst(out iter);
+                        path = _treeview.Model.GetValue(iter, 4) as string;
+                    }
+                    CreatePlayer(path);
+                    this.player?.Play();
+                }*/
+            }
+        }
+
+        private void LoopMethodToggled(object o, EventArgs args) 
+        {
+            UpdateLoopFlag();
+        }
+
+        private void LoopCountUpButtonClicked(object o, EventArgs args)
+        {
+            if (this.LoopCount != uint.MaxValue && this.player != null)
+                this.LoopCount++;
+            UpdateLoopCountLabel();
+        }
+        
+        private void LoopCountDownButtonClicked(object o, EventArgs args)
+        {
+            if (this.LoopCount != uint.MinValue && this.player != null)
+                this.LoopCount--;
+            UpdateLoopCountLabel();
+        }
+
+        private void UpdateLoopCountLabel() 
+        {
+            if (this.player != null)
+            {
+                this._labelloopcount.Text = $"{this.player.LoopCount} / {this.LoopCount}";
+            }
+            else
+                this._labelloopcount.Text = $"";
+            UpdateLoopFlag();
+        }
+
+        private void UpdateLoopFlag()
+        {
+            if (this.player != null)
+            {
+                if (this.player.SamplePosition < this.player.LoopEnd) 
+                {
+                    if (_allrepeat.Active || _randomplay.Active)
+                        this.player.NextIsLoop = (this.LoopCount > this.player.LoopCount);
+                    else
+                        this.player.NextIsLoop = _singlerepeat.Active;
+                }
+                else
+                {
+                    this.player.NextIsLoop = false;
+                }
+            }
 
         }
 
@@ -165,9 +256,11 @@ namespace LoopMusicPlayer
         {
             try
             {
+                this.player?.Dispose();
                 this.player = new Player(path, _volumebutton.Value);
                 this.player.LoopAction += OnLoop;
-                this.player.EndAction += OnEnd;
+                this.player.EndAction = OnEnd;
+                UpdateLoopFlag();
             }
             catch(Exception e)
             {
@@ -187,6 +280,7 @@ namespace LoopMusicPlayer
                 this._labeltitle.Text = this._labeltitle.Text + " / " + this.player.Artist;
             this._labelpath.Text = this.player.FilePath;
             this._labellooptime.Text = "Looptime: " + this.player.LoopStartTime.ToString(@"hh\:mm\:ss\.ff") + " - " + this.player.LoopEndTime.ToString(@"hh\:mm\:ss\.ff");
+            UpdateLoopCountLabel();
         }
 
         private void SeekBarButtonRelease(object o, ButtonReleaseEventArgs args)
@@ -430,7 +524,6 @@ namespace LoopMusicPlayer
                 dia.Comments = "MusicPlayer";
                 dia.Copyright = "© 2021 Mr-Ojii";
                 dia.Run();
-                dia.Destroy();
             }
         }
     }
