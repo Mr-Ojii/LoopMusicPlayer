@@ -161,17 +161,24 @@ namespace LoopMusicPlayer
         }
 
         private void OnEnd()
-        {
+        {/*
             if (_randomplay.Active)
             {
 
             }
             else if (_allrepeat.Active)
             {
-                /*if (_liststore.GetIterFirst(out var iter))
+                EjectClicked(7, EventArgs.Empty );
+                return;
+
+                if (_liststore.GetIterFirst(out var iter))
                 {
                     bool finded = false;
-                    for (int i = 0; i < _liststore.NColumns; i++) 
+
+                    int count;
+                    //_liststore.Foreach()
+                    var previter = iter;
+                    do
                     {
                         if (this.player.FilePath == (_liststore.GetValue(iter, 4) as string))
                         {
@@ -179,14 +186,15 @@ namespace LoopMusicPlayer
                             break;
                         }
                         _liststore.IterNext(ref iter);
-                    }
+                    } while (!iter.Equals(previter));
+
                     string path;
                     if (finded)
                     {
                         var prev = iter;
                         _liststore.IterNext(ref iter);
                         
-                        if (TreeIter.Equals(prev, iter))
+                        if (prev.Equals(iter))
                         {
                             _liststore.GetIterFirst(out iter);
                         }
@@ -199,8 +207,8 @@ namespace LoopMusicPlayer
                     }
                     CreatePlayer(path);
                     this.player?.Play();
-                }*/
-            }
+                }
+            }*/
         }
 
         private void LoopMethodToggled(object o, EventArgs args) 
@@ -463,6 +471,8 @@ namespace LoopMusicPlayer
         {
             if (this.player != null)
                 this.player.Dispose();
+            Bass.Pause();
+            Bass.Stop();
             Bass.Free();
             Application.Quit();
         }

@@ -12,7 +12,7 @@ Ogg(Vorbis)を
 
 ## 開発環境(動作確認環境)
 OS
-* Windows 10(Ver.20H2) (x64)  
+* Windows 10(Ver.21H1) (x64)  
 * Linux Mint 20.1(Xfce) (x64)
 
 Editor

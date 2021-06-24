@@ -245,10 +245,7 @@ namespace LoopMusicPlayer
 				if (this.StreamHandle != -1)
 				{
 					Bass.ChannelStop(this.StreamHandle);
-					while (!Bass.StreamFree(this.StreamHandle))
-					{
-						Trace.WriteLine(Bass.LastError);
-					}
+					Bass.StreamFree(this.StreamHandle);
 				}
 				reader?.Dispose();
 			}
