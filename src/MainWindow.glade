@@ -303,20 +303,6 @@
                         <property name="group">_loopmethod</property>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="_ignorelooprange">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">ループ範囲を無視(_L)</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                    </child>
                   </object>
                 </child>
               </object>

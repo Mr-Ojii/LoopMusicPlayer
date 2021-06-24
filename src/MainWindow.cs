@@ -26,11 +26,11 @@ namespace LoopMusicPlayer
         [UI] private TreeViewColumn _loopcolumn = null;
         [UI] private TreeViewColumn _artistcolumn = null;
         [UI] private TreeViewColumn _pathcolumn = null;
-        private Gtk.CellRendererText TitleNameCell = null;
-        private Gtk.CellRendererText TimeCell = null;
-        private Gtk.CellRendererText LoopCell = null;
-        private Gtk.CellRendererText ArtistNameCell = null;
-        private Gtk.CellRendererText PathCell = null;
+        private CellRendererText TitleNameCell = null;
+        private CellRendererText TimeCell = null;
+        private CellRendererText LoopCell = null;
+        private CellRendererText ArtistNameCell = null;
+        private CellRendererText PathCell = null;
 
         [UI] private ImageMenuItem _listaddmenu = null;
         [UI] private ImageMenuItem _listdeletemenu = null;
@@ -63,6 +63,7 @@ namespace LoopMusicPlayer
 
         private Player player = null;
         private uint LoopCount = 0;
+        private bool IsEnded = false;
 
         public MainWindow() : this(new Builder("MainWindow.glade")) { }
 
@@ -161,54 +162,61 @@ namespace LoopMusicPlayer
         }
 
         private void OnEnd()
-        {/*
-            if (_randomplay.Active)
-            {
+        {
+            this.IsEnded = true;
+        }
 
-            }
-            else if (_allrepeat.Active)
+        private void Endsita()
+        {
+            if (this.IsEnded)
             {
-                EjectClicked(7, EventArgs.Empty );
-                return;
-
-                if (_liststore.GetIterFirst(out var iter))
+                if (_randomplay.Active)
                 {
-                    bool finded = false;
-
-                    int count;
-                    //_liststore.Foreach()
-                    var previter = iter;
-                    do
+                    Random rand = new Random();
+                    if (_liststore.GetIterFirst(out var iter))
                     {
-                        if (this.player.FilePath == (_liststore.GetValue(iter, 4) as string))
+                        int randnum = rand.Next(0, _liststore.IterNChildren());
+                        for (int i = 0; i < randnum; i++) 
                         {
-                            finded = true;
-                            break;
+                            _liststore.IterNext(ref iter);
                         }
-                        _liststore.IterNext(ref iter);
-                    } while (!iter.Equals(previter));
-
-                    string path;
-                    if (finded)
+                        CreatePlayer(_treeview.Model.GetValue(iter, 4) as string);
+                    }
+                }
+                else if (_allrepeat.Active)
+                {
+                    if (_liststore.GetIterFirst(out var iter))
                     {
-                        var prev = iter;
-                        _liststore.IterNext(ref iter);
-                        
-                        if (prev.Equals(iter))
+                        bool finded = false;
+
+                        do
+                        {
+                            if (this.player.FilePath == (_liststore.GetValue(iter, 4) as string))
+                            {
+                                finded = true;
+                                break;
+                            }
+                        } while (_liststore.IterNext(ref iter));
+
+                        string path;
+                        if (finded)
+                        {
+                            if (!_liststore.IterNext(ref iter))
+                            {
+                                _liststore.GetIterFirst(out iter);
+                            }
+                            path = _treeview.Model.GetValue(iter, 4) as string;
+                        }
+                        else
                         {
                             _liststore.GetIterFirst(out iter);
+                            path = _treeview.Model.GetValue(iter, 4) as string;
                         }
-                        path = _treeview.Model.GetValue(iter, 4) as string;
+                        CreatePlayer(path);
                     }
-                    else 
-                    {
-                        _liststore.GetIterFirst(out iter);
-                        path = _treeview.Model.GetValue(iter, 4) as string;
-                    }
-                    CreatePlayer(path);
-                    this.player?.Play();
                 }
-            }*/
+            }
+            this.IsEnded = false;
         }
 
         private void LoopMethodToggled(object o, EventArgs args) 
@@ -380,6 +388,7 @@ namespace LoopMusicPlayer
                     this._labelnowtime.Text = "-" + (this.player.TotalTime - this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
             }
             _seekbararea.QueueDraw();
+            Endsita();
             return true;
         }
 
