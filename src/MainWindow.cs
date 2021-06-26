@@ -309,6 +309,11 @@ namespace LoopMusicPlayer
                 double ratio = clickedx / (double)(area.AllocatedWidth - 10);
 
                 this.player.Seek((long)(ratio * this.player.TotalSamples));
+
+                if (this._singlerepeat.Active)
+                    this.player.NextIsLoop = !((ratio * this.player.TotalSamples) >= this.player.LoopEnd);
+                else if (!this._singleplay.Active)
+                        this.player.NextIsLoop = (!((ratio * this.player.TotalSamples) >= this.player.LoopEnd)) && (this.LoopCount > this.player.LoopCount);
             }
         }
 

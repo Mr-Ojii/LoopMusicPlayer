@@ -11,7 +11,7 @@ namespace LoopMusicPlayer
 {
 	internal class Player : IDisposable
 	{
-		private VorbisReader reader = null;
+		private MusicFileReader reader = null;
 		private int StreamHandle = -1;
 		private StreamProcedure tSTREAMPROC = null;
 		private SyncProcedure tSYNCPROC = null;
@@ -111,7 +111,7 @@ namespace LoopMusicPlayer
 		public Player(string filepath, double volume)
 		{
 			this.FilePath = filepath;
-			this.reader = new VorbisReader(filepath);
+			this.reader = new MusicFileReader(filepath);
 
 			this.IsLoop = !string.IsNullOrEmpty(reader.Tags.GetTagSingle("LOOPSTART")) && (!string.IsNullOrEmpty(reader.Tags.GetTagSingle("LOOPLENGTH")) || !string.IsNullOrEmpty(reader.Tags.GetTagSingle("LOOPEND")));
 			if (this.IsLoop)
@@ -209,16 +209,16 @@ namespace LoopMusicPlayer
 			if (NextIsLoop && reader.SamplePosition + floatlength > LoopEnd)
 			{
 				int tmplength = (int)(LoopEnd - reader.SamplePosition);
-				num = reader.ReadSamples(tmp, 0, tmplength);
+				num = reader.ReadSamples(ref tmp, 0, tmplength);
 				reader.SamplePosition = LoopStart;
-				num = reader.ReadSamples(tmp, tmplength, floatlength - tmplength);
+				num = reader.ReadSamples(ref tmp, tmplength, floatlength - tmplength);
 				num = length;
 				this.LoopCount++;
 				if (LoopAction != null) LoopAction(this, EventArgs.Empty);
 			}
 			else
 			{
-				num = reader.ReadSamples(tmp, 0, tmp.Length) * (int)((double)sizeof(float) / sizeof(byte));
+				num = reader.ReadSamples(ref tmp, 0, tmp.Length) * (int)((double)sizeof(float) / sizeof(byte));
 			}
 
 			if (num < 0) num = 0;
