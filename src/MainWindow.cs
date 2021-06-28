@@ -254,10 +254,10 @@ namespace LoopMusicPlayer
             {
                 if (this.player.SamplePosition < this.player.LoopEnd) 
                 {
-                    if (_allrepeat.Active || _randomplay.Active)
+                    if (!_singlerepeat.Active)
                         this.player.NextIsLoop = (this.LoopCount > this.player.LoopCount);
                     else
-                        this.player.NextIsLoop = _singlerepeat.Active;
+                        this.player.NextIsLoop = true;
                 }
                 else
                 {
@@ -311,7 +311,7 @@ namespace LoopMusicPlayer
 
                 if (this._singlerepeat.Active)
                     this.player.NextIsLoop = !((ratio * this.player.TotalSamples) >= this.player.LoopEnd);
-                else if (!this._singleplay.Active)
+                else
                         this.player.NextIsLoop = (!((ratio * this.player.TotalSamples) >= this.player.LoopEnd)) && (this.LoopCount > this.player.LoopCount);
             }
         }
