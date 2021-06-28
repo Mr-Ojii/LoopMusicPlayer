@@ -72,6 +72,7 @@ namespace LoopMusicPlayer
 
         private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
         {
+            this.Icon = new Gdk.Pixbuf(Assembly.GetExecutingAssembly().GetManifestResourceStream("LoopMusicPlayer.icon.ico"));
             Bass.Init();
 
             Bass.Configure(Configuration.UpdatePeriod, 1);

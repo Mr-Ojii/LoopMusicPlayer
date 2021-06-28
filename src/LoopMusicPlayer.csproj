@@ -32,4 +32,8 @@
     <PackageReference Include="NVorbis" Version="0.10.3" />
   </ItemGroup>
 
+  <ItemGroup Label="Resources">
+    <EmbeddedResource Include="icon.ico" />
+  </ItemGroup>
+
 </Project>

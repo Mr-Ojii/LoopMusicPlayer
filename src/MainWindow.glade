@@ -99,9 +99,9 @@
   <object class="GtkWindow" id="MainWindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">LoopMusicPlayer</property>
+    <property name="resizable">False</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>
-    <property name="icon">icon.ico</property>
     <child type="titlebar">
       <placeholder/>
     </child>
@@ -383,8 +383,8 @@
                 <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkTreeView" id="_treeview">
-                    <property name="width_request">100</property>
-                    <property name="height_request">80</property>
+                    <property name="width_request">640</property>
+                    <property name="height_request">200</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="hadjustment">adjustment1</property>
