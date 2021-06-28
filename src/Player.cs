@@ -207,7 +207,7 @@ namespace LoopMusicPlayer
 		public int StreamProc(int handle, IntPtr buffer, int length, IntPtr user)
 		{
 			int num;
-			int floatlength = (int)((double)sizeof(byte) / sizeof(float) * length);
+			int floatlength = (int)(Const.byte_per_float * length);
 			float[] tmp = new float[floatlength];
 
 			if (NextIsLoop && reader.SamplePosition + floatlength > LoopEnd)
@@ -222,7 +222,7 @@ namespace LoopMusicPlayer
 			}
 			else
 			{
-				num = reader.ReadSamples(tmp, 0, tmp.Length) * (int)((double)sizeof(float) / sizeof(byte));
+				num = (int)(reader.ReadSamples(tmp, 0, tmp.Length) * Const.float_per_byte);
 			}
 
 			if (num < 0) num = 0;

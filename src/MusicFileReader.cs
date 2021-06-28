@@ -147,7 +147,7 @@ namespace LoopMusicPlayer
                         cnt = this.Buf.Length - p;
                     }
 
-                    Buffer.BlockCopy(readBuffer, 0, this.Buf, p * 4, cnt * 4);
+                    Buffer.BlockCopy(readBuffer, 0, this.Buf, (int)(p * Const.float_per_byte), (int)(cnt * Const.float_per_byte));
                     p += cnt;
                 }
             }
@@ -160,7 +160,7 @@ namespace LoopMusicPlayer
             if (this.TotalSamples - this.SamplePosition < count) 
                 count = (int)(this.TotalSamples - this.SamplePosition);
 
-            Buffer.BlockCopy(this.Buf, (int)this.SamplePosition * this.Channels * (sizeof(float) / sizeof(byte)), buffer, offset * (sizeof(float) / sizeof(byte)), count * (sizeof(float) / sizeof(byte)));
+            Buffer.BlockCopy(this.Buf, (int)(this.SamplePosition * this.Channels * (Const.float_per_byte)), buffer, (int)(offset * Const.float_per_byte), (int)(count * Const.float_per_byte));
 
             this.SamplePosition += (count / this.Channels);
 
