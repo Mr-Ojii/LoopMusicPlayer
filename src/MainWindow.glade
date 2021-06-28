@@ -51,6 +51,11 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-media-play</property>
   </object>
+  <object class="GtkRadioMenuItem" id="_playmethod">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="draw_as_radio">True</property>
+  </object>
   <object class="GtkImage" id="_previousimage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -301,6 +306,32 @@
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
                         <property name="group">_loopmethod</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkRadioMenuItem" id="_streamingplay">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">ストリーミング再生(_T)</property>
+                        <property name="use_underline">True</property>
+                        <property name="draw_as_radio">True</property>
+                        <property name="group">_playmethod</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkRadioMenuItem" id="_onmemoryplay">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">オンメモリ再生(_O)</property>
+                        <property name="use_underline">True</property>
+                        <property name="draw_as_radio">True</property>
+                        <property name="group">_playmethod</property>
                       </object>
                     </child>
                   </object>

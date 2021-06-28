@@ -49,6 +49,9 @@ namespace LoopMusicPlayer
         [UI] private RadioMenuItem _allrepeat = null;
         [UI] private RadioMenuItem _randomplay = null;
 
+        [UI] private RadioMenuItem _streamingplay = null;
+        [UI] private RadioMenuItem _onmemoryplay = null;
+
         [UI] private ImageMenuItem _aboutmenu = null;
 
         [UI] private DrawingArea _seekbararea = null;
@@ -107,6 +110,7 @@ namespace LoopMusicPlayer
 
             _labelseektimemenu.Toggle();
             _singlerepeat.Toggle();
+            _streamingplay.Toggle();
             UpdateLoopCountLabel();
             _aboutmenu.Activated += ShowAbout;
             _listaddmenu.Activated += OpenFileFromMenu;
@@ -122,6 +126,8 @@ namespace LoopMusicPlayer
             _previousbutton.Clicked += PreviousClicked;
             _nextbutton.Clicked += NextClicked;
             _ejectbutton.Clicked += EjectClicked;
+            _streamingplay.Toggled += EjectClicked;
+            _onmemoryplay.Toggled += EjectClicked;
             _seekbararea.AddEvents((int)(Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask));
             _seekbararea.ButtonPressEvent += SeekBarButtonPress;
             _seekbararea.ButtonReleaseEvent += SeekBarButtonRelease;
@@ -199,24 +205,16 @@ namespace LoopMusicPlayer
                         } while (_liststore.IterNext(ref iter));
 
                         string path;
-                        if (finded)
-                        {
-                            if (!_liststore.IterNext(ref iter))
-                            {
-                                _liststore.GetIterFirst(out iter);
-                            }
-                            path = _treeview.Model.GetValue(iter, 4) as string;
-                        }
-                        else
+                        if (!(finded && _liststore.IterNext(ref iter)))
                         {
                             _liststore.GetIterFirst(out iter);
-                            path = _treeview.Model.GetValue(iter, 4) as string;
                         }
+                        path = _treeview.Model.GetValue(iter, 4) as string;
                         CreatePlayer(path);
                     }
                 }
+                this.IsEnded = false;
             }
-            this.IsEnded = false;
         }
 
         private void LoopMethodToggled(object o, EventArgs args) 
@@ -273,7 +271,7 @@ namespace LoopMusicPlayer
             try
             {
                 this.player?.Dispose();
-                this.player = new Player(path, _volumebutton.Value);
+                this.player = new Player(path, _volumebutton.Value, _streamingplay.Active);
                 this.player.LoopAction += OnLoop;
                 this.player.EndAction = OnEnd;
                 UpdateLoopFlag();
@@ -392,8 +390,8 @@ namespace LoopMusicPlayer
                 else if (this._labelremainingtimemenu.Active)
                     this._labelnowtime.Text = "-" + (this.player.TotalTime - this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
             }
-            _seekbararea.QueueDraw();
             Endsita();
+            _seekbararea.QueueDraw();
             return true;
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,14 +9,59 @@ using NVorbis.Contracts;
 
 namespace LoopMusicPlayer
 {
-    internal class MusicFileReader
+    internal class MusicFileReader : IVorbisReader
     {
-        private float[] Buf;
-        public readonly long TotalSamples;
-        public readonly TimeSpan TotalTime;
+        public int UpperBitrate
+        {
+            get;
+        }
+        public long TotalSamples
+        {
+            get;
+        }
+        public TimeSpan TotalTime
+        {
+            get;
+        }
+        public int LowerBitrate
+        {
+            get;
+        }
+        public int NominalBitrate
+        {
+            get;
+        }
+        public ITagData Tags
+        {
+            get;
+        }
+        public int SampleRate
+        {
+            get;
+        }
+        public int Channels
+        {
+            get;
+        }
+        public int StreamIndex
+        {
+            get;
+        }
+        public IReadOnlyList<IStreamDecoder> Streams
+        {
+            get;
+        }
+        public long ContainerWasteBits 
+        {
+            get;
+        }
+        public long ContainerOverheadBits
+        {
+            get;
+        }
         public long SamplePosition
         {
-            get 
+            get
             {
                 return _SamplePosition;
             }
@@ -26,6 +72,26 @@ namespace LoopMusicPlayer
             }
         }
         private long _SamplePosition;
+        public bool HasClipped 
+        {
+            get;
+        }
+        public bool IsEndOfStream 
+        {
+            get 
+            {
+                return this.TotalSamples == this.SamplePosition;
+            }
+        }
+        public IStreamStats StreamStats 
+        {
+            get;
+        }
+        public bool ClipSamples
+        {
+            get;
+            set;
+        }
         public TimeSpan TimePosition
         {
             get
@@ -38,20 +104,33 @@ namespace LoopMusicPlayer
                 int day = (int)(time / 86400);
                 return new TimeSpan(day, hour, minute, second, millisecond);
             }
+            set 
+            {
+                double time = 0;
+                time += value.Days * 86400;
+                time += value.Hours * 3600;
+                time += value.Minutes * 60;
+                time += value.Seconds;
+                time += value.Milliseconds * 0.001;
+                this.SamplePosition = (long)(this.SampleRate * time);
+            }
         }
-        public readonly int SampleRate;
-        public readonly int Channels;
-        public readonly ITagData Tags;
+
+        public event EventHandler<NewStreamEventArgs> NewStream;
+        private float[] Buf;
 
         public MusicFileReader(string FilePath)
         {
             using (VorbisReader reader = new VorbisReader(FilePath))
             {
+                this.Tags = reader.Tags;
+                this.HasClipped = reader.HasClipped;
+                this.ClipSamples = reader.ClipSamples;
+
                 this.TotalSamples = reader.TotalSamples;
                 this.SampleRate = reader.SampleRate;
                 this.TotalTime = reader.TotalTime;
                 this.Channels = reader.Channels;
-                this.Tags = reader.Tags;
                 this.SamplePosition = 0;
                 this.Buf = new float[this.TotalSamples * this.Channels];
 
@@ -74,7 +153,9 @@ namespace LoopMusicPlayer
             }
         }
 
-        public int ReadSamples(ref float[] buffer, int offset, int count)
+        public bool FindNextStream() => throw new NotSupportedException();
+
+        public int ReadSamples(float[] buffer, int offset, int count)
         {
             if (this.TotalSamples - this.SamplePosition < count) 
                 count = (int)(this.TotalSamples - this.SamplePosition);
@@ -85,6 +166,19 @@ namespace LoopMusicPlayer
 
             return count;
         }
+
+        public void SeekTo(TimeSpan timePosition, SeekOrigin seekOrigin = SeekOrigin.Begin) 
+        {
+            this.TimePosition = timePosition;
+        }
+
+        public void SeekTo(long samplePosition, SeekOrigin seekOrigin = SeekOrigin.Begin)
+        {
+            this.SamplePosition = samplePosition;
+        }
+
+        public bool SwitchStreams(int index) => throw new NotSupportedException();
+
         public void Dispose() 
         {
         }
