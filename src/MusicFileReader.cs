@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NVorbis;
 using NVorbis.Contracts;
+using ManagedBass;
 
 namespace LoopMusicPlayer
 {
@@ -21,7 +21,16 @@ namespace LoopMusicPlayer
         }
         public TimeSpan TotalTime
         {
-            get;
+            get
+            {
+                double time = (this.TotalSamples / (double)this.SampleRate);
+                int millisecond = (int)((time % 1) * 1000);
+                int second = (int)(time % 60);
+                int minute = (int)(time / 60) % 60;
+                int hour = (int)(time / 3600) % 24;
+                int day = (int)(time / 86400);
+                return new TimeSpan(day, hour, minute, second, millisecond);
+            }
         }
         public int LowerBitrate
         {
@@ -72,10 +81,7 @@ namespace LoopMusicPlayer
             }
         }
         private long _SamplePosition;
-        public bool HasClipped 
-        {
-            get;
-        }
+        public bool HasClipped => throw new NotSupportedException();
         public bool IsEndOfStream 
         {
             get 
@@ -116,41 +122,39 @@ namespace LoopMusicPlayer
             }
         }
 
-        public event EventHandler<NewStreamEventArgs> NewStream;
+        public event EventHandler<NVorbis.NewStreamEventArgs> NewStream;
         private float[] Buf;
 
         public MusicFileReader(string FilePath)
         {
-            using (VorbisReader reader = new VorbisReader(FilePath))
-            {
-                this.Tags = reader.Tags;
-                this.HasClipped = reader.HasClipped;
-                this.ClipSamples = reader.ClipSamples;
+            int handle = Bass.SampleLoad(FilePath, 0, 0, 1, BassFlags.Float);
+            this.Buf = new float[(long)(Bass.ChannelGetLength(handle, PositionFlags.Bytes) * Const.byte_per_float)];
 
-                this.TotalSamples = reader.TotalSamples;
-                this.SampleRate = reader.SampleRate;
-                this.TotalTime = reader.TotalTime;
-                this.Channels = reader.Channels;
-                this.SamplePosition = 0;
-                this.Buf = new float[this.TotalSamples * this.Channels];
+            Bass.SampleGetData(handle, this.Buf);
 
-                var readBuffer = new float[reader.Channels * reader.SampleRate * 5];
+            if (Bass.LastError != Errors.OK)
+                Console.WriteLine(Bass.LastError.ToString());
 
+            int channel = Bass.SampleGetChannel(handle);
+            ChannelInfo info = Bass.ChannelGetInfo(channel);
 
-                int cnt;
-                int p = 0;
+            this.SampleRate = info.Frequency;
+            this.Channels = info.Channels;
+            this.TotalSamples = Buf.Length / this.Channels;
+            this.SamplePosition = 0;
+            this.ClipSamples = false;
 
-                while ((cnt = reader.ReadSamples(readBuffer, 0, readBuffer.Length)) > 0)
-                {
-                    if (this.Buf.Length < p + cnt)
-                    {
-                        cnt = this.Buf.Length - p;
-                    }
+            if (Bass.LastError != Errors.OK)
+                Console.WriteLine(Bass.LastError.ToString());
 
-                    Buffer.BlockCopy(readBuffer, 0, this.Buf, (int)(p * Const.float_per_byte), (int)(cnt * Const.float_per_byte));
-                    p += cnt;
-                }
-            }
+            int tmphandle = Bass.CreateStream(FilePath);
+
+            string[] list = Extensions.ExtractMultiStringUtf8(Bass.ChannelGetTags(tmphandle, TagType.OGG));
+            this.Tags = new TagData(list);
+
+            Bass.StreamFree(tmphandle);
+
+            Bass.SampleFree(handle);
         }
 
         public bool FindNextStream() => throw new NotSupportedException();
