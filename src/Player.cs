@@ -4,15 +4,13 @@ using System.Linq;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
-using NVorbis;
-using NVorbis.Contracts;
 using ManagedBass;
 
 namespace LoopMusicPlayer
 {
 	internal class Player : IDisposable
 	{
-		private IVorbisReader reader = null;
+		private IMusicFileReader reader = null;
 		private int StreamHandle = -1;
 		private StreamProcedure tSTREAMPROC = null;
 		private SyncProcedure tSYNCPROC = null;
@@ -109,11 +107,14 @@ namespace LoopMusicPlayer
 
 		public readonly string FilePath;
 
+		private bool Ended;
+
 		public Player(string filepath, double volume, bool streaming)
 		{
 			this.FilePath = filepath;
-			if(streaming)
-				this.reader = new VorbisReader(filepath);
+			Ended = false;
+			if (streaming)
+				this.reader = new MusicFileReaderStreaming(filepath);
 			else
 				this.reader = new MusicFileReader(filepath);
 
@@ -239,7 +240,11 @@ namespace LoopMusicPlayer
 
 		public void EndProc(int handle, int channel, int data, IntPtr user)
 		{
-			this.EndAction();
+			if (!Ended)
+			{
+				Ended = true;
+				this.EndAction();
+			}
 		}
 
 		public void Dispose() 

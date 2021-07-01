@@ -179,6 +179,7 @@ namespace LoopMusicPlayer
         {
             if (this.IsEnded)
             {
+                this.IsEnded = false;
                 if (_randomplay.Active)
                 {
                     Random rand = new Random();
@@ -216,7 +217,6 @@ namespace LoopMusicPlayer
                         CreatePlayer(path);
                     }
                 }
-                this.IsEnded = false;
             }
         }
 
@@ -517,7 +517,7 @@ namespace LoopMusicPlayer
                 {
                     try
                     {
-                        using (var ii = new NVorbis.VorbisReader(paths[i]))
+                        using (var ii = new MusicFileReaderStreaming(paths[i]))
                         {
                             string title = !string.IsNullOrEmpty(ii.Tags.Title) ? ii.Tags.Title : System.IO.Path.GetFileName(paths[i]);
                             string time = ii.TotalTime.ToString();

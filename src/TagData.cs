@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NVorbis.Contracts;
 
 namespace LoopMusicPlayer
 {
-    public class TagData : ITagData
+    public class TagData
     {
         private Dictionary<string, IList<string>> _Tags;
 
