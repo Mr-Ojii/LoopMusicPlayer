@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using ManagedBass;
+using LoopMusicPlayer.TagReaderExtensionMethods;
 
 namespace LoopMusicPlayer
 {
@@ -118,17 +119,17 @@ namespace LoopMusicPlayer
 			else
 				this.reader = new MusicFileReader(filepath);
 
-			this.IsLoop = !string.IsNullOrEmpty(reader.Tags.GetTagSingle("LOOPSTART")) && (!string.IsNullOrEmpty(reader.Tags.GetTagSingle("LOOPLENGTH")) || !string.IsNullOrEmpty(reader.Tags.GetTagSingle("LOOPEND")));
+			this.IsLoop = !string.IsNullOrEmpty(reader.Tags.GetTag("LOOPSTART")) && (!string.IsNullOrEmpty(reader.Tags.GetTag("LOOPLENGTH")) || !string.IsNullOrEmpty(reader.Tags.GetTag("LOOPEND")));
 			if (this.IsLoop)
 			{
-				LoopStart = long.Parse(reader.Tags.GetTagSingle("LOOPSTART"));
-				if (!string.IsNullOrEmpty(reader.Tags.GetTagSingle("LOOPLENGTH")))
+				LoopStart = long.Parse(reader.Tags.GetTag("LOOPSTART"));
+				if (!string.IsNullOrEmpty(reader.Tags.GetTag("LOOPLENGTH")))
 				{
-					LoopEnd = LoopStart + long.Parse(reader.Tags.GetTagSingle("LOOPLENGTH"));
+					LoopEnd = LoopStart + long.Parse(reader.Tags.GetTag("LOOPLENGTH"));
 				}
 				else
 				{
-					LoopEnd = long.Parse(reader.Tags.GetTagSingle("LOOPEND"));
+					LoopEnd = long.Parse(reader.Tags.GetTag("LOOPEND"));
 				}
 			}
 			else

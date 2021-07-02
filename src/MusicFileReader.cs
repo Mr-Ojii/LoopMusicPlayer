@@ -27,7 +27,7 @@ namespace LoopMusicPlayer
                 return new TimeSpan(day, hour, minute, second, millisecond);
             }
         }
-        public TagData Tags
+        public TagReader Tags
         {
             get;
         }
@@ -102,8 +102,7 @@ namespace LoopMusicPlayer
 
             int tmphandle = Bass.CreateStream(FilePath);
 
-            string[] list = Extensions.ExtractMultiStringUtf8(Bass.ChannelGetTags(tmphandle, TagType.OGG));
-            this.Tags = new TagData(list);
+            this.Tags = TagReader.Read(tmphandle);
 
             Bass.StreamFree(tmphandle);
 

@@ -27,7 +27,7 @@ namespace LoopMusicPlayer
                 return new TimeSpan(day, hour, minute, second, millisecond);
             }
         }
-        public TagData Tags
+        public TagReader Tags
         {
             get;
         }
@@ -43,18 +43,16 @@ namespace LoopMusicPlayer
         {
             get
             {
-                return _SamplePosition;
+                return (long)(Bass.ChannelGetPosition(this.handle, PositionFlags.Bytes) * Const.byte_per_float / this.Channels);
             }
             set
             {
                 if (value <= TotalSamples)
                 {
-                    this._SamplePosition = value;
                     Bass.ChannelSetPosition(this.handle, (long)(value * Const.float_per_byte * this.Channels), PositionFlags.Bytes);
                 }
             }
         }
-        private long _SamplePosition;
         public TimeSpan TimePosition
         {
             get
@@ -95,11 +93,7 @@ namespace LoopMusicPlayer
             this.TotalSamples = (long)(Bass.ChannelGetLength(handle, PositionFlags.Bytes) * Const.byte_per_float) / this.Channels;
             this.SamplePosition = 0;
 
-            if (Bass.LastError != Errors.OK)
-                Console.WriteLine(Bass.LastError.ToString());
-
-            string[] list = Extensions.ExtractMultiStringUtf8(Bass.ChannelGetTags(handle, TagType.OGG));
-            this.Tags = new TagData(list);
+            this.Tags = TagReader.Read(this.handle);
         }
 
         public int ReadSamples(float[] buffer, int offset, int count)
@@ -108,8 +102,6 @@ namespace LoopMusicPlayer
                 count = (int)(this.TotalSamples - this.SamplePosition) * this.Channels;
 
             Bass.ChannelGetData(this.handle, buffer, (int)(count * Const.float_per_byte));
-
-            this._SamplePosition += (count / this.Channels);
 
             return count;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ManagedBass;
 
 namespace LoopMusicPlayer
 {
@@ -10,7 +11,7 @@ namespace LoopMusicPlayer
     {
         public long TotalSamples { get; }
         public TimeSpan TotalTime { get; }
-        public TagData Tags { get; }
+        public TagReader Tags { get; }
         public int SampleRate { get; }
         public int Channels { get; }
         public long SamplePosition { get; set; }

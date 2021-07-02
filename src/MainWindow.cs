@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using LoopMusicPlayer.TagReaderExtensionMethods;
 using UI = Gtk.Builder.ObjectAttribute;
 
 namespace LoopMusicPlayer
@@ -522,7 +523,7 @@ namespace LoopMusicPlayer
                             string title = !string.IsNullOrEmpty(ii.Tags.Title) ? ii.Tags.Title : System.IO.Path.GetFileName(paths[i]);
                             string time = ii.TotalTime.ToString();
                             string artist = !string.IsNullOrEmpty(ii.Tags.Artist) ? ii.Tags.Artist : "";
-                            string loop = !string.IsNullOrEmpty(ii.Tags.GetTagSingle("LOOPSTART")) && (!string.IsNullOrEmpty(ii.Tags.GetTagSingle("LOOPLENGTH")) || !string.IsNullOrEmpty(ii.Tags.GetTagSingle("LOOPEND"))) ? "Loop" : "";
+                            string loop = !string.IsNullOrEmpty(ii.Tags.GetTag("LOOPSTART")) && (!string.IsNullOrEmpty(ii.Tags.GetTag("LOOPLENGTH")) || !string.IsNullOrEmpty(ii.Tags.GetTag("LOOPEND"))) ? "Loop" : "";
                             string path = paths[i];
 
                             _liststore.AppendValues(title, time, loop, artist, path);
