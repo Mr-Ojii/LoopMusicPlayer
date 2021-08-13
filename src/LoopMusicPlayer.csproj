@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.*" />
-    <PackageReference Include="ManagedBass" Version="3.0.0" />
+    <PackageReference Include="ManagedBass" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup Label="Resources">
