@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using LoopMusicPlayer.TagReaderExtensionMethods;
 using UI = Gtk.Builder.ObjectAttribute;
 
@@ -68,6 +70,8 @@ namespace LoopMusicPlayer
         private Player player = null;
         private uint LoopCount = 0;
         private bool IsEnded = false;
+
+        private CancellationTokenSource cts = null;
 
         public MainWindow() : this(new Builder("MainWindow.glade")) { }
 
@@ -141,6 +145,23 @@ namespace LoopMusicPlayer
             _singlerepeat.Toggled += LoopMethodToggled;
             _allrepeat.Toggled += LoopMethodToggled;
             _randomplay.Toggled += LoopMethodToggled;
+            this.Destroyed += OnWindowDestroyed;
+
+            cts = new CancellationTokenSource();
+            Task.Factory.StartNew(JudgeEndLoop);
+        }
+
+        private void JudgeEndLoop()
+        {
+            while(!cts.IsCancellationRequested) {
+                Endsita();
+                Thread.Sleep(100);
+            }
+        }
+
+        public void OnWindowDestroyed(object o, EventArgs args) {
+            Console.WriteLine("Destroyed");
+            cts.Cancel();
         }
 
         private void EjectClicked(object o, EventArgs args)
@@ -396,7 +417,6 @@ namespace LoopMusicPlayer
                 else if (this._labelremainingtimemenu.Active)
                     this._labelnowtime.Text = "-" + (this.player.TotalTime - this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
             }
-            Endsita();
             _seekbararea.QueueDraw();
             return true;
         }
