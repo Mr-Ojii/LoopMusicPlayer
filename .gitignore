@@ -1,8 +1,8 @@
 /src/.vs/*
 /src/obj/*
-/bin/net5.0/*
-!/bin/net5.0/dll/
-!/bin/net5.0/licenses/
+/bin/*/*
+!/bin/*/dll/
+!/bin/*/licenses/
 /UI.png
 /src/icon*
 !/src/icon.ico
