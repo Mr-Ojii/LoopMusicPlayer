@@ -1,6 +1,6 @@
 name: publish
 
-on: 
+on:
   push:
     tags:
       - "Ver.*"
@@ -12,17 +12,17 @@ jobs:
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
-    - name: Create a Release
-      id: create_release
-      uses: actions/create-release@v1
-      env: 
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
-        draft: false
-        prerelease: false
-     
+      - name: Create a Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
+
   build:
     name: Build
     runs-on: windows-latest
@@ -31,44 +31,44 @@ jobs:
       matrix:
         platform: [win-x86, win-x64, osx-x64, linux-x64]
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: SetUp NuGet
-      uses:  nuget/setup-nuget@v1
-      with:
-        nuget-version: '5.x'
-    - name: NuGet Restore
-      run: nuget restore src/LoopMusicPlayer.sln
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
-    - name: Install dependencies
-      run: dotnet restore src/LoopMusicPlayer.sln
-    - name: Build
-      run: dotnet publish ./src/LoopMusicPlayer.sln -o ./bin/net5.0 -r ${{matrix.platform}} --configuration Release --self-contained true
-    - name: Remove File
-      uses: JesseTG/rm@v1.0.0
-      with:
-        path: ./bin/net5.0/${{matrix.platform}}
-        
-    - name: Rename App File
-      if: matrix.platform == 'linux-x64'
-      run: |
-        cd $Env:GITHUB_WORKSPACE
-        move ".\bin\net5.0\LoopMusicPlayer" ".\bin\net5.0\LoopMusicPlayer.AppImage"
-        
-    - name: Create Archive
-      run: |
-        cd $Env:GITHUB_WORKSPACE
-        tar -a -cvf LoopMusicPlayer.zip -C ./bin *
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: SetUp NuGet
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-version: '6.x'
+      - name: NuGet Restore
+        run: nuget restore src/LoopMusicPlayer.sln
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Install dependencies
+        run: dotnet restore src/LoopMusicPlayer.sln
+      - name: Build
+        run: dotnet publish ./src/LoopMusicPlayer.sln -o ./bin/net6.0 -r ${{matrix.platform}} --configuration Release --self-contained true
+      - name: Remove File
+        uses: JesseTG/rm@v1.0.0
+        with:
+          path: ./bin/net6.0/${{matrix.platform}}
 
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.create_release.outputs.upload_url }}
-        asset_path: ./LoopMusicPlayer.zip
-        asset_name: LoopMusicPlayer-${{matrix.platform}}-${{ github.ref }}.zip
-        asset_content_type: application/zip
+      - name: Rename App File
+        if: matrix.platform == 'linux-x64'
+        run: |
+          cd $Env:GITHUB_WORKSPACE
+          move ".\bin\net6.0\LoopMusicPlayer" ".\bin\net6.0\LoopMusicPlayer.AppImage"
+
+      - name: Create Archive
+        run: |
+          cd $Env:GITHUB_WORKSPACE
+          tar -a -cvf LoopMusicPlayer.zip -C ./bin *
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          asset_path: ./LoopMusicPlayer.zip
+          asset_name: LoopMusicPlayer-${{matrix.platform}}-${{ github.ref }}.zip
+          asset_content_type: application/zip
