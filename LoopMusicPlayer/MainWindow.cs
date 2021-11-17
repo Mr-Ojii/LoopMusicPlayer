@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using LoopMusicPlayer.Core;
 using LoopMusicPlayer.TagReaderExtensionMethods;
 using UI = Gtk.Builder.ObjectAttribute;
 
@@ -538,7 +539,7 @@ namespace LoopMusicPlayer
                 {
                     try
                     {
-                        using (var ii = new MusicFileReaderStreaming(paths[i]))
+                        using (var ii = new Player(paths[i], 1.0, true))
                         {
                             string title = !string.IsNullOrEmpty(ii.Tags.Title) ? ii.Tags.Title : System.IO.Path.GetFileName(paths[i]);
                             string time = ii.TotalTime.ToString();

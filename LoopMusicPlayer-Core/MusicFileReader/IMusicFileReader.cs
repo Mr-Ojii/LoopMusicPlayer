@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ManagedBass;
 
-namespace LoopMusicPlayer
+namespace LoopMusicPlayer.Core
 {
     public interface IMusicFileReader : IDisposable 
     {

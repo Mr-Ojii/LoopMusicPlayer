@@ -1,9 +1,10 @@
-/src/.vs/*
-/src/obj/*
+/.vs/*
+/*/obj/*
+/*/bin/*
 /bin/*/*
 !/bin/*/dll/
 !/bin/*/licenses/
 /UI.png
-/src/icon*
-!/src/icon.ico
+icon*
+!/*/icon.ico
 *~

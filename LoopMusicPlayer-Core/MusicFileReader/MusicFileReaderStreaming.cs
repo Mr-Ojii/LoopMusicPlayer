@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ManagedBass;
 
-namespace LoopMusicPlayer
+namespace LoopMusicPlayer.Core
 {
-    internal class MusicFileReader : IMusicFileReader
+    internal class MusicFileReaderStreaming : IMusicFileReader
     {
         public long TotalSamples
         {
@@ -43,15 +43,16 @@ namespace LoopMusicPlayer
         {
             get
             {
-                return _SamplePosition;
+                return (long)(Bass.ChannelGetPosition(this.handle, PositionFlags.Bytes) * Const.byte_per_float / this.Channels);
             }
             set
             {
                 if (value <= TotalSamples)
-                    this._SamplePosition = value;
+                {
+                    Bass.ChannelSetPosition(this.handle, (long)(value * Const.float_per_byte * this.Channels), PositionFlags.Bytes);
+                }
             }
         }
-        private long _SamplePosition;
         public TimeSpan TimePosition
         {
             get
@@ -64,7 +65,7 @@ namespace LoopMusicPlayer
                 int day = (int)(time / 86400);
                 return new TimeSpan(day, hour, minute, second, millisecond);
             }
-            set 
+            set
             {
                 double time = 0;
                 time += value.Days * 86400;
@@ -76,37 +77,23 @@ namespace LoopMusicPlayer
             }
         }
 
-        private float[] Buf;
+        private int handle;
 
-        public MusicFileReader(string FilePath)
+        public MusicFileReaderStreaming(string FilePath)
         {
-            int handle = Bass.SampleLoad(FilePath, 0, 0, 1, BassFlags.Float);
+            this.handle = Bass.CreateStream(FilePath, Flags: BassFlags.Float | BassFlags.Decode);
 
             if (Bass.LastError != Errors.OK)
                 throw new Exception(Bass.LastError.ToString());
 
-            this.Buf = new float[(long)(Bass.ChannelGetLength(handle, PositionFlags.Bytes) * Const.byte_per_float)];
-
-            Bass.SampleGetData(handle, this.Buf);
-
-            if (Bass.LastError != Errors.OK)
-                Console.WriteLine(Bass.LastError.ToString());
-
-            int channel = Bass.SampleGetChannel(handle);
-            ChannelInfo info = Bass.ChannelGetInfo(channel);
+            ChannelInfo info = Bass.ChannelGetInfo(handle);
 
             this.SampleRate = info.Frequency;
             this.Channels = info.Channels;
-            this.TotalSamples = Buf.Length / this.Channels;
+            this.TotalSamples = (long)(Bass.ChannelGetLength(handle, PositionFlags.Bytes) * Const.byte_per_float) / this.Channels;
             this.SamplePosition = 0;
 
-            int tmphandle = Bass.CreateStream(FilePath);
-
-            this.Tags = TagReader.Read(tmphandle);
-
-            Bass.StreamFree(tmphandle);
-
-            Bass.SampleFree(handle);
+            this.Tags = TagReader.Read(this.handle);
         }
 
         public int ReadSamples(float[] buffer, int offset, int count)
@@ -114,16 +101,14 @@ namespace LoopMusicPlayer
             if ((int)(this.TotalSamples - this.SamplePosition) * this.Channels < count)
                 count = (int)(this.TotalSamples - this.SamplePosition) * this.Channels;
 
-            if(count != 0)
-                Buffer.BlockCopy(this.Buf, (int)(this.SamplePosition * this.Channels * (Const.float_per_byte)), buffer, (int)(offset * Const.float_per_byte), (int)(count * Const.float_per_byte));
-
-            this.SamplePosition += (count / this.Channels);
+            Bass.ChannelGetData(this.handle, buffer, (int)(count * Const.float_per_byte));
 
             return count;
         }
 
-        public void Dispose() 
+        public void Dispose()
         {
+            Bass.StreamFree(this.handle);
         }
     }
 }

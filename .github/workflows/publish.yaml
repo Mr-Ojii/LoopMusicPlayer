@@ -38,9 +38,9 @@ jobs:
         with:
           dotnet-version: 6.0.x
       - name: Install dependencies
-        run: dotnet restore src/LoopMusicPlayer.sln
+        run: dotnet restore LoopMusicPlayer.sln
       - name: Build
-        run: dotnet publish ./src/LoopMusicPlayer.sln -o ./bin/net6.0 -r ${{matrix.platform}} --configuration Release --self-contained true
+        run: dotnet publish LoopMusicPlayer.sln -o ./bin/net6.0 -r ${{matrix.platform}} --configuration Release --self-contained true
       - name: Remove File
         uses: JesseTG/rm@v1.0.0
         with:

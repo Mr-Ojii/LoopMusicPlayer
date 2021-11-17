@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using ManagedBass;
 using LoopMusicPlayer.TagReaderExtensionMethods;
 
-namespace LoopMusicPlayer
+namespace LoopMusicPlayer.Core
 {
-    internal class Player : IDisposable
+    public class Player : IDisposable
     {
         private IMusicFileReader reader = null;
         private int StreamHandle = -1;
@@ -105,6 +105,14 @@ namespace LoopMusicPlayer
             get
             {
                 return !string.IsNullOrEmpty(reader.Tags.Artist) ? reader.Tags.Artist : "";
+            }
+        }
+
+        public TagReader Tags
+        {
+            get 
+            {
+                return reader.Tags;
             }
         }
 
