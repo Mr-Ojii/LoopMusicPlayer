@@ -566,10 +566,11 @@ namespace LoopMusicPlayer
                 dia.Documenters = new string[] { "Mr-Ojii" };
                 dia.Authors = new string[] { "Mr-Ojii" };
                 dia.LicenseType = License.MitX11;
-                dia.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                dia.Version = $"LoopMusicPlayer {Assembly.GetExecutingAssembly().GetName().Version}\n" +
+                    $"{RuntimeInformation.FrameworkDescription}\n" +
+                    $"BASS {Bass.Version}";
                 dia.Title = "About LoopMusicPlayer";
                 dia.ProgramName = "LoopMusicPlayer";
-                dia.Comments = "MusicPlayer";
                 dia.Copyright = "© 2021 Mr-Ojii";
                 dia.Run();
             }

@@ -7,6 +7,8 @@
     <Authors>Mr-Ojii</Authors>
     <Company>Mr-Ojii</Company>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Mr-Ojii/LoopMusicPlayer-CSharp</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
