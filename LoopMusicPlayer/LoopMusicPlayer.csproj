@@ -3,9 +3,8 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>0.4.2.2</Version>
+    <Version>0.4.2.3</Version>
     <Authors>Mr-Ojii</Authors>
-    <Company>Mr-Ojii</Company>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/Mr-Ojii/LoopMusicPlayer-CSharp</RepositoryUrl>

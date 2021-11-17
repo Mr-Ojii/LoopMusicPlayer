@@ -4,6 +4,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>LoopMusicPlayer.Core</RootNamespace>
+    <Authors>Mr-Ojii</Authors>
   </PropertyGroup>
 
   <ItemGroup>

@@ -259,7 +259,8 @@ namespace LoopMusicPlayer.Core
             if (!Ended)
             {
                 Ended = true;
-                this.EndAction();
+                if(this.EndAction != null)
+                    this.EndAction();
             }
         }
 
