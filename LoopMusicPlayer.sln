@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopMusicPlayer", "LoopMusi
 		{5584CA0F-CBF4-4239-9A16-3A94EAD3F9AB} = {5584CA0F-CBF4-4239-9A16-3A94EAD3F9AB}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopMusicPlayer-Core", "LoopMusicPlayer-Core\LoopMusicPlayer-Core.csproj", "{5584CA0F-CBF4-4239-9A16-3A94EAD3F9AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoopMusicPlayer-Core", "LoopMusicPlayer-Core\src\LoopMusicPlayer-Core.csproj", "{5584CA0F-CBF4-4239-9A16-3A94EAD3F9AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
