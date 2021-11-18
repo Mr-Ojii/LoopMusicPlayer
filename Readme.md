@@ -1,4 +1,4 @@
-# LoopMusicPlayer-CSharp
+# LoopMusicPlayer
 Ogg(Vorbis)を  
 ``LOOPSTART・[LOOPLENGTH,LOOPEND]``  
 のタグをもとにループ再生するミュージックプレイヤー  
@@ -83,9 +83,6 @@ Editor
 
 環境によってはUIの中に日本語・英語が混じっている可能性があります。  
 自分でも気になっているので、いつか修正します。(ごめんね)(Issues #2)
-
-名前にCSharpが付いているのはもともとRustで開発するつもりでしたが、依存パッケージのエラーにより仕方なくC#で書くことにしたからです。  
-いつか別言語で書き直すかもしれません。(.NETだとpublishビルドの際にファイルサイズが大きくなるのが嫌なんですよね)
 
 バグ修正PullRequest・バグ報告Issue大歓迎です！
 
