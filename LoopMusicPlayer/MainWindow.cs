@@ -214,6 +214,7 @@ namespace LoopMusicPlayer
                             _liststore.IterNext(ref iter);
                         }
                         CreatePlayer(_treeview.Model.GetValue(iter, 4) as string);
+                        this.player?.Play();
                     }
                 }
                 else if (_allrepeat.Active)
@@ -238,6 +239,7 @@ namespace LoopMusicPlayer
                         }
                         path = _treeview.Model.GetValue(iter, 4) as string;
                         CreatePlayer(path);
+                        this.player?.Play();
                     }
                 }
             }
@@ -454,6 +456,7 @@ namespace LoopMusicPlayer
             string path = _treeview.Model.GetValue(iter, 4) as string;
 
             CreatePlayer(path);
+            this.player.Play();
         }
 
         private void ListClear(object o, EventArgs args)
