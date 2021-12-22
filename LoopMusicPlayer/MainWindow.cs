@@ -161,7 +161,6 @@ namespace LoopMusicPlayer
         }
 
         public void OnWindowDestroyed(object o, EventArgs args) {
-            Console.WriteLine("Destroyed");
             cts.Cancel();
         }
 
