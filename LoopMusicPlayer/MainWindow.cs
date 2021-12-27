@@ -169,8 +169,6 @@ namespace LoopMusicPlayer
             this.player?.Dispose();
             this.player = null;
 
-            GC.Collect();
-
             this._labeltitle.Text = "";
             this._labelpath.Text = "";
             this._labellooptime.Text = "";
@@ -302,14 +300,12 @@ namespace LoopMusicPlayer
                 this.player.LoopAction += OnLoop;
                 this.player.EndAction = OnEnd;
                 UpdateLoopFlag();
-                GC.Collect();
             }
             catch(Exception e)
             {
                 Trace.TraceError(e.ToString());
                 this.player?.Dispose();
                 this.player = null;
-                GC.Collect();
 
                 this._labeltitle.Text = "Error occurred while loading the file.";
                 this._labelpath.Text = "";
