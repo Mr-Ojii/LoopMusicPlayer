@@ -190,7 +190,7 @@ namespace LoopMusicPlayer
             UpdateLoopCountLabel();
         }
 
-        private void OnEnd()
+        private void OnEnd(object o, EventArgs args)
         {
             this.IsEnded = true;
         }
@@ -298,7 +298,7 @@ namespace LoopMusicPlayer
                 this.player?.Dispose();
                 this.player = new Player(path, _volumebutton.Value, _streamingplay.Active);
                 this.player.LoopAction += OnLoop;
-                this.player.EndAction = OnEnd;
+                this.player.EndAction += OnEnd;
                 UpdateLoopFlag();
             }
             catch(Exception e)
