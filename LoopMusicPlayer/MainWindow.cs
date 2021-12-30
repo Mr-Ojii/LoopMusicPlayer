@@ -53,9 +53,6 @@ namespace LoopMusicPlayer
         [UI] private RadioMenuItem _allrepeat = null;
         [UI] private RadioMenuItem _randomplay = null;
 
-        [UI] private RadioMenuItem _streamingplay = null;
-        [UI] private RadioMenuItem _onmemoryplay = null;
-
         [UI] private ImageMenuItem _deviceinfomenu = null;
         [UI] private ImageMenuItem _aboutmenu = null;
 
@@ -118,7 +115,6 @@ namespace LoopMusicPlayer
 
             _labelseektimemenu.Toggle();
             _singlerepeat.Toggle();
-            _streamingplay.Toggle();
             UpdateLoopCountLabel();
             _aboutmenu.Activated += ShowAbout;
             _deviceinfomenu.Activated += ShowDeviceInfo;
@@ -135,8 +131,6 @@ namespace LoopMusicPlayer
             _previousbutton.Clicked += PreviousClicked;
             _nextbutton.Clicked += NextClicked;
             _ejectbutton.Clicked += EjectClicked;
-            _streamingplay.Toggled += EjectClicked;
-            _onmemoryplay.Toggled += EjectClicked;
             _seekbararea.AddEvents((int)(Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask));
             _seekbararea.ButtonPressEvent += SeekBarButtonPress;
             _seekbararea.ButtonReleaseEvent += SeekBarButtonRelease;
@@ -298,7 +292,7 @@ namespace LoopMusicPlayer
             try
             {
                 this.player?.Dispose();
-                this.player = new Player(path, _volumebutton.Value, _streamingplay.Active);
+                this.player = new Player(path, _volumebutton.Value);
                 this.player.LoopAction += OnLoop;
                 this.player.EndAction += OnEnd;
                 UpdateLoopFlag();
@@ -538,7 +532,7 @@ namespace LoopMusicPlayer
                 {
                     try
                     {
-                        using (var ii = new Player(paths[i], 1.0, true))
+                        using (var ii = new Player(paths[i], 1.0))
                         {
                             string title = !string.IsNullOrEmpty(ii.Tags.Title) ? ii.Tags.Title : System.IO.Path.GetFileName(paths[i]);
                             string time = ii.TotalTime.ToString();
