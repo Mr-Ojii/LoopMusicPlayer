@@ -453,7 +453,7 @@ namespace LoopMusicPlayer
             string path = _treeview.Model.GetValue(iter, 4) as string;
 
             CreatePlayer(path);
-            this.player.Play();
+            this.player?.Play();
         }
 
         private void ListClear(object o, EventArgs args)
@@ -508,8 +508,7 @@ namespace LoopMusicPlayer
 
         private void Window_DeleteEvent(object sender, DeleteEventArgs a)
         {
-            if (this.player != null)
-                this.player.Dispose();
+            this.player?.Dispose();
             Bass.Pause();
             Bass.Stop();
             Bass.Free();
