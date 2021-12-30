@@ -56,6 +56,7 @@ namespace LoopMusicPlayer
         [UI] private RadioMenuItem _streamingplay = null;
         [UI] private RadioMenuItem _onmemoryplay = null;
 
+        [UI] private ImageMenuItem _deviceinfomenu = null;
         [UI] private ImageMenuItem _aboutmenu = null;
 
         [UI] private DrawingArea _seekbararea = null;
@@ -120,6 +121,7 @@ namespace LoopMusicPlayer
             _streamingplay.Toggle();
             UpdateLoopCountLabel();
             _aboutmenu.Activated += ShowAbout;
+            _deviceinfomenu.Activated += ShowDeviceInfo;
             _listaddmenu.Activated += OpenFileFromMenu;
             _seekbararea.Drawn += DrawingArea_OnDraw;
             _quitmenu.Activated += WindowQuit;
@@ -554,6 +556,26 @@ namespace LoopMusicPlayer
                     }
                 }
             }
+        }
+
+        private void ShowDeviceInfo(object sender, EventArgs a)
+        {
+            if (!Bass.GetDeviceInfo(Bass.CurrentDevice, out var device_info))
+                using (var dia = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, false, $"Failed to get DeviceInfo."))
+                    dia.Run();
+                
+            if (!Bass.GetInfo(out var info))
+                using (var dia = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, false, $"Failed to get BassInfo."))
+                    dia.Run();
+
+            using (var dia = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, false,
+                    $"Name: {device_info.Name}\n" +
+                    $"Frequency: {info.SampleRate}\n" +
+                    $"Latency: {info.Latency}\n" +
+                    $"SpeakerCount: {info.SpeakerCount}"))
+                {
+                    dia.Run();
+                }
         }
 
         private void ShowAbout(object sender, EventArgs a)
