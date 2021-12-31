@@ -517,6 +517,10 @@ namespace LoopMusicPlayer
             filter.Name = "ogg File";
             filter.AddPattern("*.ogg");
             dialog.AddFilter(filter);
+            filter = new Gtk.FileFilter();
+            filter.Name = "All File";
+            filter.AddPattern("*");
+            dialog.AddFilter(filter);
             if (dialog.Run() == (int)ResponseType.Accept)
             {
                 AddSongs(dialog.Filenames);
