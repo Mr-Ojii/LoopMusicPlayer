@@ -77,7 +77,7 @@ namespace LoopMusicPlayer
         private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
         {
             this.Icon = new Gdk.Pixbuf(Assembly.GetExecutingAssembly().GetManifestResourceStream("LoopMusicPlayer.icon.ico"));
-            Bass.Init(Flags: DeviceInitFlags.Frequency);
+            Player.Init(AppContext.BaseDirectory);
 
             Bass.Configure(Configuration.UpdatePeriod, 1);
             Bass.Configure(Configuration.PlaybackBufferLength, 50);
@@ -393,8 +393,8 @@ namespace LoopMusicPlayer
                 {
                     this.player.Dispose();
                     this.player = null;
-                    Bass.Free();
-                    Bass.Init();
+                    Player.Free();
+                    Player.Init(AppContext.BaseDirectory);
 
                     this._labeltitle.Text = "Device Disconnected";
                     this._labelpath.Text = "";
@@ -503,9 +503,7 @@ namespace LoopMusicPlayer
         private void Window_DeleteEvent(object sender, DeleteEventArgs a)
         {
             this.player?.Dispose();
-            Bass.Pause();
-            Bass.Stop();
-            Bass.Free();
+            Player.Free();
             Application.Quit();
         }
 
