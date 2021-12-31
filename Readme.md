@@ -4,6 +4,18 @@
 ループタグがなかった場合、曲全体をループします
 
 ## 仕様
+### 使用前の注意点
++ Windows  
+以下の作業のいずれかをしてください。
+  - [こちら](https://github.com/GtkSharp/GtkSharp/wiki/Installing-Gtk-on-Windows)を参照し、MSYS2を用いGTK+3をインストールする
+  - [こちら](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)のインストーラーを用い、GTK+3をインストールする
+  - [こちら](https://github.com/GtkSharp/Dependencies/blob/master/gtk-3.24.24.zip)のzipファイルをダウンロード&展開し、LoopMusicPlayer.exeと同じ場所に中身を置く
+
++ MacOS  
+以下の作業をしてください
+  - [こちら](https://github.com/GtkSharp/GtkSharp/wiki/Installing-Gtk-on-Mac)を参照し、GTK+3をインストールする
+
+
 ### 主な使用方法
 * 音声ファイルをD&Dするか、メニューバーの「ファイル→追加」より選択して、リストに追加してください。
 * 再生したいファイルをリストから選択し、ダブルクリック/再生ボタンを押してください。
