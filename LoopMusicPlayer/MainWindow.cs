@@ -581,9 +581,10 @@ namespace LoopMusicPlayer
                     $"Frequency: {info.SampleRate}\n" +
                     $"Latency: {info.Latency}\n" +
                     $"SpeakerCount: {info.SpeakerCount}"))
-                {
-                    dia.Run();
-                }
+            {
+                dia.KeepAbove = true;
+                dia.Run();
+            }
         }
 
         private void ShowAbout(object sender, EventArgs a)
@@ -601,6 +602,7 @@ namespace LoopMusicPlayer
                 dia.Title = "About LoopMusicPlayer";
                 dia.ProgramName = "LoopMusicPlayer";
                 dia.Copyright = "(c) 2021-2022  Mr-Ojii";
+                dia.KeepAbove = true;
                 dia.Run();
             }
         }
