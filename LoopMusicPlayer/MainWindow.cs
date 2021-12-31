@@ -124,6 +124,7 @@ namespace LoopMusicPlayer
             _listclearmenu.Activated += ListClear;
             _listdeletemenu.Activated += ListDelete;
             _treeview.RowActivated += ActivateLow;
+            _treeview.ButtonPressEvent += ClickLow;
             _volumebutton.ValueChanged += VolumeChanged;
             _pausebutton.Clicked += PauseClicked;
             _stopbutton.Clicked += StopClicked;
@@ -449,6 +450,18 @@ namespace LoopMusicPlayer
             CreatePlayer(path);
             this.player?.Play();
         }
+        private void ClickLow(object o, ButtonPressEventArgs args)
+        {
+            if (args.Event.Button == 3)
+            {
+                Menu menu = new Menu();
+                MenuItem menuItem = new MenuItem("削除");
+                menuItem.Activated += ListDelete;
+                menu.Add(menuItem);
+                menu.ShowAll();
+                menu.Popup();
+            }
+        }
 
         private void ListClear(object o, EventArgs args)
         {
@@ -587,7 +600,7 @@ namespace LoopMusicPlayer
                     $"BASS {Bass.Version}";
                 dia.Title = "About LoopMusicPlayer";
                 dia.ProgramName = "LoopMusicPlayer";
-                dia.Copyright = "© 2021 Mr-Ojii";
+                dia.Copyright = "(c) 2021-2022  Mr-Ojii";
                 dia.Run();
             }
         }
