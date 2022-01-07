@@ -458,6 +458,9 @@ namespace LoopMusicPlayer
                 MenuItem menuItem = new MenuItem("削除");
                 menuItem.Activated += ListDelete;
                 menu.Add(menuItem);
+                MenuItem menuItem2 = new MenuItem("クリア");
+                menuItem2.Activated += ListClear;
+                menu.Add(menuItem2);
                 menu.ShowAll();
                 menu.Popup();
             }
