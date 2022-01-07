@@ -71,6 +71,7 @@ namespace LoopMusicPlayer
         private bool IsEnded = false;
 
         private CancellationTokenSource cts = null;
+        private Setting setting = null;
 
         public MainWindow() : this(new Builder("MainWindow.glade")) { }
 
@@ -113,8 +114,6 @@ namespace LoopMusicPlayer
             DragDataReceived += TreeViewDragDataReceived;
             this.AddEvents((int)(Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask));
 
-            _labelseektimemenu.Toggle();
-            _singlerepeat.Toggle();
             UpdateLoopCountLabel();
             _aboutmenu.Activated += ShowAbout;
             _deviceinfomenu.Activated += ShowDeviceInfo;
@@ -145,6 +144,40 @@ namespace LoopMusicPlayer
             _randomplay.Toggled += LoopMethodToggled;
             this.Destroyed += OnWindowDestroyed;
 
+            {
+                setting = new Setting();
+                _showgridlinemenu.Active = setting.SettingStruct.IsShowGridLine;
+                switch (setting.SettingStruct.TimePositionShowMethod)
+                {
+                    case Setting.ETimePositionShowMethod.ElapsedTime:
+                        _labelelpsedtimemenu.Active = true;
+                        break;
+                    case Setting.ETimePositionShowMethod.SeekTime:
+                        _labelseektimemenu.Active = true;
+                        break;
+                    case Setting.ETimePositionShowMethod.RemainingTime:
+                        _labelremainingtimemenu.Active = true;
+                        break;
+                }
+                _windowkeepabovemenu.Active = setting.SettingStruct.IsWindowKeepAbove;
+                switch (setting.SettingStruct.RepeatMethod)
+                {
+                    case Setting.ERepeatMethod.SinglePlay:
+                        _singleplay.Active = true;
+                        break;
+                    case Setting.ERepeatMethod.SingleRepeat:
+                        _singlerepeat.Active = true;
+                        break;
+                    case Setting.ERepeatMethod.AllRepeat:
+                        _allrepeat.Active = true;
+                        break;
+                    case Setting.ERepeatMethod.RandomPlay:
+                        _randomplay.Active = true;
+                        break;
+                }
+                _volumebutton.Value = setting.SettingStruct.Volume;
+            }
+
             cts = new CancellationTokenSource();
             Task.Factory.StartNew(JudgeEndLoop);
         }
@@ -159,6 +192,40 @@ namespace LoopMusicPlayer
 
         public void OnWindowDestroyed(object o, EventArgs args) {
             cts.Cancel();
+
+            {
+                setting.SettingStruct.IsShowGridLine = _showgridlinemenu.Active;
+
+                if (_labelelpsedtimemenu.Active)
+                {
+                    setting.SettingStruct.TimePositionShowMethod = Setting.ETimePositionShowMethod.ElapsedTime;
+                } else if (_labelseektimemenu.Active)
+                {
+                    setting.SettingStruct.TimePositionShowMethod = Setting.ETimePositionShowMethod.SeekTime;
+                } else if (_labelremainingtimemenu.Active)
+                {
+                    setting.SettingStruct.TimePositionShowMethod = Setting.ETimePositionShowMethod.RemainingTime;
+                }
+
+                setting.SettingStruct.IsWindowKeepAbove = _windowkeepabovemenu.Active;
+
+                if(_singleplay.Active)
+                {
+                    setting.SettingStruct.RepeatMethod = Setting.ERepeatMethod.SinglePlay;
+                } else if(_singlerepeat.Active)
+                {
+                    setting.SettingStruct.RepeatMethod = Setting.ERepeatMethod.SingleRepeat;
+                } else if(_allrepeat.Active)
+                {
+                    setting.SettingStruct.RepeatMethod = Setting.ERepeatMethod.AllRepeat;
+                } else if(_randomplay.Active)
+                {
+                    setting.SettingStruct.RepeatMethod = Setting.ERepeatMethod.RandomPlay;
+                }
+                setting.SettingStruct.Volume = _volumebutton.Value;
+            }
+
+            setting.SaveJson();
         }
 
         private void EjectClicked(object o, EventArgs args)
