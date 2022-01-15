@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>0.6.1.0</Version>
+    <Version>0.7.0.0</Version>
     <Authors>Mr-Ojii</Authors>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <RepositoryType>git</RepositoryType>
