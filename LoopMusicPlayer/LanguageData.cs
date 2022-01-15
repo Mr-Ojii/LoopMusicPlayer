@@ -32,6 +32,7 @@ namespace LoopMusicPlayer
             public string SingleRepeat { get; set; } = "単曲リピート";
             public string AllRepeat { get; set; } = "全曲リピート";
             public string RandomPlay { get; set; } = "ランダム再生";
+            public string Preference { get; set; } = "設定";
             public string DeviceInfo { get; set; } = "再生デバイス情報";
             public string About { get; set; } = "LoopMusicPlayerについて";
         }

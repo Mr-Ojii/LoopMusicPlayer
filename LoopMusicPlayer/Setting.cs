@@ -42,6 +42,7 @@ namespace LoopMusicPlayer
             public bool IsWindowKeepAbove { get; set; } = false;
             public ERepeatMethod RepeatMethod { get; set; } = ERepeatMethod.SingleRepeat;
             public double Volume { get; set; } = 1;
+            public string LanguageName { get; set; } = null;
         }
 
         //Enum

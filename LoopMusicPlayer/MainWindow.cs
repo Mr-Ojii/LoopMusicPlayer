@@ -61,6 +61,8 @@ namespace LoopMusicPlayer
         [UI] private RadioMenuItem _allrepeat = null;
         [UI] private RadioMenuItem _randomplay = null;
 
+        [UI] private MenuItem _preferencesmenu = null;
+
         [UI] private ImageMenuItem _deviceinfomenu = null;
         [UI] private ImageMenuItem _aboutmenu = null;
 
@@ -81,7 +83,7 @@ namespace LoopMusicPlayer
         private CancellationTokenSource cts = null;
         private Setting setting = null;
         private List<LanguageData> languagesdata = new List<LanguageData>();
-        private LanguageData.CLanguage nowlang = LanguageData.Default.Data;
+        private LanguageData nowlang = LanguageData.Default;
 
         public MainWindow() : this(new Builder("MainWindow.glade")) { }
 
@@ -130,6 +132,7 @@ namespace LoopMusicPlayer
             _listaddmenu.Activated += OpenFileFromMenu;
             _seekbararea.Drawn += DrawingArea_OnDraw;
             _quitmenu.Activated += WindowQuit;
+            _preferencesmenu.Activated += ShowPreferenceDialog;
             _listclearmenu.Activated += ListClear;
             _listdeletemenu.Activated += ListDelete;
             _treeview.RowActivated += ActivateLow;
@@ -188,7 +191,6 @@ namespace LoopMusicPlayer
                 _volumebutton.Value = setting.SettingStruct.Volume;
             }
 
-
             //言語ファイルのロード
             try
             {
@@ -201,8 +203,12 @@ namespace LoopMusicPlayer
                         try
                         {
                             LanguageData data = JsonSerializer.Deserialize<LanguageData>(fileinfo.Open(FileMode.Open));
-                            if(!string.IsNullOrEmpty(data.LanguageName))
+                            if(!string.IsNullOrEmpty(data.LanguageName)) {
                                 languagesdata.Add(data);
+                                if(setting.SettingStruct.LanguageName == data.LanguageName) {
+                                    ApplyLanguage(data);
+                                }
+                            }
                         }
                         catch (Exception e)
                         {
@@ -216,40 +222,44 @@ namespace LoopMusicPlayer
             {
                 Trace.TraceError(e.ToString());
             }
-            //デフォルトの適用
-            ApplyLanguage(-1);
 
             cts = new CancellationTokenSource();
             Task.Factory.StartNew(JudgeEndLoop);
         }
 
-
-        private void ApplyLanguage(int index)
-        {
+        private void ApplyLanguage(int index) {
             if (index >= 0 && index < languagesdata.Count)
-                nowlang = languagesdata[index].Data;
+                ApplyLanguage(languagesdata[index]);
             else
-                nowlang = LanguageData.Default.Data;
-            
-            _filemenu.Label = (nowlang.File ?? LanguageData.Default.Data.File) + "(_F)";
-            _viewmenu.Label = (nowlang.View ?? LanguageData.Default.Data.View) + "(_V)";
-            _settingmenu.Label = (nowlang.Setting ?? LanguageData.Default.Data.Setting) + "(_S)";
-            _othermenu.Label = (nowlang.Others ?? LanguageData.Default.Data.Others) + "(_O)";
-            _listaddmenu.Label = (nowlang.AddFile ?? LanguageData.Default.Data.AddFile) + "(_A)";
-            _listdeletemenu.Label = (nowlang.DeleteFile ?? LanguageData.Default.Data.DeleteFile) + "(_D)";
-            _listclearmenu.Label = (nowlang.ClearFile ?? LanguageData.Default.Data.ClearFile) + "(_C)";
-            _quitmenu.Label = (nowlang.Quit ?? LanguageData.Default.Data.Quit) + "(_Q)";
-            _showgridlinemenu.Label = (nowlang.GridLine ?? LanguageData.Default.Data.GridLine) + "(_G)";
-            _labelelpsedtimemenu.Label = (nowlang.ElapsedTime ?? LanguageData.Default.Data.ElapsedTime) + "(_T)";
-            _labelseektimemenu.Label = (nowlang.SeekTime ?? LanguageData.Default.Data.SeekTime) + "(_S)";
-            _labelremainingtimemenu.Label = (nowlang.RemainingTime ?? LanguageData.Default.Data.RemainingTime) + "(_R)";
-            _windowkeepabovemenu.Label = (nowlang.WindowOnTop ?? LanguageData.Default.Data.WindowOnTop) + "(_A)";
-            _singleplay.Label = (nowlang.SinglePlay ?? LanguageData.Default.Data.SinglePlay) + "(_P)";
-            _singlerepeat.Label = (nowlang.SingleRepeat ?? LanguageData.Default.Data.SingleRepeat) + "(_S)";
-            _allrepeat.Label = (nowlang.AllRepeat ?? LanguageData.Default.Data.AllRepeat) + "(_A)";
-            _randomplay.Label = (nowlang.RandomPlay ?? LanguageData.Default.Data.RandomPlay) + "(_R)";
-            _deviceinfomenu.Label = (nowlang.DeviceInfo ?? LanguageData.Default.Data.DeviceInfo) + "(_D)";
-            _aboutmenu.Label = (nowlang.About ?? LanguageData.Default.Data.About) + "(_A)";
+                ApplyLanguage(LanguageData.Default);
+        }
+
+        private void ApplyLanguage(LanguageData data)
+        {
+            nowlang = data;
+
+            _filemenu.Label = (nowlang.Data.File ?? LanguageData.Default.Data.File) + "(_F)";
+            _viewmenu.Label = (nowlang.Data.View ?? LanguageData.Default.Data.View) + "(_V)";
+            _settingmenu.Label = (nowlang.Data.Setting ?? LanguageData.Default.Data.Setting) + "(_S)";
+            _othermenu.Label = (nowlang.Data.Others ?? LanguageData.Default.Data.Others) + "(_O)";
+            _listaddmenu.Label = (nowlang.Data.AddFile ?? LanguageData.Default.Data.AddFile) + "(_A)";
+            _listdeletemenu.Label = (nowlang.Data.DeleteFile ?? LanguageData.Default.Data.DeleteFile) + "(_D)";
+            _listclearmenu.Label = (nowlang.Data.ClearFile ?? LanguageData.Default.Data.ClearFile) + "(_C)";
+            _quitmenu.Label = (nowlang.Data.Quit ?? LanguageData.Default.Data.Quit) + "(_Q)";
+            _showgridlinemenu.Label = (nowlang.Data.GridLine ?? LanguageData.Default.Data.GridLine) + "(_G)";
+            _labelelpsedtimemenu.Label = (nowlang.Data.ElapsedTime ?? LanguageData.Default.Data.ElapsedTime) + "(_T)";
+            _labelseektimemenu.Label = (nowlang.Data.SeekTime ?? LanguageData.Default.Data.SeekTime) + "(_S)";
+            _labelremainingtimemenu.Label = (nowlang.Data.RemainingTime ?? LanguageData.Default.Data.RemainingTime) + "(_R)";
+            _windowkeepabovemenu.Label = (nowlang.Data.WindowOnTop ?? LanguageData.Default.Data.WindowOnTop) + "(_A)";
+            _singleplay.Label = (nowlang.Data.SinglePlay ?? LanguageData.Default.Data.SinglePlay) + "(_P)";
+            _singlerepeat.Label = (nowlang.Data.SingleRepeat ?? LanguageData.Default.Data.SingleRepeat) + "(_S)";
+            _allrepeat.Label = (nowlang.Data.AllRepeat ?? LanguageData.Default.Data.AllRepeat) + "(_A)";
+            _randomplay.Label = (nowlang.Data.RandomPlay ?? LanguageData.Default.Data.RandomPlay) + "(_R)";
+            _preferencesmenu.Label = (nowlang.Data.Preference ?? LanguageData.Default.Data.Preference) + "(_F)";
+            _deviceinfomenu.Label = (nowlang.Data.DeviceInfo ?? LanguageData.Default.Data.DeviceInfo) + "(_D)";
+            _aboutmenu.Label = (nowlang.Data.About ?? LanguageData.Default.Data.About) + "(_A)";
+
+            setting.SettingStruct.LanguageName = nowlang.LanguageName;
         }
 
         private void JudgeEndLoop()
@@ -592,10 +602,10 @@ namespace LoopMusicPlayer
             if (args.Event.Button == 3)
             {
                 Menu menu = new Menu();
-                MenuItem menuItem = new MenuItem(nowlang.DeleteFile ?? LanguageData.Default.Data.DeleteFile);
+                MenuItem menuItem = new MenuItem(nowlang.Data.DeleteFile ?? LanguageData.Default.Data.DeleteFile);
                 menuItem.Activated += ListDelete;
                 menu.Add(menuItem);
-                MenuItem menuItem2 = new MenuItem(nowlang.ClearFile ?? LanguageData.Default.Data.ClearFile);
+                MenuItem menuItem2 = new MenuItem(nowlang.Data.ClearFile ?? LanguageData.Default.Data.ClearFile);
                 menuItem2.Activated += ListClear;
                 menu.Add(menuItem2);
                 menu.ShowAll();
@@ -616,6 +626,40 @@ namespace LoopMusicPlayer
             }
         }
 
+        private void ShowPreferenceDialog(object o, EventArgs args)
+        {
+            Window w = new Window("LoopMusicPlayer Preference");
+            w.SetDefaultSize(500,100);
+            w.Resizable = false;
+            w.Icon = this.Icon;
+            
+            Grid grid = new Grid();
+            grid.ColumnHomogeneous = true;
+            grid.RowHomogeneous = true;
+            Label langLabel = new Label("Language");
+            ComboBox comboBox = new ComboBox();
+            ListStore store = new ListStore(typeof(string));
+            CellRendererText rendererText = new CellRendererText();
+
+            comboBox.PackStart(rendererText, true);
+            comboBox.AddAttribute(rendererText, "text", 0);
+            comboBox.Model = store;
+            store.AppendValues(LanguageData.Default.LanguageName);
+            for(int i = 0; i < languagesdata.Count; i++) {
+                store.AppendValues(languagesdata[i].LanguageName);
+            }
+            comboBox.Active = languagesdata.IndexOf(nowlang) + 1;
+            grid.Attach(langLabel,0,0,1,1);
+            grid.Attach(comboBox,1,0,1,1);
+            w.Add(grid);
+            w.ShowAll();
+            comboBox.Changed += ComboChangedEvent;
+        }
+
+        private void ComboChangedEvent(object o, EventArgs args) {
+            ComboBox c = o as ComboBox;
+            ApplyLanguage(c.Active - 1);
+        }
         private void WindowQuit(object o, EventArgs args)
         {
             Close();

@@ -267,7 +267,7 @@
                       <object class="GtkRadioMenuItem" id="_singleplay">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">単曲再生(_S)</property>
+                        <property name="label" translatable="yes">単曲再生(_P)</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
                         <property name="group">_loopmethod</property>
@@ -277,7 +277,7 @@
                       <object class="GtkRadioMenuItem" id="_singlerepeat">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">単曲リピート(_R)</property>
+                        <property name="label" translatable="yes">単曲リピート(_S)</property>
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
                         <property name="group">_loopmethod</property>
@@ -301,6 +301,20 @@
                         <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
                         <property name="group">_loopmethod</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="_preferencesmenu">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">設定(_F)</property>
+                        <property name="use_underline">True</property>
                       </object>
                     </child>
                   </object>
@@ -334,7 +348,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="_aboutmenu">
-                        <property name="label">バージョン情報(_V)</property>
+                        <property name="label">LoopMusicPlayerについて(_A)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>

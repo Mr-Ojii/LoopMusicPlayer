@@ -18,6 +18,7 @@
         "SingleRepeat" : "単曲リピート",
         "AllRepeat" : "全曲リピート",
         "RandomPlay" : "ランダム再生",
+        "Preference" : "設定",
         "DeviceInfo" : "再生デバイス情報",
         "About" : "LoopMusicPlayerについて"
     }

@@ -18,7 +18,8 @@
         "SingleRepeat" : "SingleRepeat",
         "AllRepeat" : "AllRepeat",
         "RandomPlay" : "RandomPlay",
-        "DeviceInfo" : "DeviceInformation",
+        "Preference" : "Preference",
+        "DeviceInfo" : "Device Information",
         "About" : "About LoopMusicPlayer"
     }
 }
