@@ -736,7 +736,7 @@ namespace LoopMusicPlayer
                             string title = !string.IsNullOrEmpty(ii.Tags.Title) ? ii.Tags.Title : System.IO.Path.GetFileName(paths[i]);
                             string time = ii.TotalTime.ToString();
                             string artist = !string.IsNullOrEmpty(ii.Tags.Artist) ? ii.Tags.Artist : "";
-                            string loop = !string.IsNullOrEmpty(ii.Tags.GetTag("LOOPSTART")) && (!string.IsNullOrEmpty(ii.Tags.GetTag("LOOPLENGTH")) || !string.IsNullOrEmpty(ii.Tags.GetTag("LOOPEND"))) ? "Loop" : "";
+                            string loop = ii.IsLoop ? "Loop" : "";
                             string path = paths[i];
 
                             _liststore.AppendValues(title, time, loop, artist, path);
