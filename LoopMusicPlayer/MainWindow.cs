@@ -552,14 +552,17 @@ namespace LoopMusicPlayer
                     return true;
                 }
 
-                if (this._labelseektimemenu.Active)
-                    this._labelnowtime.Text = this.player.TimePosition.ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
-                else if (this._labelelpsedtimemenu.Active)
-                    this._labelnowtime.Text = "+" + (this.player.LoopCount * (this.player.LoopEndTime - this.player.LoopStartTime) + this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
-                else if (this._labelremainingtimemenu.Active)
-                    this._labelnowtime.Text = "-" + (this.player.TotalTime - this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
+                if (this.player.Status() == PlaybackState.Playing)
+                {
+                    if (this._labelseektimemenu.Active)
+                        this._labelnowtime.Text = this.player.TimePosition.ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
+                    else if (this._labelelpsedtimemenu.Active)
+                        this._labelnowtime.Text = "+" + (this.player.LoopCount * (this.player.LoopEndTime - this.player.LoopStartTime) + this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
+                    else if (this._labelremainingtimemenu.Active)
+                        this._labelnowtime.Text = "-" + (this.player.TotalTime - this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
+                    _seekbararea.QueueDraw();
+                }
             }
-            _seekbararea.QueueDraw();
             return true;
         }
 
