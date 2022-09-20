@@ -79,6 +79,7 @@ namespace LoopMusicPlayer
         private Player player = null;
         private uint LoopCount = 0;
         private bool IsEnded = false;
+        private uint framedelaycounter = 0;
 
         private CancellationTokenSource cts = null;
         private Setting setting = null;
@@ -480,7 +481,7 @@ namespace LoopMusicPlayer
                 if (this._singlerepeat.Active)
                     this.player.NextIsLoop = !((ratio * this.player.TotalSamples) >= this.player.LoopEnd);
                 else
-                        this.player.NextIsLoop = (!((ratio * this.player.TotalSamples) >= this.player.LoopEnd)) && (this.LoopCount > this.player.LoopCount);
+                    this.player.NextIsLoop = (!((ratio * this.player.TotalSamples) >= this.player.LoopEnd)) && (this.LoopCount > this.player.LoopCount);
             }
         }
 
@@ -554,13 +555,18 @@ namespace LoopMusicPlayer
 
                 if (this.player.Status() == PlaybackState.Playing)
                 {
-                    if (this._labelseektimemenu.Active)
-                        this._labelnowtime.Text = this.player.TimePosition.ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
-                    else if (this._labelelpsedtimemenu.Active)
-                        this._labelnowtime.Text = "+" + (this.player.LoopCount * (this.player.LoopEndTime - this.player.LoopStartTime) + this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
-                    else if (this._labelremainingtimemenu.Active)
-                        this._labelnowtime.Text = "-" + (this.player.TotalTime - this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
-                    _seekbararea.QueueDraw();
+                    framedelaycounter++;
+                    if (framedelaycounter > 3)
+                    {
+                        if (this._labelseektimemenu.Active)
+                            this._labelnowtime.Text = this.player.TimePosition.ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
+                        else if (this._labelelpsedtimemenu.Active)
+                            this._labelnowtime.Text = "+" + (this.player.LoopCount * (this.player.LoopEndTime - this.player.LoopStartTime) + this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
+                        else if (this._labelremainingtimemenu.Active)
+                            this._labelnowtime.Text = "-" + (this.player.TotalTime - this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
+                        _seekbararea.QueueDraw();
+                        framedelaycounter = 0;
+                    }
                 }
             }
             return true;
