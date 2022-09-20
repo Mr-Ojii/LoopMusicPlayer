@@ -10,3 +10,4 @@
 icon*
 !/*/icon.ico
 *~
+*.DS_Store
