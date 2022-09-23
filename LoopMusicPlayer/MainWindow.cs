@@ -482,6 +482,7 @@ namespace LoopMusicPlayer
                     this.player.NextIsLoop = !((ratio * this.player.TotalSamples) >= this.player.LoopEnd);
                 else
                     this.player.NextIsLoop = (!((ratio * this.player.TotalSamples) >= this.player.LoopEnd)) && (this.LoopCount > this.player.LoopCount);
+                this._seekbararea?.QueueDraw();
             }
         }
 
@@ -522,6 +523,7 @@ namespace LoopMusicPlayer
         private void StopClicked(object o, EventArgs args) 
         {
             this.player?.Stop();
+            this._seekbararea?.QueueDraw();
         }
 
         private void PauseClicked(object o, EventArgs args)
