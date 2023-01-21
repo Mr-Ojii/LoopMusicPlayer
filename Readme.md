@@ -11,7 +11,7 @@
   - [こちら](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer)のインストーラーを用い、GTK+3をインストールする
   - [こちら](https://github.com/GtkSharp/Dependencies/blob/master/gtk-3.24.24.zip)のzipファイルをダウンロード&展開し、LoopMusicPlayer.exeと同じ場所に中身を置く
 
-+ MacOS  
++ macOS  
 以下の作業をしてください
   - [こちら](https://github.com/GtkSharp/GtkSharp/wiki/Installing-Gtk-on-Mac)を参照し、GTK+3をインストールする
 
@@ -22,7 +22,6 @@
 
 ### 注意事項
 * D&D時・ファイルの追加時には複数ファイルを選択することができます。
-* 再生方法(ストリーミング再生/オンメモリ再生)を切り替えた場合、再び再生する必要があります。
 * ループ時に指定されたサンプルから数サンプルずれている可能性があります。(計算式がずさん)
 
 ### ループ方法について
@@ -48,6 +47,7 @@
 ## 開発環境(動作確認環境)
 OS
 * Windows 11(Ver.22H2) (x64)
+* macOS 12.6.2 (arm64) (Rosetta2)
 
 Editor
 * Visual Studio Community 2022  
@@ -91,5 +91,5 @@ Editor
 これは元々私自身がLinux環境で作業用BGMを聞くために作ったものです。  
 いい感じにループして聞ければいいや程度で作ったやつです。
 
-バグ修正PullRequest・バグ報告Issue大歓迎です！
+バグ修正PullRequest・Issue大歓迎です！
 
