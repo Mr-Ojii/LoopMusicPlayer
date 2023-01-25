@@ -8,7 +8,6 @@ jobs:
   build:
     name: Build
     runs-on: windows-latest
-    needs: create_release
     strategy:
       matrix:
         platform: [win-x86, win-x64, osx-x64, linux-x64]
