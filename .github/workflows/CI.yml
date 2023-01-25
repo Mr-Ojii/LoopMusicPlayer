@@ -2,6 +2,10 @@ name: publish
 
 on:
   push:
+
+
+jobs:
+  build:
     name: Build
     needs: create_release
     strategy:
@@ -21,4 +25,3 @@ on:
         run: dotnet restore
       - name: Build
         run: dotnet build
-        
