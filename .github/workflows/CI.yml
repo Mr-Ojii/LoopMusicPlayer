@@ -18,8 +18,12 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '6.0.x'
-      - run: cd ${{ github.workspace }}/LoopMusicPlayer
+      - run: 
       - name: Install dependencies
-        run: dotnet restore
+        run: |
+          cd ${{ github.workspace }}/LoopMusicPlayer
+          dotnet restore
       - name: Build
-        run: dotnet build
+        run: |
+          cd ${{ github.workspace }}/LoopMusicPlayer
+          dotnet build
