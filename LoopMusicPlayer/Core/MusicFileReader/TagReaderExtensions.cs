@@ -5,17 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using ManagedBass;
 
-namespace LoopMusicPlayer.TagReaderExtensionMethods
+namespace LoopMusicPlayer.TagReaderExtensionMethods;
+
+public static class TagReaderExtensions
 {
-    public static class TagReaderExtensions
+    public static string GetTag(this TagReader tagReader, string key)
     {
-        public static string GetTag(this TagReader tagReader, string key)
+        if (tagReader.Other.TryGetValue(key, out string value)) 
         {
-            if (tagReader.Other.TryGetValue(key, out string value)) 
-            {
-                return value;
-            }
-            return string.Empty;
+            return value;
         }
+        return string.Empty;
     }
 }
