@@ -238,15 +238,11 @@ namespace LoopMusicPlayer.Core
                 this.NextIsLoop = false;
         }
 
-        public void ChangeVolume(double volume)//0~1
-        {
-            Bass.ChannelSetAttribute(this.StreamHandle, ChannelAttribute.Volume, volume);
-        }
+        public void ChangeVolume(double volume)
+            => Bass.ChannelSetAttribute(this.StreamHandle, ChannelAttribute.Volume, Math.Clamp(volume, 0, 1));
 
         public void Play()
-        {
-            Bass.ChannelPlay(this.StreamHandle);
-        }
+            => Bass.ChannelPlay(this.StreamHandle);
 
         public void Pause()
         {
@@ -270,9 +266,7 @@ namespace LoopMusicPlayer.Core
         }
 
         public PlaybackState Status()
-        {
-            return Bass.ChannelIsActive(this.StreamHandle);
-        }
+            => Bass.ChannelIsActive(this.StreamHandle);
 
         public bool CheckDeviceEnable()
         {

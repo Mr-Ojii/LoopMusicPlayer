@@ -17,12 +17,11 @@ namespace LoopMusicPlayer
         public Setting()
         {
             SettingStruct = new StSetting();
-            if (File.Exists(SettingFilePath))
+            if (!File.Exists(SettingFilePath))
+                return;
+            using (var JsonFileStream = File.OpenText(SettingFilePath))
             {
-                using (var JsonFileStream = File.OpenText(SettingFilePath))
-                {
-                    SettingStruct = JsonSerializer.Deserialize<StSetting>(JsonFileStream.ReadToEnd());
-                }
+                SettingStruct = JsonSerializer.Deserialize<StSetting>(JsonFileStream.ReadToEnd());
             }
         }
 

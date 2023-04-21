@@ -199,22 +199,21 @@ namespace LoopMusicPlayer
 
                 foreach (FileInfo fileinfo in info.GetFiles())
                 {
-                    if (fileinfo.Extension.ToLower() == ".json")
+                    if (fileinfo.Extension.ToLower() != ".json")
+                        continue;
+                    try
                     {
-                        try
-                        {
-                            LanguageData data = JsonSerializer.Deserialize<LanguageData>(fileinfo.Open(FileMode.Open));
-                            if(!string.IsNullOrEmpty(data.LanguageName)) {
-                                languagesdata.Add(data);
-                                if(setting.SettingStruct.LanguageName == data.LanguageName) {
-                                    ApplyLanguage(data);
-                                }
+                        LanguageData data = JsonSerializer.Deserialize<LanguageData>(fileinfo.Open(FileMode.Open));
+                        if(!string.IsNullOrEmpty(data.LanguageName)) {
+                            languagesdata.Add(data);
+                            if(setting.SettingStruct.LanguageName == data.LanguageName) {
+                                ApplyLanguage(data);
                             }
                         }
-                        catch (Exception e)
-                        {
-                            Trace.TraceError(e.ToString());
-                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Trace.TraceError(e.ToString());
                     }
                 }
                 languagesdata.Sort((a, b) => a.LanguageName.CompareTo(b.LanguageName));
@@ -271,38 +270,31 @@ namespace LoopMusicPlayer
             }
         }
 
-        public void OnWindowDestroyed(object o, EventArgs args) {
+        public void OnWindowDestroyed(object o, EventArgs args)
+        {
             cts.Cancel();
 
             {
                 setting.SettingStruct.IsShowGridLine = _showgridlinemenu.Active;
 
                 if (_labelelpsedtimemenu.Active)
-                {
                     setting.SettingStruct.TimePositionShowMethod = Setting.ETimePositionShowMethod.ElapsedTime;
-                } else if (_labelseektimemenu.Active)
-                {
+                else if (_labelseektimemenu.Active)
                     setting.SettingStruct.TimePositionShowMethod = Setting.ETimePositionShowMethod.SeekTime;
-                } else if (_labelremainingtimemenu.Active)
-                {
+                else if (_labelremainingtimemenu.Active)
                     setting.SettingStruct.TimePositionShowMethod = Setting.ETimePositionShowMethod.RemainingTime;
-                }
 
                 setting.SettingStruct.IsWindowKeepAbove = _windowkeepabovemenu.Active;
 
                 if(_singleplay.Active)
-                {
                     setting.SettingStruct.RepeatMethod = Setting.ERepeatMethod.SinglePlay;
-                } else if(_singlerepeat.Active)
-                {
+                else if(_singlerepeat.Active)
                     setting.SettingStruct.RepeatMethod = Setting.ERepeatMethod.SingleRepeat;
-                } else if(_allrepeat.Active)
-                {
+                else if(_allrepeat.Active)
                     setting.SettingStruct.RepeatMethod = Setting.ERepeatMethod.AllRepeat;
-                } else if(_randomplay.Active)
-                {
+                else if(_randomplay.Active)
                     setting.SettingStruct.RepeatMethod = Setting.ERepeatMethod.RandomPlay;
-                }
+
                 setting.SettingStruct.Volume = _volumebutton.Value;
             }
 
@@ -347,10 +339,9 @@ namespace LoopMusicPlayer
                 this.IsEnded = false;
                 if (_randomplay.Active)
                 {
-                    Random rand = new Random();
                     if (_liststore.GetIterFirst(out var iter))
                     {
-                        int randnum = rand.Next(0, _liststore.IterNChildren());
+                        int randnum = Random.Shared.Next(0, _liststore.IterNChildren());
                         for (int i = 0; i < randnum; i++) 
                         {
                             _liststore.IterNext(ref iter);
@@ -738,25 +729,24 @@ namespace LoopMusicPlayer
         {
             for (int i = 0; i < paths.Length; i++)
             {
-                if (File.Exists(paths[i]))
+                if (!File.Exists(paths[i]))
+                    continue;
+                try
                 {
-                    try
+                    using (var ii = new Player(paths[i], 1.0))
                     {
-                        using (var ii = new Player(paths[i], 1.0))
-                        {
-                            string title = !string.IsNullOrEmpty(ii.Tags.Title) ? ii.Tags.Title : System.IO.Path.GetFileName(paths[i]);
-                            string time = ii.TotalTime.ToString();
-                            string artist = !string.IsNullOrEmpty(ii.Tags.Artist) ? ii.Tags.Artist : "";
-                            string loop = ii.IsLoop ? "Loop" : "";
-                            string path = paths[i];
+                        string title = !string.IsNullOrEmpty(ii.Tags.Title) ? ii.Tags.Title : System.IO.Path.GetFileName(paths[i]);
+                        string time = ii.TotalTime.ToString();
+                        string artist = !string.IsNullOrEmpty(ii.Tags.Artist) ? ii.Tags.Artist : "";
+                        string loop = ii.IsLoop ? "Loop" : "";
+                        string path = paths[i];
 
-                            _liststore.AppendValues(title, time, loop, artist, path);
-                        }
+                        _liststore.AppendValues(title, time, loop, artist, path);
                     }
-                    catch (Exception e)
-                    {
-                        Trace.TraceError(e.ToString());
-                    }
+                }
+                catch (Exception e)
+                {
+                    Trace.TraceError(e.ToString());
                 }
             }
         }
