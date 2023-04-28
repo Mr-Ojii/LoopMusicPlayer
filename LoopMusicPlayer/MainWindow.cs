@@ -83,7 +83,7 @@ internal class MainWindow : Window
 
     private CancellationTokenSource cts = null;
     private Setting setting = null;
-    private List<LanguageData> languagesdata = new List<LanguageData>();
+    private LanguageManager languageManager = null;
     private LanguageData nowlang = LanguageData.Default;
 
     public MainWindow() : this(new Builder("MainWindow.glade")) { }
@@ -193,34 +193,13 @@ internal class MainWindow : Window
         }
 
         //言語ファイルのロード
-        try
+        languageManager = new();
+        foreach(var data in languageManager.languageDatas)
         {
-            DirectoryInfo info = new DirectoryInfo(AppContext.BaseDirectory + @"lang/");
-
-            foreach (FileInfo fileinfo in info.GetFiles())
+            if(setting.SettingStruct.LanguageName == data.LanguageName)
             {
-                if (fileinfo.Extension.ToLower() != ".json")
-                    continue;
-                try
-                {
-                    LanguageData data = JsonSerializer.Deserialize<LanguageData>(fileinfo.Open(FileMode.Open));
-                    if(!string.IsNullOrEmpty(data.LanguageName)) {
-                        languagesdata.Add(data);
-                        if(setting.SettingStruct.LanguageName == data.LanguageName) {
-                            ApplyLanguage(data);
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Trace.TraceError(e.ToString());
-                }
+                ApplyLanguage(data);
             }
-            languagesdata.Sort((a, b) => a.LanguageName.CompareTo(b.LanguageName));
-        }
-        catch (Exception e)
-        {
-            Trace.TraceError(e.ToString());
         }
 
         cts = new CancellationTokenSource();
@@ -228,8 +207,8 @@ internal class MainWindow : Window
     }
 
     private void ApplyLanguage(int index) {
-        if (index >= 0 && index < languagesdata.Count)
-            ApplyLanguage(languagesdata[index]);
+        if (index >= 0 && index < languageManager.languageDatas.Count)
+            ApplyLanguage(languageManager.languageDatas[index]);
         else
             ApplyLanguage(LanguageData.Default);
     }
@@ -647,10 +626,10 @@ internal class MainWindow : Window
         comboBox.AddAttribute(rendererText, "text", 0);
         comboBox.Model = store;
         store.AppendValues(LanguageData.Default.LanguageName);
-        for(int i = 0; i < languagesdata.Count; i++) {
-            store.AppendValues(languagesdata[i].LanguageName);
+        for(int i = 0; i < languageManager.languageDatas.Count; i++) {
+            store.AppendValues(languageManager.languageDatas[i].LanguageName);
         }
-        comboBox.Active = languagesdata.IndexOf(nowlang) + 1;
+        comboBox.Active = languageManager.languageDatas.IndexOf(nowlang) + 1;
         grid.Attach(langLabel,0,0,1,1);
         grid.Attach(comboBox,1,0,1,1);
         w.Add(grid);
