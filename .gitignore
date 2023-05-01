@@ -7,7 +7,5 @@
 !/bin/*/licenses/
 !/bin/*/lang/
 /UI.png
-icon*
-!/*/icon.ico
 *~
 *.DS_Store
