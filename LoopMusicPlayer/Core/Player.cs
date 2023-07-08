@@ -105,90 +105,23 @@ public class Player : IDisposable
         }
     }
 
-    public TimeSpan LoopStartTime
-    {
-        get
-        {
-            double time = (LoopStart / (double)reader.SampleRate);
-            int millisecond = (int)((time % 1) * 1000);
-            int second = (int)(time % 60);
-            int minute = (int)(time / 60) % 60;
-            int hour = (int)(time / 3600) % 24;
-            int day = (int)(time / 86400);
-            return new TimeSpan(day, hour, minute, second, millisecond);
-        }
-    }
+    public TimeSpan LoopStartTime => TimeSpan.FromSeconds(LoopStart / (double)reader.SampleRate);
 
-    public TimeSpan LoopEndTime
-    {
-        get
-        {
-            double time = (LoopEnd / (double)reader.SampleRate);
-            int millisecond = (int)((time % 1) * 1000);
-            int second = (int)(time % 60);
-            int minute = (int)(time / 60) % 60;
-            int hour = (int)(time / 3600) % 24;
-            int day = (int)(time / 86400);
-            return new TimeSpan(day, hour, minute, second, millisecond);
-        }
-    }
+    public TimeSpan LoopEndTime => TimeSpan.FromSeconds(LoopEnd / (double)reader.SampleRate);
 
+    public long TotalSamples => reader.TotalSamples;
 
-    public long TotalSamples
-    {
-        get
-        {
-            return reader.TotalSamples;
-        }
-    }
+    public long SamplePosition => reader.SamplePosition;
 
-    public long SamplePosition
-    {
-        get
-        {
-            return reader.SamplePosition;
-        }
-    }
+    public TimeSpan TotalTime => reader.TotalTime;
 
-    public TimeSpan TotalTime
-    {
-        get
-        {
-            return reader.TotalTime;
-        }
-    }
+    public TimeSpan TimePosition => reader.TimePosition;
 
-    public TimeSpan TimePosition
-    {
-        get
-        {
-            return reader.TimePosition;
-        }
-    }
+    public string Title => !string.IsNullOrEmpty(reader.Tags.Title) ? reader.Tags.Title : System.IO.Path.GetFileName(FilePath);
 
-    public string Title
-    {
-        get
-        {
-            return !string.IsNullOrEmpty(reader.Tags.Title) ? reader.Tags.Title : System.IO.Path.GetFileName(FilePath);
-        }
-    }
-
-    public string Artist
-    {
-        get
-        {
-            return !string.IsNullOrEmpty(reader.Tags.Artist) ? reader.Tags.Artist : string.Empty;
-        }
-    }
-
-    public TagReader Tags
-    {
-        get 
-        {
-            return reader.Tags;
-        }
-    }
+    public string Artist => !string.IsNullOrEmpty(reader.Tags.Artist) ? reader.Tags.Artist : string.Empty;
+    
+    public TagReader Tags => reader.Tags;
 
     public event EventHandler LoopAction;
 

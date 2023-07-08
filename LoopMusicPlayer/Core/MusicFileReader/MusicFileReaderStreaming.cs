@@ -16,19 +16,8 @@ internal class MusicFileReaderStreaming : IMusicFileReader
     {
         get;
     }
-    public TimeSpan TotalTime
-    {
-        get
-        {
-            double time = (this.TotalSamples / (double)this.SampleRate);
-            int millisecond = (int)((time % 1) * 1000);
-            int second = (int)(time % 60);
-            int minute = (int)(time / 60) % 60;
-            int hour = (int)(time / 3600) % 24;
-            int day = (int)(time / 86400);
-            return new TimeSpan(day, hour, minute, second, millisecond);
-        }
-    }
+    public TimeSpan TimePosition => TimeSpan.FromSeconds(this.SamplePosition / (double)this.SampleRate);
+    public TimeSpan TotalTime => TimeSpan.FromSeconds(this.TotalSamples / (double)this.SampleRate);
     public TagReader Tags
     {
         get;
@@ -59,19 +48,6 @@ internal class MusicFileReaderStreaming : IMusicFileReader
                     Bass.ChannelSetPosition(this.handle, (long)(value * Const.float_per_byte * this.Channels), PositionFlags.Bytes);
                 }
             }
-        }
-    }
-    public TimeSpan TimePosition
-    {
-        get
-        {
-            double time = (this.SamplePosition / (double)this.SampleRate);
-            int millisecond = (int)((time % 1) * 1000);
-            int second = (int)(time % 60);
-            int minute = (int)(time / 60) % 60;
-            int hour = (int)(time / 3600) % 24;
-            int day = (int)(time / 86400);
-            return new TimeSpan(day, hour, minute, second, millisecond);
         }
     }
 
