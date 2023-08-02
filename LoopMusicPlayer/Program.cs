@@ -14,7 +14,24 @@ internal class Program
         try
         {
             string osplatform = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "win" : (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "osx" : "linux");
-            string platform = Environment.Is64BitProcess ? "x64" : "x86";
+            string platform = "";
+            switch (RuntimeInformation.ProcessArchitecture)
+            {
+                case Architecture.X86:
+                    platform = "x86";
+                    break;
+                case Architecture.X64:
+                    platform = "x64";
+                    break;
+                case Architecture.Arm:
+                    platform = "arm";
+                    break;
+                case Architecture.Arm64:
+                    platform = "arm64";
+                    break;
+                default:
+                    throw new PlatformNotSupportedException();
+            }
             DirectoryInfo info = new DirectoryInfo(AppContext.BaseDirectory + @"dll/" + osplatform + "-" + platform + "/");
 
             //exeÇÃäKëwÇ…dllÇÉRÉsÅ[
