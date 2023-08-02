@@ -439,21 +439,21 @@ internal class MainWindow : Window
 
     private void SeekBarButtonRelease(object o, ButtonReleaseEventArgs args)
     {
-        if (this.player != null)
-        {
-            DrawingArea area = o as DrawingArea;
-            int clickedx = (int)Math.Max(Math.Min(args.Event.X - 5, (area.AllocatedWidth - 10)), 0);
+        if (this.player == null)
+            return;
+        
+        DrawingArea area = o as DrawingArea;
+        int clickedx = (int)Math.Max(Math.Min(args.Event.X - 5, (area.AllocatedWidth - 10)), 0);
 
-            double ratio = clickedx / (double)(area.AllocatedWidth - 10);
+        double ratio = clickedx / (double)(area.AllocatedWidth - 10);
 
-            this.player.Seek((long)(ratio * this.player.TotalSamples));
+        this.player.Seek((long)(ratio * this.player.TotalSamples));
 
-            if (this._singlerepeat.Active)
-                this.player.NextIsLoop = !((ratio * this.player.TotalSamples) >= this.player.LoopEnd);
-            else
-                this.player.NextIsLoop = (!((ratio * this.player.TotalSamples) >= this.player.LoopEnd)) && (this.LoopCount > this.player.LoopCount);
-            this._seekbararea?.QueueDraw();
-        }
+        if (this._singlerepeat.Active)
+            this.player.NextIsLoop = !((ratio * this.player.TotalSamples) >= this.player.LoopEnd);
+        else
+            this.player.NextIsLoop = (!((ratio * this.player.TotalSamples) >= this.player.LoopEnd)) && (this.LoopCount > this.player.LoopCount);
+        this._seekbararea?.QueueDraw();
     }
 
     private void SeekBarButtonPress(object o, ButtonPressEventArgs args)
@@ -508,37 +508,37 @@ internal class MainWindow : Window
 
     private bool onframetick(Widget widget, Gdk.FrameClock frame_clock)
     {
-        if (this.player != null)
+        if (this.player == null)
+            return true;
+            
+        if (!this.player.CheckDeviceEnable()) 
         {
-            if (!this.player.CheckDeviceEnable()) 
+            this.player.Dispose();
+            this.player = null;
+            Player.Free();
+            Player.Init(AppContext.BaseDirectory);
+
+            this._labeltitle.Text = "Device Disconnected";
+            this._labelpath.Text = "";
+            this._labellooptime.Text = "";
+            this._labelnowtime.Text = "";
+
+            return true;
+        }
+
+        if (this.player.Status() == PlaybackState.Playing)
+        {
+            framedelaycounter++;
+            if (framedelaycounter > 3)
             {
-                this.player.Dispose();
-                this.player = null;
-                Player.Free();
-                Player.Init(AppContext.BaseDirectory);
-
-                this._labeltitle.Text = "Device Disconnected";
-                this._labelpath.Text = "";
-                this._labellooptime.Text = "";
-                this._labelnowtime.Text = "";
-
-                return true;
-            }
-
-            if (this.player.Status() == PlaybackState.Playing)
-            {
-                framedelaycounter++;
-                if (framedelaycounter > 3)
-                {
-                    if (this._labelseektimemenu.Active)
-                        this._labelnowtime.Text = this.player.TimePosition.ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
-                    else if (this._labelelpsedtimemenu.Active)
-                        this._labelnowtime.Text = "+" + (this.player.LoopCount * (this.player.LoopEndTime - this.player.LoopStartTime) + this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
-                    else if (this._labelremainingtimemenu.Active)
-                        this._labelnowtime.Text = "-" + (this.player.TotalTime - this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
-                    _seekbararea.QueueDraw();
-                    framedelaycounter = 0;
-                }
+                if (this._labelseektimemenu.Active)
+                    this._labelnowtime.Text = this.player.TimePosition.ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
+                else if (this._labelelpsedtimemenu.Active)
+                    this._labelnowtime.Text = "+" + (this.player.LoopCount * (this.player.LoopEndTime - this.player.LoopStartTime) + this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
+                else if (this._labelremainingtimemenu.Active)
+                    this._labelnowtime.Text = "-" + (this.player.TotalTime - this.player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
+                _seekbararea.QueueDraw();
+                framedelaycounter = 0;
             }
         }
         return true;
