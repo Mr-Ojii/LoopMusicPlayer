@@ -32,12 +32,31 @@ internal class Program
                 default:
                     throw new PlatformNotSupportedException();
             }
-            DirectoryInfo info = new DirectoryInfo(AppContext.BaseDirectory + @"dll/" + osplatform + "-" + platform + "/");
 
-            //exeの階層にdllをコピー
-            foreach (FileInfo fileinfo in info.GetFiles())
+            var OSPlatformDirName = AppContext.BaseDirectory + @"dll/" + osplatform + "/";
+
+            if(Directory.Exists(OSPlatformDirName))
             {
-                fileinfo.CopyTo(AppContext.BaseDirectory + fileinfo.Name, true);
+                DirectoryInfo info = new DirectoryInfo(OSPlatformDirName);
+
+                //実行ファイルの階層にライブラリをコピー
+                foreach (FileInfo fileinfo in info.GetFiles())
+                {
+                    fileinfo.CopyTo(AppContext.BaseDirectory + fileinfo.Name, true);
+                }
+            }
+
+            var PlatformDirName = AppContext.BaseDirectory + @"dll/" + osplatform + "-" + platform + "/";
+
+            if(Directory.Exists(PlatformDirName))
+            {
+                DirectoryInfo info = new DirectoryInfo(PlatformDirName);
+
+                //実行ファイルの階層にライブラリをコピー
+                foreach (FileInfo fileinfo in info.GetFiles())
+                {
+                    fileinfo.CopyTo(AppContext.BaseDirectory + fileinfo.Name, true);
+                }
             }
         }
         catch (Exception e)
