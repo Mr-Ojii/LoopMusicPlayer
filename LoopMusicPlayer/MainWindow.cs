@@ -765,7 +765,7 @@ internal class MainWindow : Window
                 $"BASS {Bass.Version}";
             dia.Title = "About LoopMusicPlayer";
             dia.ProgramName = "LoopMusicPlayer";
-            dia.Copyright = "(c) 2021-2023  Mr-Ojii";
+            dia.Copyright = "(c) 2021-2024  Mr-Ojii";
             dia.KeepAbove = true;
             dia.Run();
         }
