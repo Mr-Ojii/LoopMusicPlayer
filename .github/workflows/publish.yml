@@ -27,10 +27,10 @@ jobs:
       - name: Build
         run: dotnet publish -o ../bin/net8.0 -r ${{ matrix.platform }} --configuration Release --self-contained true
       - run: cd ../
+
       - name: Remove File
-        uses: JesseTG/rm@v1.0.0
-        with:
-          path: ./bin/net8.0/${{ matrix.platform }}
+        run: |
+          rm -rf ./bin/net8.0/${{ matrix.platform }}
 
       - name: Rename App File
         if: matrix.platform == 'linux-x64'
