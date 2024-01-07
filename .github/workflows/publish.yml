@@ -6,33 +6,15 @@ on:
       - "Ver.*"
 
 jobs:
-  create_release:
-    name: Create release
-    runs-on: windows-latest
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
-    steps:
-      - name: Create a Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
-
   build:
     name: Build
-    runs-on: windows-latest
-    needs: create_release
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         platform: [win-x86, win-x64, osx-arm64, osx-x64, linux-x64]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Setup .NET
@@ -43,30 +25,43 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet publish -o ../bin/net8.0 -r ${{matrix.platform}} --configuration Release --self-contained true
+        run: dotnet publish -o ../bin/net8.0 -r ${{ matrix.platform }} --configuration Release --self-contained true
       - run: cd ../
       - name: Remove File
         uses: JesseTG/rm@v1.0.0
         with:
-          path: ./bin/net8.0/${{matrix.platform}}
+          path: ./bin/net8.0/${{ matrix.platform }}
 
       - name: Rename App File
         if: matrix.platform == 'linux-x64'
         run: |
-          cd $Env:GITHUB_WORKSPACE
-          move ".\bin\net8.0\LoopMusicPlayer" ".\bin\net8.0\LoopMusicPlayer.AppImage"
+          cd ${{ github.workspace }}
+          mv ".\bin\net8.0\LoopMusicPlayer" ".\bin\net8.0\LoopMusicPlayer.AppImage"
 
       - name: Create Archive
         run: |
-          cd $Env:GITHUB_WORKSPACE
-          tar -a -cvf LoopMusicPlayer.zip -C ./bin *
+          cd ${{ github.workspace }}
+          zip LoopMusicPlayer-${{ matrix.platform }}-${{ github.ref }}.zip -r ./bin
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v3
         with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: ./LoopMusicPlayer.zip
-          asset_name: LoopMusicPlayer-${{matrix.platform}}-${{ github.ref }}.zip
-          asset_content_type: application/zip
+          name: LoopMusicPlayer-${{ matrix.platform }}-${{ github.ref }}
+          path: ${{ github.workspace }}/*.zip
+        
+  create-release:
+    name: Create release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: actions/download-artifact@v3
+      with:
+        path: artifacts
+
+    - name: Create Release
+      run: |
+        cd ${{ github.workspace }}/artifacts
+        mv ./*/*.zip ./
+        gh release create "${{ github.ref }}" ${{ github.workspace }}/artifacts/*.zip -t "${{ github.ref }}"
+
