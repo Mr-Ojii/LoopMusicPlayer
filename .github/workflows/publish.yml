@@ -59,6 +59,8 @@ jobs:
         path: artifacts
 
     - name: Create Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd ${{ github.workspace }}/artifacts
         mv ./*/*.zip ./
