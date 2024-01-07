@@ -21,12 +21,11 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
-      - run: cd LoopMusicPlayer
+          
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore LoopMusicPlayer
       - name: Build
-        run: dotnet publish -o ../bin/net8.0 -r ${{ matrix.platform }} --configuration Release --self-contained true
-      - run: cd ../
+        run: dotnet publish LoopMusicPlayer -o ./bin/net8.0 -r ${{ matrix.platform }} --configuration Release --self-contained true
 
       - name: Remove File
         run: |
