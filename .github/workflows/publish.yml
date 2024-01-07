@@ -38,23 +38,23 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '8.0.x'
       - run: cd LoopMusicPlayer
       - name: Install dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet publish -o ../bin/net6.0 -r ${{matrix.platform}} --configuration Release --self-contained true
+        run: dotnet publish -o ../bin/net8.0 -r ${{matrix.platform}} --configuration Release --self-contained true
       - run: cd ../
       - name: Remove File
         uses: JesseTG/rm@v1.0.0
         with:
-          path: ./bin/net6.0/${{matrix.platform}}
+          path: ./bin/net8.0/${{matrix.platform}}
 
       - name: Rename App File
         if: matrix.platform == 'linux-x64'
         run: |
           cd $Env:GITHUB_WORKSPACE
-          move ".\bin\net6.0\LoopMusicPlayer" ".\bin\net6.0\LoopMusicPlayer.AppImage"
+          move ".\bin\net8.0\LoopMusicPlayer" ".\bin\net8.0\LoopMusicPlayer.AppImage"
 
       - name: Create Archive
         run: |
