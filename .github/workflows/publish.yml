@@ -64,5 +64,5 @@ jobs:
       run: |
         cd ${{ github.workspace }}/artifacts
         mv ./*/*.zip ./
-        gh release create "${{ github.ref }}" ${{ github.workspace }}/artifacts/*.zip -t "${{ github.ref }}"
+        gh release create "${{ github.ref }}" ${{ github.workspace }}/artifacts/*.zip
 
