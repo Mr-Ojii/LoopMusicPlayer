@@ -163,7 +163,7 @@ public partial class MainViewModel : ViewModelBase
             // DrawCall内で次の曲にする
 
             if (this.SingleRepeat)
-                await UpdatePlayer(this.PlayList[this._playingIndex].Uri);
+                await UpdatePlayer(this.PlayList[this._playingIndex].File);
             if (this.AllRepeat)
                 await Next();
             else if (this.RandomRepeat)
@@ -215,17 +215,6 @@ public partial class MainViewModel : ViewModelBase
     partial void OnVolumeChanged(double value)
         => this.Player?.ChangeVolume(this.Volume);
 
-    public async Task AddToPlayList(Uri uri)
-    {
-        using (var file = await this.GetStorageFile(uri))
-        {
-            if (file is null)
-                return;
-
-            await this.AddToPlayList(file);
-        }
-    }
-
     public async Task AddToPlayList(IStorageFile file)
     {
         string path = FileToPath(file);
@@ -238,18 +227,9 @@ public partial class MainViewModel : ViewModelBase
                 string artist = !string.IsNullOrEmpty(ii.Artist) ? ii.Artist : "";
                 bool loop = ii.IsLoop;
 
-                PlayList.Add(new PlayListItem(title, time, artist, loop, path, file.Path));
+                PlayList.Add(new PlayListItem(title, time, artist, loop, path, file));
             }
         }
-    }
-
-    public async Task UpdatePlayer(Uri uri)
-    {
-        var file = await this.GetStorageFile(uri);
-        if (file is null)
-            return;
-
-        await this.UpdatePlayer(file);
     }
 
     public async Task UpdatePlayer(IStorageFile file)
@@ -296,7 +276,7 @@ public partial class MainViewModel : ViewModelBase
 
         this._playingIndex = (this._playingIndex + this.PlayList.Count - 1) % this.PlayList.Count;
 
-        await UpdatePlayer(this.PlayList[this._playingIndex].Uri);
+        await UpdatePlayer(this.PlayList[this._playingIndex].File);
     }
 
     [RelayCommand]
@@ -307,7 +287,7 @@ public partial class MainViewModel : ViewModelBase
 
         this._playingIndex = (this._playingIndex + this.PlayList.Count + 1) % this.PlayList.Count;
 
-        await UpdatePlayer(this.PlayList[this._playingIndex].Uri);
+        await UpdatePlayer(this.PlayList[this._playingIndex].File);
     }
 
     [RelayCommand]
@@ -318,7 +298,7 @@ public partial class MainViewModel : ViewModelBase
 
         this._playingIndex = Random.Shared.Next(this.PlayList.Count);
 
-        await UpdatePlayer(this.PlayList[this._playingIndex].Uri);
+        await UpdatePlayer(this.PlayList[this._playingIndex].File);
     }
 
     [RelayCommand]
@@ -444,7 +424,7 @@ public partial class MainViewModel : ViewModelBase
         if (item is null)
             return;
 
-        await UpdatePlayer(item.Uri);
+        await UpdatePlayer(item.File);
     }
 
     public async void DropCommandHandler(IEnumerable<IStorageItem> files)
@@ -453,19 +433,16 @@ public partial class MainViewModel : ViewModelBase
         {
             try
             {
-                await AddToPlayList(file.Path);
+                var filesService = this.GetFilesService();
+                IStorageFile? s_file = await filesService.OpenFileAsync(file.Path);
+                if (s_file is not null)
+                    await AddToPlayList(s_file);
             }
             catch (Exception e)
             {
                 Errors.Add(e.ToString());
             }
         }
-    }
-
-    private async Task<IStorageFile?> GetStorageFile(Uri uri)
-    {
-        var filesService = this.GetFilesService();
-        return await filesService.OpenFileAsync(uri);
     }
 
     private IFilesService GetFilesService()
