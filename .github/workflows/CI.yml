@@ -22,7 +22,7 @@ jobs:
           dotnet workload restore
       - name: Build
         run: |
-          dotnet publish LoopMusicPlayer.Desktop -r ${{ matrix.platform }} -c release -o publish --self-contained=true -p:PublishSingleFile=true
+          dotnet publish LoopMusicPlayer.Desktop -r ${{ matrix.platform }} -c release -o publish --self-contained=true
       - name: Make .app
         if: ${{ startsWith(matrix.platform, 'osx') }}
         run: |
