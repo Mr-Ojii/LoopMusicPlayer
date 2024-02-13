@@ -31,6 +31,10 @@ jobs:
           mkdir publish
           mv macOSAppAssets/LoopMusicPlayer publish
           mv publish/LoopMusicPlayer publish/LoopMusicPlayer.app
+      - name: Rename to AppImage
+        if: ${{ startsWith(matrix.platform, 'linux') }}
+        run: |
+          mv publish/LoopMusicPlayer.Desktop publish/LoopMusicPlayer.Desktop.AppImage
       - name : Create Archive
         run: |
           cd publish
