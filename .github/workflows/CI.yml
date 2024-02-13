@@ -1,0 +1,138 @@
+name: CI
+
+on:
+  push:
+
+jobs:
+  build:
+    name: Build-Desktop
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [win-x86, win-x64 osx-arm64, osx-x64, linux-x64, linux-arm, linux-arm64]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore workloads
+        run: |
+          dotnet workload restore
+      - name: Build
+        run: |
+          dotnet publish LoopMusicPlayer.Desktop -r ${{ matrix.platform }} -c release -o publish --self-contained=true -p:PublishSingleFile=true
+      - name : Create Archive
+        run: |
+          zip LoopMusicPlayer-${{ matrix.platform }}.zip -r publish
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LoopMusicPlayer-${{ matrix.platform }}
+          path: ${{ github.workspace }}/*.zip
+
+
+  android-build:
+    name: Build-Android
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore workloads
+        run: |
+          dotnet workload restore
+      - name: Build
+        run: |
+          dotnet publish LoopMusicPlayer.Android -c release -o publish
+      - name : Create Archive
+        run: |
+          zip LoopMusicPlayer-android.zip -r publish
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LoopMusicPlayer-android
+          path: ${{ github.workspace }}/*.zip
+
+  # ios-build:
+  #   name: Build-iOS
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+  #     - name: Setup .NET
+  #       uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: '8.0.x'
+  #     - name: Restore workloads
+  #       run: |
+  #         dotnet workload restore
+  #     - name: Build
+  #       run: |
+  #         dotnet publish LoopMusicPlayer.iOS -c release -o publish
+  #     - name : Create Archive
+  #       run: |
+  #         zip LoopMusicPlayer-ios.zip -r publish
+  #     - name: Upload artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: LoopMusicPlayer-ios
+  #         path: ${{ github.workspace }}/*.zip
+
+  browser-build:
+    name: Build-Browser
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore workloads
+        run: |
+          dotnet workload restore
+      - name: Build
+        run: |
+          dotnet publish LoopMusicPlayer.Browser -c release -o publish
+      - name : Create Archive
+        run: |
+          zip LoopMusicPlayer-browser.zip -r publish
+    #   - name: Upload artifact
+    #     uses: actions/upload-artifact@v4
+    #     with:
+    #       name: LoopMusicPlayer-browser
+    #       path: ${{ github.workspace }}/*.zip
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: ${{ github.ref_type == 'tag' }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v3
+      with:
+        path: artifacts
+    - name: Create Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        cd ${{ github.workspace }}/artifacts
+        mv ./*/*.zip ./
+        gh release create "${{ github.ref }}" ${{ github.workspace }}/artifacts/*.zip
+
+

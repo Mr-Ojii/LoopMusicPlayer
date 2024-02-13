@@ -1,0 +1,201 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:LoopMusicPlayer.ViewModels"
+             xmlns:lang="clr-namespace:LoopMusicPlayer.Assets"
+             xmlns:lc="using:LoopMusicPlayer.Controls"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="LoopMusicPlayer.Views.MainView"
+             x:DataType="vm:MainViewModel">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:MainViewModel />
+  </Design.DataContext>
+  <TabControl>
+
+    <TabItem ToolTip.Tip="{x:Static lang:Resources.Player}">
+      <TabItem.Header>
+        <ic:SymbolIcon Symbol="Play" IsFilled="True" />
+      </TabItem.Header>
+      <ScrollViewer>
+        <StackPanel>
+          <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding OpenFileCommand}" Content="{x:Static lang:Resources.OpenFile}"/>
+          <DataGrid Margin="20" ItemsSource="{Binding PlayList}"
+                Height="250"
+                IsReadOnly="True"
+                CanUserReorderColumns="True"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                GridLinesVisibility="All"
+                BorderThickness="1" BorderBrush="Gray"
+                Name="PlayListDataGrid">
+
+            <i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="Loaded" SourceObject="{Binding #PlayListDataGrid}">
+                <ia:InvokeCommandAction Command="{Binding OnDataGridLoaded}" CommandParameter="{Binding #PlayListDataGrid}"/>
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+
+            <DataGrid.ContextMenu>
+              <ContextMenu>
+                <MenuItem Header="{x:Static lang:Resources.Delete}" Command="{Binding DeleteCommand}"/>
+                <Separator />
+                <MenuItem Header="{x:Static lang:Resources.MoveToUp}" Command="{Binding SongUpCommand}"/>
+                <MenuItem Header="{x:Static lang:Resources.MoveToDown}" Command="{Binding SongDownCommand}"/>
+                <Separator />
+                <MenuItem Header="{x:Static lang:Resources.Clear}" Command="{Binding ClearCommand}"/>
+              </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+              <DataGridTextColumn Header="{x:Static lang:Resources.Title}"  Binding="{Binding Title}"/>
+              <DataGridTextColumn Header="{x:Static lang:Resources.Time}" Binding="{Binding Time}" />
+              <DataGridTextColumn Header="{x:Static lang:Resources.Artist}" Binding="{Binding Artist}" />
+              <DataGridTextColumn Header="{x:Static lang:Resources.Loop}" Binding="{Binding Loop}" />
+              <DataGridTextColumn Header="{x:Static lang:Resources.Path}" Binding="{Binding Path}" />
+            </DataGrid.Columns>
+          </DataGrid>
+          <Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto" Margin="4">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Title}" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding PlayTime}" />
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding LoopTime}" />
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding FilePath}" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LoopCount}" Grid.ColumnSpan="2" HorizontalAlignment="Center" />
+            <Button Grid.Row="2" Grid.Column="1" Command="{Binding MaxLoopDecrementCommand}"><ic:SymbolIcon Symbol="Subtract" IsFilled="True" /></Button>
+            <Button Grid.Row="2" Grid.Column="2" Command="{Binding MaxLoopIncrementCommand}"><ic:SymbolIcon Symbol="Add" IsFilled="True" /></Button>
+          </Grid>
+          <lc:SeekbarControl Height="30" Progress="{Binding Progress}" LoopStart="{Binding LoopStart}" LoopEnd="{Binding LoopEnd}" Player="{Binding Player}" />
+          <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*,*,*,*,*" Margin="4">
+            <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding PlayCommand}" ToolTip.Tip="{x:Static lang:Resources.Play}">
+              <ic:SymbolIcon Symbol="Play" IsFilled="True" />
+            </Button>
+            <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding PauseCommand}" ToolTip.Tip="{x:Static lang:Resources.Pause}">
+              <ic:SymbolIcon Symbol="Pause" IsFilled="True" />
+            </Button>
+            <Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding StopCommand}" ToolTip.Tip="{x:Static lang:Resources.Stop}">
+              <ic:SymbolIcon Symbol="Stop" IsFilled="True" />
+            </Button>
+            <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding PrevCommand}" ToolTip.Tip="{x:Static lang:Resources.Prev}">
+              <ic:SymbolIcon Symbol="Previous" IsFilled="True" />
+            </Button>
+            <Button Grid.Row="0" Grid.Column="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding NextCommand}" ToolTip.Tip="{x:Static lang:Resources.Next}">
+              <ic:SymbolIcon Symbol="Next" IsFilled="True" />
+            </Button>
+            <Button Grid.Row="0" Grid.Column="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding RandomChoiceCommand}" ToolTip.Tip="{x:Static lang:Resources.Random}">
+              <ic:SymbolIcon Symbol="ArrowShuffle" IsFilled="True" />
+            </Button>
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Static lang:Resources.Volume}"/>
+            <Slider Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Minimum="0" Maximum="1" Value="{Binding Volume}" />
+          </Grid>
+          <ListBox ItemsSource="{Binding Errors}" MaxHeight="200"/>
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+
+    <TabItem ToolTip.Tip="{x:Static lang:Resources.Option}">
+      <TabItem.Header>
+        <ic:SymbolIcon Symbol="Settings" IsFilled="True" />
+      </TabItem.Header>
+      <ScrollViewer>
+        <StackPanel Margin="20">
+          <TextBlock Text="{x:Static lang:Resources.General}" FontSize="30"/>
+
+          <Separator Margin="20"/>
+
+          <TextBlock Text="{x:Static lang:Resources.RepeatType}" FontSize="20"/>
+          <RadioButton GroupName="RepeatTypeGroup" Content="{x:Static lang:Resources.DisableRepeat}" IsChecked="{Binding DisableRepeat}"/>
+          <RadioButton GroupName="RepeatTypeGroup" Content="{x:Static lang:Resources.SingleRepeat}" IsChecked="{Binding SingleRepeat}"/>
+          <RadioButton GroupName="RepeatTypeGroup" Content="{x:Static lang:Resources.AllRepeat}" IsChecked="{Binding AllRepeat}"/>
+          <RadioButton GroupName="RepeatTypeGroup" Content="{x:Static lang:Resources.RandomRepeat}" IsChecked="{Binding RandomRepeat}"/>
+
+          <CheckBox Content="{x:Static lang:Resources.Loop}" IsChecked="{Binding EnableLoop}" />
+
+          <Separator Margin="20"/>
+
+          <TextBlock Text="{x:Static lang:Resources.Audio}" FontSize="30"/>
+
+          <Separator Margin="20"/>
+
+          <TextBlock Text="{x:Static lang:Resources.UpdatePeriod}" FontSize="20"/>
+
+          <Grid RowDefinitions="Auto" ColumnDefinitions="Auto,Auto">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding UpdatePeriod}"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="ms"/>
+          </Grid>
+          <Slider Minimum="5" Maximum="100" Value="{Binding UpdatePeriod}" />
+
+          <Separator Margin="20"/>
+
+          <TextBlock Text="{x:Static lang:Resources.BufferLength}" FontSize="20"/>
+
+          <Grid RowDefinitions="Auto" ColumnDefinitions="Auto,Auto">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding BufferLength}"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="ms"/>
+          </Grid>
+          <Slider Minimum="{Binding UpdatePeriod}" Maximum="500" Value="{Binding BufferLength}" />
+
+          <Separator Margin="20"/>
+
+          <TextBlock Text="{x:Static lang:Resources.View}" FontSize="30"/>
+
+          <Separator Margin="20"/>
+
+          <TextBlock Text="{x:Static lang:Resources.TimeFormat}" FontSize="20"/>
+          <RadioButton GroupName="TimeFormatGroup" Content="{x:Static lang:Resources.ElapsedTime}" IsChecked="{Binding ElapsedTime}" />
+          <RadioButton GroupName="TimeFormatGroup" Content="{x:Static lang:Resources.SeekTime}" IsChecked="{Binding SeekTime}"/>
+          <RadioButton GroupName="TimeFormatGroup" Content="{x:Static lang:Resources.RemainingTime}" IsChecked="{Binding RemainingTime}" />
+
+          <Separator Margin="20"/>
+
+          <TextBlock Text="{x:Static lang:Resources.AlwaysOnTop}" FontSize="20"/>
+          <CheckBox Content="{x:Static lang:Resources.AlwaysOnTop}" IsChecked="{Binding TopMost}" />
+
+          <Separator Margin="20"/>
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+
+    <TabItem ToolTip.Tip="{x:Static lang:Resources.DeviceInfo}">
+      <TabItem.Header>
+        <ic:SymbolIcon Symbol="Headphones" IsFilled="True" />
+      </TabItem.Header>
+      <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="4" HorizontalAlignment="Center">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static lang:Resources.Name}"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding DeviceName}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static lang:Resources.Frequency}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding DeviceFrequency}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static lang:Resources.Latency}"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding DeviceLatency}"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static lang:Resources.SpeakerCount}"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SpeakerCount}"/>
+      </Grid>
+    </TabItem>
+
+    <TabItem ToolTip.Tip="{x:Static lang:Resources.About}">
+      <TabItem.Header>
+        <ic:SymbolIcon Symbol="Info" IsFilled="True" />
+      </TabItem.Header>
+      <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="4" HorizontalAlignment="Center">
+        <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Width="256" Height="256" Source="avares://LoopMusicPlayer/Assets/icon.ico" />
+        <TextBlock Text="{Binding AppName}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
+        <TextBlock Text="LoopMusicPlayer" Grid.Row="2" Grid.Column="0"/>
+        <TextBlock Text="{Binding Version}" Grid.Row="2" Grid.Column="1"/>
+        <TextBlock Text=".NET" Grid.Row="3" Grid.Column="0"/>
+        <TextBlock Text="{Binding DotnetVersion}" Grid.Row="3" Grid.Column="1"/>
+        <TextBlock Text="Avalonia UI" Grid.Row="4" Grid.Column="0"/>
+        <TextBlock Text="{Binding AvaloniaVersion}" Grid.Row="4" Grid.Column="1"/>
+        <TextBlock Text="BASS" Grid.Row="5" Grid.Column="0"/>
+        <TextBlock Text="{Binding BASSVersion}" Grid.Row="5" Grid.Column="1"/>
+        <TextBlock Text="ManagedBass" Grid.Row="6" Grid.Column="0"/>
+        <TextBlock Text="{Binding ManagedBassVersion}" Grid.Row="6" Grid.Column="1"/>
+        <TextBlock Text="{Binding Copyright}" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="10"/>
+      </Grid>
+    </TabItem>
+
+  </TabControl>
+</UserControl>
