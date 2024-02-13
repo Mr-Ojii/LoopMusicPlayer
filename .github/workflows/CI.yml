@@ -71,7 +71,9 @@ jobs:
           dotnet publish LoopMusicPlayer.Android -c release -o publish
       - name : Create Archive
         run: |
-          zip LoopMusicPlayer-android.zip -r publish
+          cd publish
+          zip LoopMusicPlayer-android.zip -r *
+          mv *.zip ..
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -96,7 +98,9 @@ jobs:
   #         dotnet publish LoopMusicPlayer.iOS -c release -o publish
   #     - name : Create Archive
   #       run: |
-  #         zip LoopMusicPlayer-ios.zip -r publish
+  #         cd publish
+  #         zip LoopMusicPlayer-ios.zip -r *
+  #         mv *.zip ..
   #     - name: Upload artifact
   #       uses: actions/upload-artifact@v4
   #       with:
@@ -121,12 +125,14 @@ jobs:
           dotnet publish LoopMusicPlayer.Browser -c release -o publish
       - name : Create Archive
         run: |
-          zip LoopMusicPlayer-browser.zip -r publish
-    #   - name: Upload artifact
-    #     uses: actions/upload-artifact@v4
-    #     with:
-    #       name: LoopMusicPlayer-browser
-    #       path: ${{ github.workspace }}/*.zip
+          cd publish
+          zip LoopMusicPlayer-browser.zip -r *
+          mv *.zip ..
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: LoopMusicPlayer-browser
+      #     path: ${{ github.workspace }}/*.zip
 
   release:
     name: Release
