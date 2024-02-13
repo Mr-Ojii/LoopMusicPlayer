@@ -33,7 +33,9 @@ jobs:
           mv publish/LoopMusicPlayer publish/LoopMusicPlayer.app
       - name : Create Archive
         run: |
-          zip LoopMusicPlayer-${{ matrix.platform }}.zip -r publish
+          cd publish
+          zip LoopMusicPlayer-${{ matrix.platform }}.zip -r *
+          mv *.zip ..
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
