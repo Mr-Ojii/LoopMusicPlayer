@@ -23,6 +23,14 @@ jobs:
       - name: Build
         run: |
           dotnet publish LoopMusicPlayer.Desktop -r ${{ matrix.platform }} -c release -o publish --self-contained=true -p:PublishSingleFile=true
+      - name: Make .app
+        if: ${{ startsWith(matrix.platform, 'osx') }}
+        run: |
+          mv publish MacOS
+          mv MacOS macOSAppAssets/LoopMusicPlayer/Contents
+          mkdir publish
+          mv macOSAppAssets/LoopMusicPlayer publish
+          mv publish/LoopMusicPlayer publish/LoopMusicPlayer.app
       - name : Create Archive
         run: |
           zip LoopMusicPlayer-${{ matrix.platform }}.zip -r publish
