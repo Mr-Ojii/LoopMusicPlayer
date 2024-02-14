@@ -33,7 +33,8 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] public string _loopTime = "";
     [ObservableProperty] public string _filePath = "";
     [ObservableProperty] public string _loopCount = $"0 / 0";
-    public bool isEnd = false;
+    private bool isEnded = false;
+    private bool isLooped = false;
 
     private void setNewLoopCount(object? sender, EventArgs e)
     {
@@ -53,7 +54,11 @@ public partial class MainViewModel : ViewModelBase
 
     private void OnEnd(object? sender, EventArgs e)
     {
-        isEnd = true;
+        this.isEnded = true;
+    }
+    private void OnLoop(object? sender, EventArgs e)
+    {
+        this.isLooped = true;
     }
 
     private uint _max_loop = 0;
@@ -157,10 +162,9 @@ public partial class MainViewModel : ViewModelBase
                 this.PlayTime = "-" + (this.Player.TotalTime - this.Player.TimePosition).ToString(@"hh\:mm\:ss\.ff") + " / " + this.Player.TotalTime.ToString(@"hh\:mm\:ss\.ff");
             this.Progress = this.Player.SamplePosition / (double)this.Player.TotalSamples;
         }
-        if (isEnd)
+        if (this.isEnded)
         {
-            // CallBack内で次の曲にするとおかしくなるので、
-            // DrawCall内で次の曲にする
+            // CallBack内で次の曲にするとおかしくなるので、DrawCall内で次の曲にする
 
             if (this.SingleRepeat)
                 await UpdatePlayer(this.PlayList[this._playingIndex].File);
@@ -169,7 +173,13 @@ public partial class MainViewModel : ViewModelBase
             else if (this.RandomRepeat)
                 await RandomChoice();
 
-            isEnd = false;
+            this.isEnded = false;
+        }
+        if (this.isLooped)
+        {
+            // CallBackでループ処理するとおかしくなるので、DrawCall内で
+            this.setNewLoopCount(this, EventArgs.Empty);
+            this.isLooped = false;
         }
     }
 
@@ -254,8 +264,8 @@ public partial class MainViewModel : ViewModelBase
             this.LoopStart = this.Player.LoopStart / (double)this.Player.TotalSamples;
             this.LoopEnd = this.Player.LoopEnd /(double)this.Player.TotalSamples;
         }
-        this.Player.EndAction += OnEnd;
-        this.Player.LoopAction += this.setNewLoopCount;
+        this.Player.EndAction += this.OnEnd;
+        this.Player.LoopAction += this.OnLoop;
         this.setNewLoopCount(this, EventArgs.Empty);
         if (playing)
             this.Player.Play();
