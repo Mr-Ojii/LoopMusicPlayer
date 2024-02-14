@@ -12,6 +12,7 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using Avalonia.Platform.Storage;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LoopMusicPlayer.DataClass;
@@ -408,7 +409,7 @@ public partial class MainViewModel : ViewModelBase
         this.setNewLoopCount(this, EventArgs.Empty);
     }
 
-    public Unit OnDataGridLoaded(object? sender)
+    public void OnDataGridLoaded(object? sender, RoutedEventArgs e)
     {
         var dg = sender as DataGrid;
         if (dg is not null)
@@ -416,7 +417,6 @@ public partial class MainViewModel : ViewModelBase
             dg.LoadingRow += OnLoadingRow;
         }
         this.dataGrid = dg;
-        return Unit.Default;
     }
 
     public void OnLoadingRow(object? sender, DataGridRowEventArgs e)

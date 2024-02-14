@@ -1,6 +1,7 @@
 using System;
 using System.Reflection.Metadata;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using LoopMusicPlayer.ViewModels;
 using LoopMusicPlayer.DataClass;
 
@@ -113,5 +114,11 @@ public partial class MainView : UserControl
             settings.View.TopMost = model.TopMost;
         }
         settings.Save();
+    }
+    public void OnDataGridLoaded(object? sender, RoutedEventArgs e)
+    {
+        var model = this.DataContext as MainViewModel;
+        if (model is not null)
+            model.OnDataGridLoaded(sender, e);
     }
 }
