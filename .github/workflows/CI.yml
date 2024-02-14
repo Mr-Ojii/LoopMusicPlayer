@@ -6,10 +6,19 @@ on:
 jobs:
   build:
     name: Build-Desktop
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.config.runner }}
     strategy:
       matrix:
-        platform: [win-x86, win-x64, osx-arm64, osx-x64, linux-x64, linux-arm, linux-arm64, linux-musl-x64, linux-musl-arm64]
+        config:
+          - { platform: win-x86, runner: ubuntu-latest }
+          - { platform: win-x64, runner: ubuntu-latest }
+          - { platform: osx-x64, runner: macos-latest }
+          - { platform: osx-arm64, runner: macos-latest }
+          - { platform: linux-x64, runner: ubuntu-latest }
+          - { platform: linux-arm, runner: ubuntu-latest }
+          - { platform: linux-arm64, runner: ubuntu-latest }
+          - { platform: linux-musl-x64, runner: ubuntu-latest }
+          - { platform: linux-musl-arm64, runner: ubuntu-latest }
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,9 +31,9 @@ jobs:
           dotnet workload restore
       - name: Build
         run: |
-          dotnet publish LoopMusicPlayer.Desktop -r ${{ matrix.platform }} -c release -o publish --self-contained=true -p:UseAppHost=true
+          dotnet publish LoopMusicPlayer.Desktop -r ${{ matrix.config.platform }} -c release -o publish --self-contained=true -p:UseAppHost=true
       - name: Make .app
-        if: ${{ startsWith(matrix.platform, 'osx') }}
+        if: ${{ startsWith(matrix.config.platform, 'osx') }}
         run: |
           mv publish MacOS
           mv MacOS macOSAppAssets/LoopMusicPlayer/Contents
@@ -32,18 +41,18 @@ jobs:
           mv macOSAppAssets/LoopMusicPlayer publish
           mv publish/LoopMusicPlayer publish/LoopMusicPlayer.app
       - name: Rename to AppImage
-        if: ${{ startsWith(matrix.platform, 'linux') }}
+        if: ${{ startsWith(matrix.config.platform, 'linux') }}
         run: |
           mv publish/LoopMusicPlayer.Desktop publish/LoopMusicPlayer.Desktop.AppImage
       - name : Create Archive
         run: |
           cd publish
-          zip LoopMusicPlayer-${{ matrix.platform }}.zip -r *
+          zip LoopMusicPlayer-${{ matrix.config.platform }}.zip -r *
           mv *.zip ..
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: LoopMusicPlayer-${{ matrix.platform }}
+          name: LoopMusicPlayer-${{ matrix.config.platform }}
           path: ${{ github.workspace }}/*.zip
 
 
