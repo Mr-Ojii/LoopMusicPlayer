@@ -85,7 +85,7 @@ jobs:
       - name : Create Archive
         run: |
           cd publish
-          zip LoopMusicPlayer-android.zip -r *
+          zip LoopMusicPlayer-android.zip -r *Signed.apk
           mv *.zip ..
       - name: Upload artifact
         uses: actions/upload-artifact@v4
