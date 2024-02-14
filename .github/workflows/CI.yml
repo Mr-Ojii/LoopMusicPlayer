@@ -18,6 +18,7 @@ jobs:
           - { platform: linux-arm, runner: ubuntu-latest }
           - { platform: linux-arm64, runner: ubuntu-latest }
           - { platform: linux-musl-x64, runner: ubuntu-latest }
+          - { platform: linux-musl-arm, runner: ubuntu-latest }
           - { platform: linux-musl-arm64, runner: ubuntu-latest }
     steps:
       - name: Checkout repository
