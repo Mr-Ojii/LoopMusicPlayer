@@ -32,7 +32,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] public string _playTime = "";
     [ObservableProperty] public string _loopTime = "";
     [ObservableProperty] public string _filePath = "";
-    [ObservableProperty] public string _loopCount = $"  / 0";
+    [ObservableProperty] public string _loopCount = $"0 / 0";
     public bool isEnd = false;
 
     private void setNewLoopCount(object? sender, EventArgs e)
