@@ -8,9 +8,9 @@
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
-    <RunAOTCompilation>false</RunAOTCompilation>
-    <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
-    <PublishTrimmed>false</PublishTrimmed>
+    <RunAOTCompilation>true</RunAOTCompilation>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
   </PropertyGroup>
 
   <ItemGroup>
