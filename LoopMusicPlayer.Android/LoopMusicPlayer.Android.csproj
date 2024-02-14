@@ -10,6 +10,7 @@
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <RunAOTCompilation>false</RunAOTCompilation>
     <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
+    <PublishTrimmed>false</PublishTrimmed>
   </PropertyGroup>
 
   <ItemGroup>
