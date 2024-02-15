@@ -119,8 +119,8 @@
           <TextBlock Text="{x:Static lang:Resources.UpdatePeriod}" FontSize="20"/>
 
           <Grid RowDefinitions="Auto" ColumnDefinitions="Auto,Auto">
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding UpdatePeriod}"/>
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="ms"/>
+            <NumericUpDown Grid.Row="0" Grid.Column="0" Value="{Binding UpdatePeriod}" Minimum="5" Maximum="100" Increment="1" FormatString="000"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="ms" VerticalAlignment="Center"/>
           </Grid>
           <Slider Minimum="5" Maximum="100" Value="{Binding UpdatePeriod}" />
 
@@ -129,8 +129,8 @@
           <TextBlock Text="{x:Static lang:Resources.BufferLength}" FontSize="20"/>
 
           <Grid RowDefinitions="Auto" ColumnDefinitions="Auto,Auto">
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding BufferLength}"/>
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="ms"/>
+            <NumericUpDown Grid.Row="0" Grid.Column="0" Value="{Binding BufferLength}" Minimum="{Binding UpdatePeriod}" Maximum="500" Increment="1" FormatString="000"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="ms" VerticalAlignment="Center"/>
           </Grid>
           <Slider Minimum="{Binding UpdatePeriod}" Maximum="500" Value="{Binding BufferLength}" />
 
