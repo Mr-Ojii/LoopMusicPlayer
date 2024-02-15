@@ -33,7 +33,7 @@ jobs:
           dotnet workload restore
       - name: Build
         run: |
-          dotnet publish LoopMusicPlayer.Desktop -r ${{ matrix.config.platform }} -c release -o publish --self-contained=true -p:UseAppHost=true
+          dotnet publish LoopMusicPlayer.Desktop -r ${{ matrix.config.platform }} -c Release -o publish --self-contained=true -p:UseAppHost=true
       - name: Make .app
         if: ${{ startsWith(matrix.config.platform, 'osx') }}
         run: |
@@ -83,7 +83,10 @@ jobs:
           dotnet workload restore
       - name: Build
         run: |
-          dotnet publish LoopMusicPlayer.Android -c release -o publish
+          cd ${{ github.workspace }}
+          echo -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode --output ./release.keystore
+          echo "${{ secrets.ANDROID_SIGNING_PASSWORD }}" > AndroidSigningPassword.txt
+          dotnet publish LoopMusicPlayer.Android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=${{ github.workspace }}/release.keystore -p:AndroidSigningKeyAlias=${{ secrets.ANDROID_KEY_ALIAS }} -p:AndroidSigningKeyPass=file:${{ github.workspace }}/AndroidSigningPassword.txt -p:AndroidSigningStorePass=file:${{ github.workspace }}/AndroidSigningPassword.txt -o publish
       - name : Create Archive
         run: |
           cd publish
@@ -110,7 +113,7 @@ jobs:
   #         dotnet workload restore
   #     - name: Build
   #       run: |
-  #         dotnet publish LoopMusicPlayer.iOS -c release -o publish
+  #         dotnet publish LoopMusicPlayer.iOS -c Release -o publish
   #     - name : Create Archive
   #       run: |
   #         cd publish
@@ -137,7 +140,7 @@ jobs:
           dotnet workload restore
       - name: Build
         run: |
-          dotnet publish LoopMusicPlayer.Browser -c release -o publish
+          dotnet publish LoopMusicPlayer.Browser -c Release -o publish
       - name : Create Archive
         run: |
           cd publish
