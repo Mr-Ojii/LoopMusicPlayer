@@ -47,7 +47,7 @@ public partial class MainViewModel : ViewModelBase
 
         this.LoopCount = $"{this.Player.LoopCount} / {this._max_loop}";
 
-        if ((this._max_loop != 0 && this._max_loop <= this.Player.LoopCount) || !this.EnableLoop)
+        if ((this._max_loop != 0 && this._max_loop <= this.Player.LoopCount) || !this.EnableLoop || this.Player.SamplePosition > this.Player.LoopEnd)
             this.Player.NextIsLoop = false;
         else
             this.Player.NextIsLoop = true;
