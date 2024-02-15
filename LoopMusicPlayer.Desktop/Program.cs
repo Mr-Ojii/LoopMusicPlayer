@@ -15,57 +15,41 @@ class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        try
+        string LibsDir = AppContext.BaseDirectory + @"Libs/";
+        if (Directory.Exists(LibsDir))
         {
-            string osplatform = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "win" : (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "osx" : "linux");
-            string platform = "";
-            switch (RuntimeInformation.ProcessArchitecture)
+            //Libsディレクトリがあったら実行ファイルの階層にライブラリをコピーする
+            //メソッドが呼ばれた時に動的ロードする系なので、最初にコピーすればいい
+            try
             {
-                case Architecture.X86:
-                    platform = "x86";
-                    break;
-                case Architecture.X64:
-                    platform = "x64";
-                    break;
-                case Architecture.Arm:
-                    platform = "arm";
-                    break;
-                case Architecture.Arm64:
-                    platform = "arm64";
-                    break;
-                default:
-                    throw new PlatformNotSupportedException();
-            }
+                string osplatform = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "win" : (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "osx" : "linux");
+                string platform = RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant();
+                var OSPlatformDirName = LibsDir + osplatform + "/";
 
-            var OSPlatformDirName = AppContext.BaseDirectory + @"Libs/" + osplatform + "/";
-
-            if(Directory.Exists(OSPlatformDirName))
-            {
-                DirectoryInfo info = new DirectoryInfo(OSPlatformDirName);
-
-                //実行ファイルの階層にライブラリをコピー
-                foreach (FileInfo fileinfo in info.GetFiles())
+                if(Directory.Exists(OSPlatformDirName))
                 {
-                    fileinfo.CopyTo(AppContext.BaseDirectory + fileinfo.Name, true);
+                    DirectoryInfo info = new DirectoryInfo(OSPlatformDirName);
+
+                    foreach (FileInfo fileinfo in info.GetFiles())
+                        fileinfo.CopyTo(AppContext.BaseDirectory + fileinfo.Name, true);
                 }
-            }
 
-            var PlatformDirName = AppContext.BaseDirectory + @"Libs/" + osplatform + "-" + platform + "/";
+                var PlatformDirName = LibsDir + osplatform + "-" + platform + "/";
 
-            if(Directory.Exists(PlatformDirName))
-            {
-                DirectoryInfo info = new DirectoryInfo(PlatformDirName);
-
-                //実行ファイルの階層にライブラリをコピー
-                foreach (FileInfo fileinfo in info.GetFiles())
+                if(Directory.Exists(PlatformDirName))
                 {
-                    fileinfo.CopyTo(AppContext.BaseDirectory + fileinfo.Name, true);
+                    DirectoryInfo info = new DirectoryInfo(PlatformDirName);
+
+                    foreach (FileInfo fileinfo in info.GetFiles())
+                        fileinfo.CopyTo(AppContext.BaseDirectory + fileinfo.Name, true);
                 }
+                //コピーしたら消し、次回起動から高速化
+                Directory.Delete(LibsDir, true);
             }
-        }
-        catch (Exception e)
-        {
-            Trace.TraceError(e.ToString());
+            catch (Exception e)
+            {
+                Trace.TraceError(e.ToString());
+            }
         }
 
         BuildAvaloniaApp()
