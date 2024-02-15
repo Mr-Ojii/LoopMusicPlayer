@@ -60,14 +60,14 @@ public class Settings
             get => this._updatePeriod;
             set => this._updatePeriod = Math.Clamp(value, 5, 100);
         }
-        private int _updatePeriod = 100;
+        private int _updatePeriod = 50;
 
         public int BufferLength
         {
             get => this._bufferLength;
             set => this._bufferLength = Math.Clamp(value, _updatePeriod, 500);
         }
-        private int _bufferLength = 500;
+        private int _bufferLength = 100;
         public double Volume
         {
             get => this._volume;
