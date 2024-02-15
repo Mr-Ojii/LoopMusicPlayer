@@ -434,6 +434,8 @@ public partial class MainViewModel : ViewModelBase
         if (item is null)
             return;
 
+        this._playingIndex = this.PlayList.IndexOf(item);
+
         await UpdatePlayer(item.File);
     }
 
