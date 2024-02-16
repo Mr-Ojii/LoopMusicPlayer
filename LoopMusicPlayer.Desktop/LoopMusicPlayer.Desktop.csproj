@@ -14,7 +14,7 @@
 
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>../LoopMusicPlayer/Assets/Icon.ico</ApplicationIcon>
+    <ApplicationIcon>../LoopMusicPlayer/Assets/icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
