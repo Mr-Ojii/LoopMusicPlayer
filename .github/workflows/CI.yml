@@ -53,6 +53,7 @@ jobs:
           mv *.zip ..
       - name: Upload artifact
         uses: actions/upload-artifact@v4
+        if: ${{ matrix.config.platform != 'win-arm64' }}
         with:
           name: LoopMusicPlayer-${{ matrix.config.platform }}
           path: ${{ github.workspace }}/*.zip
