@@ -12,14 +12,21 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         this.AddHandler(DragDrop.DropEvent, OnDrop);
-        this.AddHandler(LoadedEvent, OnLoaded);
+        this.AddHandler(LoadedEvent, OnWindowLoaded);
+        this.AddHandler(UnloadedEvent, OnWindowUnloaded);
     }
 
-    private void OnLoaded(object? sender, EventArgs e)
+    private void OnWindowLoaded(object? sender, EventArgs e)
     {
         var viewModel = this.DataContext as MainViewModel;
         if (viewModel is not null)
             viewModel.PropertyChanged += OnChangeTopmost;
+    }
+    private void OnWindowUnloaded(object? sender, EventArgs e)
+    {
+        var viewModel = this.DataContext as MainViewModel;
+        if (viewModel is not null)
+            viewModel.OnWindowUnloaded(sender, e);
     }
 
     private void OnDrop(object? sender, DragEventArgs e) {

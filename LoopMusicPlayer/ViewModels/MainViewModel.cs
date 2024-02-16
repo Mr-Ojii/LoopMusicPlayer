@@ -166,6 +166,15 @@ public partial class MainViewModel : ViewModelBase
             return;
     }
 
+    public void OnWindowUnloaded(object? sender, EventArgs e)
+    {
+        if (this.Player is null)
+            return;
+        this.Player.Stop();
+        this.Player.Dispose();
+        this.Player = null;
+    }
+
     private void CheckPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         switch (e.PropertyName)
