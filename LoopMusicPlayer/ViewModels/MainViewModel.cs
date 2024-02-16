@@ -145,7 +145,7 @@ public partial class MainViewModel : ViewModelBase
             if (stream is null)
                 continue;
 
-            // namespaceと拡張子を削除
+            // namespace名と拡張子を削除
             string name = ln.Substring(licenseNamespace.Length);
             name = name.Substring(0, name.LastIndexOf("."));
             using (var sr = new StreamReader(stream))
@@ -156,7 +156,8 @@ public partial class MainViewModel : ViewModelBase
                 ));
             }
         }
-        //
+        //なんか、名前順じゃないので、並び替える
+        LicenseList = new ObservableCollection<LicenseItem>(LicenseList.OrderBy(s => s.Name));
 
 
         if (!Bass.GetDeviceInfo(Bass.CurrentDevice, out device_info))
