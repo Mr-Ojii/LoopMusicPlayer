@@ -171,7 +171,7 @@
       </Grid>
     </TabItem>
 
-    <TabItem ToolTip.Tip="ThirdPartyLicenses">
+    <TabItem ToolTip.Tip="{x:Static lang:Resources.ThirdPartyLicenses}">
       <TabItem.Header>
         <ic:SymbolIcon Symbol="DocumentText" IsFilled="True" />
       </TabItem.Header>

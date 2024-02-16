@@ -10,8 +10,8 @@
 
 namespace LoopMusicPlayer.Assets {
     using System;
-    
-    
+
+
     /// <summary>
     ///   ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
     /// </summary>
@@ -23,15 +23,15 @@ namespace LoopMusicPlayer.Assets {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-        
+
         /// <summary>
         ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
@@ -45,7 +45,7 @@ namespace LoopMusicPlayer.Assets {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   すべてについて、現在のスレッドの CurrentUICulture プロパティをオーバーライドします
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
@@ -59,7 +59,7 @@ namespace LoopMusicPlayer.Assets {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   About に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -68,7 +68,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("About", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   AllRepeat に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -77,7 +77,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("AllRepeat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Always On Top に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -86,7 +86,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("AlwaysOnTop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Artist に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -95,7 +95,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Artist", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Audio に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -104,7 +104,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Audio", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   BufferLength に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -113,7 +113,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("BufferLength", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Clear に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -122,7 +122,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Clear", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Delete に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -131,7 +131,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   DeviceInfo に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -140,7 +140,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("DeviceInfo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   DisableRepeat に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -149,7 +149,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("DisableRepeat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   ElapsedTime に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -158,7 +158,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("ElapsedTime", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Frequency に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -167,7 +167,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Frequency", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   General に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -176,7 +176,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("General", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   English に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -185,7 +185,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("LangNameMetadata", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Language に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -194,7 +194,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Language", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Latency に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -203,7 +203,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Latency", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Loop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -212,7 +212,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Loop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   MoveToDown に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -221,7 +221,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("MoveToDown", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   MoveToUp に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -230,7 +230,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("MoveToUp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Name に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -239,7 +239,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Name", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Next に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -248,7 +248,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Next", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Open File に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -257,7 +257,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("OpenFile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Option に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -266,7 +266,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Option", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Path に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -275,7 +275,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Path", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Pause に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -284,7 +284,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Pause", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Play に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -293,7 +293,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Play", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Player に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -302,7 +302,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Player", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Prev に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -311,7 +311,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Prev", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Random に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -320,7 +320,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Random", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   RandomRepeat に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -329,7 +329,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("RandomRepeat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   RemainingTime に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -338,7 +338,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("RemainingTime", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   RepeatType に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -347,7 +347,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("RepeatType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   SeekTime に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -356,7 +356,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("SeekTime", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   SingleRepeat に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -365,7 +365,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("SingleRepeat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   SpeakerCount に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -374,7 +374,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("SpeakerCount", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Stop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -383,7 +383,16 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Stop", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   ThirdPartyLicenses に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ThirdPartyLicenses {
+            get {
+                return ResourceManager.GetString("ThirdPartyLicenses", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Time に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -392,7 +401,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Time", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   TimeFormat に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -401,7 +410,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("TimeFormat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Title に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -410,7 +419,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   UpdatePeriod に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -419,7 +428,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("UpdatePeriod", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   View に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -428,7 +437,7 @@ namespace LoopMusicPlayer.Assets {
                 return ResourceManager.GetString("View", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Volume に類似しているローカライズされた文字列を検索します。
         /// </summary>
