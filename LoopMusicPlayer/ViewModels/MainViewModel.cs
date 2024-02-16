@@ -22,6 +22,8 @@ using ManagedBass;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using System.Xml.Schema;
+using System.Linq;
+using System.IO;
 
 namespace LoopMusicPlayer.ViewModels;
 
@@ -104,6 +106,10 @@ public partial class MainViewModel : ViewModelBase
     public int DeviceLatency => bass_info.Latency;
     public int SpeakerCount => bass_info.SpeakerCount;
 
+    // ThirdPartyLicenses
+
+    public ObservableCollection<LicenseItem> LicenseList { get; set; }
+
     // About
     public string AppName => $"{Assembly.GetExecutingAssembly().GetName().Name}";
     public string Version => $"{Assembly.GetExecutingAssembly().GetName().Version}";
@@ -128,6 +134,30 @@ public partial class MainViewModel : ViewModelBase
         dispatcherTimer = new(TimeSpan.FromMilliseconds(100), DispatcherPriority.Normal, DrawCall);
         dispatcherTimer.Start();
         PropertyChanged += CheckPropertyChanged;
+
+        // ライセンスリストを構築
+        LicenseList = new ObservableCollection<LicenseItem>();
+        var licenseNamespace = "LoopMusicPlayer.ThirdPartyLicenses.";
+        var licenseNames = typeof(MainViewModel).Assembly.GetManifestResourceNames().Where(s => s.StartsWith(licenseNamespace));
+        foreach (var ln in licenseNames)
+        {
+            var stream = typeof(MainViewModel).Assembly.GetManifestResourceStream(ln);
+            if (stream is null)
+                continue;
+
+            // namespaceと拡張子を削除
+            string name = ln.Substring(licenseNamespace.Length);
+            name = name.Substring(0, name.LastIndexOf("."));
+            using (var sr = new StreamReader(stream))
+            {
+                LicenseList.Add(new LicenseItem(
+                    name,
+                    sr.ReadToEnd()
+                ));
+            }
+        }
+        //
+
 
         if (!Bass.GetDeviceInfo(Bass.CurrentDevice, out device_info))
             return;

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
+    <EmbeddedResource Include="ThirdPartyLicenses\**" />
   </ItemGroup>
 
   <ItemGroup>

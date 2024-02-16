@@ -171,6 +171,26 @@
       </Grid>
     </TabItem>
 
+    <TabItem ToolTip.Tip="ThirdPartyLicenses">
+      <TabItem.Header>
+        <ic:SymbolIcon Symbol="DocumentText" IsFilled="True" />
+      </TabItem.Header>
+      <ScrollViewer>
+        <StackPanel>
+          <ItemsControl ItemsSource="{Binding LicenseList}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <StackPanel>
+                  <TextBlock Text="{Binding Name}" FontSize="30"/>
+                  <TextBlock Text="{Binding Text}" Margin="20" />
+                </StackPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+
     <TabItem ToolTip.Tip="{x:Static lang:Resources.About}">
       <TabItem.Header>
         <ic:SymbolIcon Symbol="Info" IsFilled="True" />
