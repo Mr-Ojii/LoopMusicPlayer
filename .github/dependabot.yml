@@ -21,9 +21,3 @@ updates:
     schedule:
       interval: "weekly"
       timezone: "Asia/Tokyo"
-    # https://sue445.hatenablog.com/entry/2023/12/15/230043
-    groups:
-      fluent-icons:
-        patterns:
-          - "FluentIcons.Avalonia"
-          - "FluentIcons.Avalonia.Fluent"
