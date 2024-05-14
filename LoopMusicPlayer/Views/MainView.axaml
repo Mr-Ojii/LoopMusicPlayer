@@ -195,7 +195,7 @@
       <TabItem.Header>
         <ic:SymbolIcon Symbol="Info" IsFilled="True" />
       </TabItem.Header>
-      <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="4" HorizontalAlignment="Center">
+      <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="4" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Width="256" Height="256" Source="avares://LoopMusicPlayer/Assets/icon.ico" />
         <TextBlock Text="{Binding AppName}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
         <TextBlock Text="LoopMusicPlayer" Grid.Row="2" Grid.Column="0"/>
