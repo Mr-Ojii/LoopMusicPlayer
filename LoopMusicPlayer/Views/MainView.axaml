@@ -181,8 +181,8 @@
             <ItemsControl.ItemTemplate>
               <DataTemplate>
                 <StackPanel>
-                  <TextBlock Text="{Binding Name}" FontSize="30"/>
-                  <TextBlock Text="{Binding Text}" Margin="20" />
+                  <TextBlock Text="{Binding Name}" FontSize="30" TextWrapping="Wrap" />
+                  <TextBlock Text="{Binding Text}" Margin="20" TextWrapping="Wrap" />
                 </StackPanel>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
