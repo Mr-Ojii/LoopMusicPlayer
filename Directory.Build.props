@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <AvaloniaVersion>11.0.10</AvaloniaVersion>
-    <FluentIconsVersion>1.1.227</FluentIconsVersion>
+    <FluentIconsVersion>1.1.242</FluentIconsVersion>
 
     <Version>1.0.0.1</Version>
     <Authors>Mr-Ojii</Authors>
