@@ -7,7 +7,7 @@
 ## 仕様
 ### 導入
 * macOS  
-  以下の作業をしてください
+  Applicationsフォルダに移動後、以下の作業をしてください
   - `xattr -rc /Applications/LoopMusicPlayer.app`
 
 ### 主な使用方法
@@ -59,14 +59,22 @@
 
 ## 開発環境(動作確認環境)
 OS
-* Windows 11(Ver.22H2) (x64)
-* macOS 14.3.1 (arm64)
+* Windows 11 (Ver.23H2) (x64)
+* macOS 14.5 (arm64)
 * Ubuntu 22.04 LTS (x64, WSL)
 * Android 12 (arm64)
 
 Editor
 * Visual Studio Community 2022
 * Visual Studio Code
+
+## 対応環境
+* Windows 10+ (x86, x64)
+* macOS 12+ (x64, arm64)
+* Linux (arm32, arm64, x64) (X11, glibc)
+* Android 8.0+ (armeabi-v7a, arm64-v8a)
+
+Linuxの各種ディストロ対応については[こちら](https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md)をご覧ください
 
 ## 謝辞
 各依存パッケージを作成していただいてる方々に感謝を申し上げます。
@@ -80,7 +88,7 @@ Editor
 これは元々私自身がmacOS・Linux環境で作業用BGMを聞くために作ったものです。  
 いい感じにループして聞ければいいや程度で作ったやつです。
 
-バグ修正PullRequest・Issue大歓迎です！
+PullRequest・Issue大歓迎です！
 
 ## 更新履歴
 |バージョン |日付(JST) |                                       実装内容                                       |
