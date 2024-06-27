@@ -99,5 +99,6 @@ internal class MusicFileReaderStreaming : IMusicFileReader
     public void Dispose()
     {
         Bass.StreamFree(this.handle);
+        this.handle = 0;
     }
 }
