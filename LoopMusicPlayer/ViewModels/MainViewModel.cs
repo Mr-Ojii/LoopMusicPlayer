@@ -288,8 +288,10 @@ public partial class MainViewModel : ViewModelBase
         var stream = await file.OpenReadAsync();
         var path = FileToPath(file);
         bool playing = true;
-        if (this.Player is not null)
-            playing = this.Player.Status() == PlaybackState.Playing;
+        if (this.Player is not null) {
+            var status = this.Player.Status();
+            playing = (status == PlaybackState.Playing || status == PlaybackState.Stalled);
+        }
         this.Player?.Dispose();
         this.LoopStart = -1;
         this.LoopEnd = -1;
