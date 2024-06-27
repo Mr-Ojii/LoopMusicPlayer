@@ -19,6 +19,11 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(VerOpt)'=='RC'">
+    <ApplicationTitle>LoopMusicPlayer-RC</ApplicationTitle>
+    <ApplicationId>net.mr_ojii.loopmusicplayer.rc</ApplicationId>
+  </PropertyGroup>
+
   <ItemGroup>
     <AndroidResource Include="Icon.png">
       <Link>Resources\drawable\Icon.png</Link>
