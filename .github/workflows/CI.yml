@@ -91,13 +91,13 @@ jobs:
       - name : Create Archive
         run: |
           cd publish
-          zip LoopMusicPlayer-android.zip -r *Signed.apk
-          mv *.zip ..
+          mv *Signed.apk LoopMusicPlayer-android.apk
+          mv LoopMusicPlayer-android.apk ..
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: LoopMusicPlayer-android
-          path: ${{ github.workspace }}/*.zip
+          path: ${{ github.workspace }}/LoopMusicPlayer-android.apk
 
   ios-build:
     name: Build-iOS
@@ -169,6 +169,7 @@ jobs:
       run: |
         cd ${{ github.workspace }}/artifacts
         mv ./*/*.zip ./
-        gh release create "${{ github.ref }}" ${{ github.workspace }}/artifacts/*.zip
+        mv ./*/*.apk ./
+        gh release create "${{ github.ref }}" ${{ github.workspace }}/artifacts/*.zip ${{ github.workspace }}/artifacts/*.apk
 
 
