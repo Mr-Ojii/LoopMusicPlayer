@@ -14,9 +14,16 @@ public class Settings
     {
         if (File.Exists(_settingPath))
         {
-            Settings? settings = JsonSerializer.Deserialize<Settings>(File.ReadAllBytes(_settingPath));
-            if (settings is not null)
-                return settings;
+            try
+            {
+                Settings? settings = JsonSerializer.Deserialize<Settings>(File.ReadAllBytes(_settingPath));
+                if (settings is not null)
+                    return settings;
+            }
+            catch(Exception e)
+            {
+                Trace.TraceWarning(e.ToString());
+            }
         }
         return new Settings();
     }
