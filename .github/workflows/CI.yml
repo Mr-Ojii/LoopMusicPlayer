@@ -85,9 +85,14 @@ jobs:
       - name: Build
         run: |
           cd ${{ github.workspace }}
-          echo -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > ./release.keystore
-          echo "${{ secrets.ANDROID_SIGNING_PASSWORD }}" > AndroidSigningPassword.txt
-          dotnet publish LoopMusicPlayer.Android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=${{ github.workspace }}/release.keystore -p:AndroidSigningKeyAlias=${{ secrets.ANDROID_KEY_ALIAS }} -p:AndroidSigningKeyPass=file:${{ github.workspace }}/AndroidSigningPassword.txt -p:AndroidSigningStorePass=file:${{ github.workspace }}/AndroidSigningPassword.txt -o publish
+          if [ "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" != "" ] then
+            echo -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > ./release.keystore
+            echo "${{ secrets.ANDROID_SIGNING_PASSWORD }}" > AndroidSigningPassword.txt
+            dotnet publish LoopMusicPlayer.Android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=${{ github.workspace }}/release.keystore -p:AndroidSigningKeyAlias=${{ secrets.ANDROID_KEY_ALIAS }} -p:AndroidSigningKeyPass=file:${{ github.workspace }}/AndroidSigningPassword.txt -p:AndroidSigningStorePass=file:${{ github.workspace }}/AndroidSigningPassword.txt -o publish
+          else
+            dotnet publish LoopMusicPlayer.Android -c Release -o publish
+          fi
+
       - name : Create Archive
         run: |
           cd publish
