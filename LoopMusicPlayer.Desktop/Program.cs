@@ -3,7 +3,6 @@ using System.IO;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Avalonia;
-using Avalonia.ReactiveUI;
 
 namespace LoopMusicPlayer.Desktop;
 
@@ -61,6 +60,5 @@ class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace()
-            .UseReactiveUI();
+            .LogToTrace();
 }

@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Reactive;
 using System.Web;
 using Avalonia;
 using Avalonia.Controls;
