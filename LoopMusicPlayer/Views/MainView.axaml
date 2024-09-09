@@ -33,8 +33,7 @@
                 CanUserSortColumns="False"
                 GridLinesVisibility="All"
                 BorderThickness="1" BorderBrush="Gray"
-                Name="PlayListDataGrid"
-                Loaded="OnDataGridLoaded">
+                Name="PlayListDataGrid">
 
             <DataGrid.ContextMenu>
               <ContextMenu>

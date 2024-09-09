@@ -13,6 +13,7 @@ public partial class MainView : UserControl
     {
         InitializeComponent();
         this.AddHandler(LoadedEvent, OnViewLoaded);
+        this.PlayListDataGrid.AddHandler(LoadedEvent, OnDataGridLoaded);
         if (!OperatingSystem.IsAndroid())
             this.AddHandler(UnloadedEvent, OnSaveSetting);
     }
