@@ -27,7 +27,7 @@
     <RuntimeIdentifiers>android-arm;android-arm64</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition="'$(AndroidRID)'!=''">
-    <RuntimeIdentifier>$(RID)</RuntimeIdentifier>
+    <RuntimeIdentifier>$(AndroidRID)</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
