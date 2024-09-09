@@ -2,7 +2,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-android</TargetFramework>
-    <RuntimeIdentifiers>android-arm;android-arm64</RuntimeIdentifiers>
     <SupportedOSPlatformVersion>26</SupportedOSPlatformVersion>
     <Nullable>enable</Nullable>
     <ApplicationTitle>LoopMusicPlayer</ApplicationTitle>
@@ -22,6 +21,13 @@
   <PropertyGroup Condition="'$(VerOpt)'=='RC'">
     <ApplicationTitle>LoopMusicPlayer-RC</ApplicationTitle>
     <ApplicationId>net.mr_ojii.loopmusicplayer.rc</ApplicationId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(AndroidRID)'==''">
+    <RuntimeIdentifiers>android-arm;android-arm64</RuntimeIdentifiers>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(AndroidRID)'!=''">
+    <RuntimeIdentifier>$(RID)</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>

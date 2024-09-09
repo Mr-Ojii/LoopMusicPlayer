@@ -62,6 +62,11 @@ jobs:
   android-build:
     name: Build-Android
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+          - { rid: android-arm, abi: armeabi-v7a }
+          - { rid: android-arm64, abi: arm64-v8a }
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -88,21 +93,21 @@ jobs:
           if [ "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" != "" ]; then
             echo -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > ./release.keystore
             echo "${{ secrets.ANDROID_SIGNING_PASSWORD }}" > AndroidSigningPassword.txt
-            dotnet publish LoopMusicPlayer.Android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=${{ github.workspace }}/release.keystore -p:AndroidSigningKeyAlias=${{ secrets.ANDROID_KEY_ALIAS }} -p:AndroidSigningKeyPass=file:${{ github.workspace }}/AndroidSigningPassword.txt -p:AndroidSigningStorePass=file:${{ github.workspace }}/AndroidSigningPassword.txt -o publish
+            dotnet publish LoopMusicPlayer.Android -c Release -p:AndroidRID=${{ matrix.config.rid }} -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=${{ github.workspace }}/release.keystore -p:AndroidSigningKeyAlias=${{ secrets.ANDROID_KEY_ALIAS }} -p:AndroidSigningKeyPass=file:${{ github.workspace }}/AndroidSigningPassword.txt -p:AndroidSigningStorePass=file:${{ github.workspace }}/AndroidSigningPassword.txt -o publish
           else
-            dotnet publish LoopMusicPlayer.Android -c Release -o publish
+            dotnet publish LoopMusicPlayer.Android -c Release -p:AndroidRID=${{ matrix.config.rid }} -o publish
           fi
 
       - name : Create Archive
         run: |
           cd publish
-          mv *Signed.apk LoopMusicPlayer-android.apk
-          mv LoopMusicPlayer-android.apk ..
+          mv *Signed.apk LoopMusicPlayer-android-${{ matrix.config.abi }}.apk
+          mv LoopMusicPlayer-android-${{ matrix.config.abi }}.apk ..
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: LoopMusicPlayer-android
-          path: ${{ github.workspace }}/LoopMusicPlayer-android.apk
+          name: LoopMusicPlayer-android-${{ matrix.config.abi }}
+          path: ${{ github.workspace }}/LoopMusicPlayer-android-${{ matrix.config.abi }}.apk
 
   ios-build:
     name: Build-iOS
