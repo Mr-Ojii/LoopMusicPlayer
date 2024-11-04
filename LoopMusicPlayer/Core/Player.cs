@@ -130,17 +130,26 @@ public class Player : IDisposable
 
     private bool Ended;
 
-    public Player(string filepath, double volume, Stream? stream = null)
+    public Player(string filepath, double volume, bool streaming, Stream? stream = null)
     {
         if(!initialized)
             throw new Exception("Player class is not initialized.");
         this.FilePath = filepath;
         Ended = false;
 
-        if(stream is not null)
-            this.reader = new MusicFileReaderStreaming(stream);
+        if (streaming) {
+            if(stream is not null)
+                this.reader = new MusicFileReaderStreaming(stream);
+            else
+                this.reader = new MusicFileReaderStreaming(filepath);
+        }
         else
-            this.reader = new MusicFileReaderStreaming(filepath);
+        {
+            if(stream is not null)
+                this.reader = new MusicFileReaderMemory(stream);
+            else
+                this.reader = new MusicFileReaderMemory(filepath);
+        }
 
         this.IsLoop = !string.IsNullOrEmpty(reader.Tags.GetTag("LOOPSTART")) && (!string.IsNullOrEmpty(reader.Tags.GetTag("LOOPLENGTH")) || !string.IsNullOrEmpty(reader.Tags.GetTag("LOOPEND")));
         if (this.IsLoop)

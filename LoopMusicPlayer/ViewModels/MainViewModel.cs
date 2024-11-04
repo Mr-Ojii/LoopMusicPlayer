@@ -270,7 +270,7 @@ public partial class MainViewModel : ViewModelBase
         string path = FileToPath(file);
         using (var stream = await file.OpenReadAsync())
         {
-            using (var ii = new Player(path, 1.0, stream))
+            using (var ii = new Player(path, 1.0, true, stream))
             {
                 string title = !string.IsNullOrEmpty(ii.Title) ? ii.Title : System.IO.Path.GetFileName(path);
                 string time = ii.TotalTime.ToString();
@@ -294,7 +294,7 @@ public partial class MainViewModel : ViewModelBase
         this.Player?.Dispose();
         this.LoopStart = -1;
         this.LoopEnd = -1;
-        this.Player = new Player(path, this.Volume, stream);
+        this.Player = new Player(path, this.Volume, true, stream);
         if (!string.IsNullOrEmpty(this.Player.Artist))
             this.Title = this.Player.Title + " / " + this.Player.Artist;
         else
