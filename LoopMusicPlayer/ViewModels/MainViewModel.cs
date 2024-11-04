@@ -95,6 +95,8 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty] public int _updatePeriod = 100;
     [ObservableProperty] public int _bufferLength = 500;
+    [ObservableProperty] public bool _onMemoryPlayback = false;
+    [ObservableProperty] public bool _streamingPlayback = false;
 
     // Info
     private DeviceInfo device_info;
@@ -294,7 +296,7 @@ public partial class MainViewModel : ViewModelBase
         this.Player?.Dispose();
         this.LoopStart = -1;
         this.LoopEnd = -1;
-        this.Player = new Player(path, this.Volume, true, stream);
+        this.Player = new Player(path, this.Volume, this.StreamingPlayback, stream); // 現状はStreamingPlaybackを渡せばいいだけだが...
         if (!string.IsNullOrEmpty(this.Player.Artist))
             this.Title = this.Player.Title + " / " + this.Player.Artist;
         else

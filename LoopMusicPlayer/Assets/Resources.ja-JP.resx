@@ -289,4 +289,16 @@
     <value>サードパーティライセンス</value>
     <comment/>
   </data>
+  <data name="PlaybackType" xml:space="preserve">
+    <value>再生方式</value>
+    <comment/>
+  </data>
+  <data name="OnMemoryPlayback" xml:space="preserve">
+    <value>オンメモリ再生</value>
+    <comment/>
+  </data>
+  <data name="StreamingPlayback" xml:space="preserve">
+    <value>ストリーミング再生</value>
+    <comment/>
+  </data>
 </root>

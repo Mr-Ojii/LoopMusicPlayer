@@ -64,6 +64,15 @@ public partial class MainView : UserControl
             // Audio
             model.UpdatePeriod = settings.Audio.UpdatePeriod;
             model.BufferLength = settings.Audio.BufferLength;
+            switch (settings.Audio.PlaybackType)
+            {
+                case Settings.CAudio.EPlaybackType.Streaming:
+                    model.StreamingPlayback = true;
+                    break;
+                case Settings.CAudio.EPlaybackType.OnMemory:
+                    model.OnMemoryPlayback = true;
+                    break;
+            }
             model.Volume = settings.Audio.Volume;
             // View
             switch(settings.View.TimeFormat)
@@ -104,6 +113,10 @@ public partial class MainView : UserControl
             // Audio
             settings.Audio.UpdatePeriod = model.UpdatePeriod;
             settings.Audio.BufferLength = model.BufferLength;
+            if (model.StreamingPlayback)
+                settings.Audio.PlaybackType = Settings.CAudio.EPlaybackType.Streaming;
+            else if (model.OnMemoryPlayback)
+                settings.Audio.PlaybackType = Settings.CAudio.EPlaybackType.OnMemory;
             settings.Audio.Volume = model.Volume;
             // View
             if (model.ElapsedTime)

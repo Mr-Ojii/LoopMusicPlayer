@@ -289,4 +289,16 @@
     <value>ThirdPartyLicenses</value>
     <comment/>
   </data>
+  <data name="PlaybackType" xml:space="preserve">
+    <value>PlaybackType</value>
+    <comment/>
+  </data>
+  <data name="OnMemoryPlayback" xml:space="preserve">
+    <value>OnMemoryPlayback</value>
+    <comment/>
+  </data>
+  <data name="StreamingPlayback" xml:space="preserve">
+    <value>StreamingPlayback</value>
+    <comment/>
+  </data>
 </root>

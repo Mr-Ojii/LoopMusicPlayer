@@ -75,6 +75,18 @@ public class Settings
             set => this._bufferLength = Math.Clamp(value, _updatePeriod, 500);
         }
         private int _bufferLength = 100;
+        public EPlaybackType PlaybackType
+        {
+            get => this._playbackType;
+            set => this._playbackType = (EPlaybackType)Math.Clamp((int)value, 0, (int)EPlaybackType.Max - 1);
+        }
+        private EPlaybackType _playbackType = EPlaybackType.Streaming;
+        public enum EPlaybackType
+        {
+            Streaming,
+            OnMemory,
+            Max,
+        }
         public double Volume
         {
             get => this._volume;

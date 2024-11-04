@@ -250,6 +250,15 @@ namespace LoopMusicPlayer.Assets {
         }
 
         /// <summary>
+        ///   OnMemoryPlayback に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string OnMemoryPlayback {
+            get {
+                return ResourceManager.GetString("OnMemoryPlayback", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Open File に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string OpenFile {
@@ -291,6 +300,15 @@ namespace LoopMusicPlayer.Assets {
         public static string Play {
             get {
                 return ResourceManager.GetString("Play", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   PlaybackType に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string PlaybackType {
+            get {
+                return ResourceManager.GetString("PlaybackType", resourceCulture);
             }
         }
 
@@ -381,6 +399,15 @@ namespace LoopMusicPlayer.Assets {
         public static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   StreamingPlayback に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string StreamingPlayback {
+            get {
+                return ResourceManager.GetString("StreamingPlayback", resourceCulture);
             }
         }
 
