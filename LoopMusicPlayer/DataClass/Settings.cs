@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection.PortableExecutable;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace LoopMusicPlayer.DataClass;
 
@@ -16,7 +17,7 @@ public class Settings
         {
             try
             {
-                Settings? settings = JsonSerializer.Deserialize<Settings>(File.ReadAllBytes(_settingPath));
+                Settings? settings = JsonSerializer.Deserialize<Settings>(File.ReadAllBytes(_settingPath), SettingsSourceGenerationContext.Default.Settings);
                 if (settings is not null)
                     return settings;
             }
@@ -32,7 +33,7 @@ public class Settings
     {
         try
         {
-            File.WriteAllBytes(_settingPath, JsonSerializer.SerializeToUtf8Bytes(this));
+            File.WriteAllBytes(_settingPath, JsonSerializer.SerializeToUtf8Bytes(this, SettingsSourceGenerationContext.Default.Settings));
         }
         catch (Exception e)
         {
@@ -114,4 +115,10 @@ public class Settings
             Max,
         }
     }
+}
+
+[JsonSourceGenerationOptions(WriteIndented = false)]
+[JsonSerializable(typeof(Settings))]
+internal partial class SettingsSourceGenerationContext : JsonSerializerContext
+{
 }
