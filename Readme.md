@@ -80,7 +80,7 @@ Editor
 * Visual Studio Code
 
 ## 対応環境
-* Windows 10+ (x86, x64)
+* Windows 10+ (x86, x64, arm64)
 * macOS 12+ (x64, arm64)
 * Linux (arm32, arm64, x64) (X11, glibc)
 * Android 8.0+ (armeabi-v7a, arm64-v8a)
@@ -109,6 +109,7 @@ PullRequest・Issue大歓迎です！
 |Ver.1.0.0.3|2024-08-19|設定ファイルが不正な状態である場合、起動できなくなる問題の修正                        |
 |Ver.1.0.0.4|2024-09-09|ファイルサイズの削減                                                                  |
 |Ver.1.0.1.0|2024-11-04|オンメモリ再生の復活(内部処理はVer.0.xのものと異なる)                                 |
+|Ver.1.0.1.1|2024-11-07|Arm64なWindowsに対応・AboutにBASSのプラグイン情報も表記するように変更                 |
 
 <details><summary>旧版(GTK3版)</summary>
 
