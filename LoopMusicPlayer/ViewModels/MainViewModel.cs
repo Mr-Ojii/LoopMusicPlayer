@@ -109,17 +109,13 @@ public partial class MainViewModel : ViewModelBase
 
     // ThirdPartyLicenses
 
-    public ObservableCollection<LicenseItem> LicenseList { get; set; }
+    public ObservableCollection<LicenseItem> LicenseList { get; }
 
     // About
     public string AppName => $"{Assembly.GetExecutingAssembly().GetName().Name}";
-    public string Version => $"{Assembly.GetExecutingAssembly().GetName().Version}";
-    public string ManagedBassVersion => $"{typeof(Bass).Assembly.GetName().Version?.ToString(3)}";
-    public string BASSVersion => $"{Bass.Version}";
-    public string AvaloniaVersion => $"{typeof(AvaloniaObject).Assembly.GetName().Version?.ToString(3)}";
-    public string DotnetVersion => RuntimeInformation.FrameworkDescription.Substring(5); //".NET "を切る
     public string Copyright => "(c) 2021-2024 Mr-Ojii";
 
+    public ObservableCollection<VersionItem> VersionList { get; }
 
 
     private int _playingIndex = 0;
@@ -160,6 +156,18 @@ public partial class MainViewModel : ViewModelBase
         //なんか、名前順じゃないので、並び替える
         LicenseList = new ObservableCollection<LicenseItem>(LicenseList.OrderBy(s => s.Name));
 
+        VersionList = new ObservableCollection<VersionItem>() {
+            new VersionItem(this.AppName, $"{Assembly.GetExecutingAssembly().GetName().Version}"),
+            new VersionItem(".NET", RuntimeInformation.FrameworkDescription.Substring(5)), //".NET "を切る
+            new VersionItem("Avalonia UI", $"{typeof(AvaloniaObject).Assembly.GetName().Version?.ToString(3)}"),
+            new VersionItem("BASS", $"{Bass.Version}"),
+            new VersionItem("ManagedBass", $"{typeof(Bass).Assembly.GetName().Version?.ToString(3)}"),
+        };
+        foreach (var i in Player.bassPluginsVersionList)
+        {
+            VersionList.Add(new VersionItem(i.Item1, i.Item2));
+        }
+        VersionList = new ObservableCollection<VersionItem>(VersionList.OrderBy(s => s.Name));
 
         if (!Bass.GetDeviceInfo(Bass.CurrentDevice, out device_info))
             return;
@@ -289,7 +297,8 @@ public partial class MainViewModel : ViewModelBase
         var stream = await file.OpenReadAsync();
         var path = FileToPath(file);
         bool playing = true;
-        if (this.Player is not null) {
+        if (this.Player is not null)
+        {
             var status = this.Player.Status();
             playing = (status == PlaybackState.Playing || status == PlaybackState.Stalled);
         }
@@ -306,7 +315,7 @@ public partial class MainViewModel : ViewModelBase
         if (this.Player.IsLoop)
         {
             this.LoopStart = this.Player.LoopStart / (double)this.Player.TotalSamples;
-            this.LoopEnd = this.Player.LoopEnd /(double)this.Player.TotalSamples;
+            this.LoopEnd = this.Player.LoopEnd / (double)this.Player.TotalSamples;
         }
         this.Player.EndAction += this.OnEnd;
         this.Player.LoopAction += this.OnLoop;
@@ -358,7 +367,7 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void SkipM5()
     {
-        if(this.Player is null)
+        if (this.Player is null)
             return;
 
         long to = Math.Clamp(this.Player.SamplePosition - 5 * this.Player.SampleRate, 0, this.Player.TotalSamples - 1);
@@ -371,7 +380,7 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void SkipP5()
     {
-        if(this.Player is null)
+        if (this.Player is null)
             return;
 
         long to = Math.Clamp(this.Player.SamplePosition + 5 * this.Player.SampleRate, 0, this.Player.TotalSamples - 1);
@@ -409,7 +418,7 @@ public partial class MainViewModel : ViewModelBase
 
         if (this._playingIndex == _selectedIndex)
             this._playingIndex -= 1;
-        else if(this._playingIndex == _selectedIndex - 1)
+        else if (this._playingIndex == _selectedIndex - 1)
             this._playingIndex += 1;
     }
     [RelayCommand]
@@ -426,7 +435,7 @@ public partial class MainViewModel : ViewModelBase
 
         if (this._playingIndex == _selectedIndex)
             this._playingIndex += 1;
-        else if(this._playingIndex == _selectedIndex + 1)
+        else if (this._playingIndex == _selectedIndex + 1)
             this._playingIndex -= 1;
     }
 

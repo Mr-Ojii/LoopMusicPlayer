@@ -200,21 +200,25 @@
       <TabItem.Header>
         <ic:SymbolIcon Symbol="Info" IsFilled="True" />
       </TabItem.Header>
-      <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="4" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Width="256" Height="256" Source="avares://LoopMusicPlayer/Assets/icon.ico" />
-        <TextBlock Text="{Binding AppName}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
-        <TextBlock Text="LoopMusicPlayer" Grid.Row="2" Grid.Column="0"/>
-        <TextBlock Text="{Binding Version}" Grid.Row="2" Grid.Column="1"/>
-        <TextBlock Text=".NET" Grid.Row="3" Grid.Column="0"/>
-        <TextBlock Text="{Binding DotnetVersion}" Grid.Row="3" Grid.Column="1"/>
-        <TextBlock Text="Avalonia UI" Grid.Row="4" Grid.Column="0"/>
-        <TextBlock Text="{Binding AvaloniaVersion}" Grid.Row="4" Grid.Column="1"/>
-        <TextBlock Text="BASS" Grid.Row="5" Grid.Column="0"/>
-        <TextBlock Text="{Binding BASSVersion}" Grid.Row="5" Grid.Column="1"/>
-        <TextBlock Text="ManagedBass" Grid.Row="6" Grid.Column="0"/>
-        <TextBlock Text="{Binding ManagedBassVersion}" Grid.Row="6" Grid.Column="1"/>
-        <TextBlock Text="{Binding Copyright}" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="10"/>
-      </Grid>
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Image Width="256" Height="256" HorizontalAlignment="Center" Source="avares://LoopMusicPlayer/Assets/icon.ico" />
+        <TextBlock Text="{Binding AppName}" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
+        <ItemsControl ItemsSource="{Binding VersionList}" Grid.IsSharedSizeScope="True">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Grid HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="NameGroup" />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="VersionGroup" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Name}" Grid.Column="0" />
+                <TextBlock Text="{Binding Version}" Grid.Column="1" />
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <TextBlock Text="{Binding Copyright}" HorizontalAlignment="Center" Margin="10"/>
+      </StackPanel>
     </TabItem>
 
   </TabControl>

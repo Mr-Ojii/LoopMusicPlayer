@@ -33,9 +33,11 @@ public class Player : IDisposable
         "basswma",
         "basswv",
         };
-    private static List<int> bassPluginsHandleList = new List<int>();
+    private static List<int> bassPluginsHandleList { get; set; } = new();
+    public static List<Tuple<string, string>> bassPluginsVersionList { get; private set; } = new();
     private static CBassLibraryLoader? bassLibraryLoader = null;
-    public static void Init(string BasePath, int Device = -1) {
+    public static void Init(string BasePath, int Device = -1)
+    {
         bassLibraryLoader = new CBassLibraryLoader();
 
         //Linux環境で、bassflacは2回以上Loadを実施しないと、正常にLoadできない(なんで?)
@@ -55,24 +57,27 @@ public class Player : IDisposable
                 {
                     pluginName = BasePath + $"lib{pluginName}.so";
                 }
-                else if(OperatingSystem.IsAndroid())
+                else if (OperatingSystem.IsAndroid())
                 {
                     pluginName = $"lib{pluginName}.so";
                 }
                 int pluginHandle = Bass.PluginLoad(pluginName);
-                if (pluginHandle != 0)
+                if (pluginHandle != 0) {
+                    PluginInfo info = Bass.PluginGetInfo(pluginHandle);
                     bassPluginsHandleList.Add(pluginHandle);
+                    bassPluginsVersionList.Add(new Tuple<string, string>(bassPluginsList[i].Replace("_", "").ToUpperInvariant(), info.Version.ToString()));
+                }
             }
         Bass.Init(Device);
         initialized = true;
     }
 
-    public static void Free() {
-        for (int i = 0; i < bassPluginsHandleList.Count; i++)
-        {
-            Bass.PluginFree(bassPluginsHandleList[i]);
-        }
+    public static void Free()
+    {
+        foreach (var i in bassPluginsHandleList)
+            Bass.PluginFree(i);
         bassPluginsHandleList.Clear();
+        bassPluginsVersionList.Clear();
         Bass.Free();
         bassLibraryLoader?.Dispose();
         bassLibraryLoader = null;
@@ -94,12 +99,12 @@ public class Player : IDisposable
     {
         get
         {
-            lock(LockObj)
+            lock (LockObj)
                 return _LoopCount;
         }
         private set
         {
-            lock(LockObj)
+            lock (LockObj)
                 _LoopCount = value;
         }
     }
@@ -132,20 +137,21 @@ public class Player : IDisposable
 
     public Player(string filepath, double volume, bool streaming, Stream? stream = null)
     {
-        if(!initialized)
+        if (!initialized)
             throw new Exception("Player class is not initialized.");
         this.FilePath = filepath;
         Ended = false;
 
-        if (streaming) {
-            if(stream is not null)
+        if (streaming)
+        {
+            if (stream is not null)
                 this.reader = new MusicFileReaderStreaming(stream);
             else
                 this.reader = new MusicFileReaderStreaming(filepath);
         }
         else
         {
-            if(stream is not null)
+            if (stream is not null)
                 this.reader = new MusicFileReaderMemory(stream);
             else
                 this.reader = new MusicFileReaderMemory(filepath);
@@ -228,7 +234,7 @@ public class Player : IDisposable
 
         if (NextIsLoop && reader.SamplePosition + (int)(Const.byte_per_float * (length / reader.Channels)) >= LoopEnd)
         {
-            int tmplength = (int)((LoopEnd - reader.SamplePosition)* reader.Channels * Const.float_per_byte);
+            int tmplength = (int)((LoopEnd - reader.SamplePosition) * reader.Channels * Const.float_per_byte);
             num += reader.ReadSamples(buffer, 0, tmplength);
             reader.SamplePosition = LoopStart;
             num += reader.ReadSamples(buffer, tmplength, length - tmplength);
@@ -242,8 +248,10 @@ public class Player : IDisposable
 
         if (num < 0) num = 0;
 
-        if(this.EndAction is not null && num != length) {
-            if(!Ended) {
+        if (this.EndAction is not null && num != length)
+        {
+            if (!Ended)
+            {
                 Ended = true;
                 this.EndAction(this, EventArgs.Empty);
             }
