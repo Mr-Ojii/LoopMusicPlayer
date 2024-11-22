@@ -397,6 +397,8 @@ public partial class MainViewModel : ViewModelBase
             return;
 
         int _selectedIndex = this.dataGrid.SelectedIndex;
+        if (_selectedIndex < 0)
+            return;
 
         if (this._playingIndex >= _selectedIndex)
             _playingIndex--;
@@ -411,7 +413,7 @@ public partial class MainViewModel : ViewModelBase
             return;
 
         int _selectedIndex = this.dataGrid.SelectedIndex;
-        if (_selectedIndex == 0)
+        if (_selectedIndex <= 0)
             return;
 
         (this.PlayList[_selectedIndex], this.PlayList[_selectedIndex - 1]) = (this.PlayList[_selectedIndex - 1], this.PlayList[_selectedIndex]);
