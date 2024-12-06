@@ -51,6 +51,7 @@ jobs:
         run: |
           mv publish/LoopMusicPlayer.Desktop publish/LoopMusicPlayer.Desktop.AppImage
       - name : Create Archive
+        shell: pwsh
         run: |
           cd publish
           zip LoopMusicPlayer-${{ matrix.config.platform }}.zip -r *
