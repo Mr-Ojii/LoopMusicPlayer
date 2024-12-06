@@ -8,7 +8,10 @@
 ### 導入
 * macOS  
   Applicationsフォルダに移動後、以下の作業をしてください
-  - `xattr -rc /Applications/LoopMusicPlayer.app`
+  ```
+  xattr -rc /Applications/LoopMusicPlayer.app
+  chmod +x /Applications/LoopMusicPlayer.app/Contents/MacOS/LoopMusicPlayer.Desktop
+  ```
 
 ### 主な使用方法
 * 音声ファイルをD&Dするか、「ファイルを開く」より選択してリストに追加してください。
