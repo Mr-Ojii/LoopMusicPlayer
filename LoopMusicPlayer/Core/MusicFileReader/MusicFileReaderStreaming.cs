@@ -57,7 +57,8 @@ internal class MusicFileReaderStreaming : IMusicFileReader
     public MusicFileReaderStreaming(Stream stream)
     {
         byte[] array = ArrayPool<byte>.Shared.Rent((int)stream.Length);
-        stream.Read(array, 0, (int)stream.Length);
+        if (stream.Read(array, 0, (int)stream.Length) <= 0)
+            throw new Exception("Failed to read stream.");
         this.handle = Bass.CreateStream(array, 0, stream.Length, Flags: BassFlags.Float | BassFlags.Decode);
         ArrayPool<byte>.Shared.Return(array);
 

@@ -58,7 +58,8 @@ internal class MusicFileReaderMemory : IMusicFileReader
     public MusicFileReaderMemory(Stream stream)
     {
         byte[] array = ArrayPool<byte>.Shared.Rent((int)stream.Length);
-        stream.Read(array, 0, (int)stream.Length);
+        if (stream.Read(array, 0, (int)stream.Length) <= 0)
+            throw new Exception("Failed to read stream.");
         this.handle = Bass.SampleLoad(array, 0, (int)stream.Length, 1, Flags: BassFlags.Float);
         ArrayPool<byte>.Shared.Return(array);
 
