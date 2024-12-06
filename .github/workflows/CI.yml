@@ -10,14 +10,14 @@ jobs:
     strategy:
       matrix:
         config:
-          - { platform: win-x86, runner: ubuntu-latest }
-          - { platform: win-x64, runner: ubuntu-latest }
-          - { platform: win-arm64, runner: ubuntu-latest }
-          - { platform: osx-x64, runner: macos-latest }
-          - { platform: osx-arm64, runner: macos-latest }
-          - { platform: linux-x64, runner: ubuntu-latest }
-          - { platform: linux-arm, runner: ubuntu-latest }
-          - { platform: linux-arm64, runner: ubuntu-latest }
+          - { platform: win-x86, runner: ubuntu-latest, pub: "-p:PublishSingleFile=true" }
+          - { platform: win-x64, runner: ubuntu-latest, pub: "-p:PublishAOT=true" }
+          - { platform: win-arm64, runner: ubuntu-latest, pub: "-p:PublishSingleFile=true" }
+          - { platform: osx-x64, runner: macos-latest, pub: "-p:PublishSingleFile=true" }
+          - { platform: osx-arm64, runner: macos-latest, pub: "-p:PublishAOT=true" }
+          - { platform: linux-x64, runner: ubuntu-latest, pub: "-p:PublishAOT=true" }
+          - { platform: linux-arm, runner: ubuntu-latest, pub: "-p:PublishSingleFile=true" }
+          - { platform: linux-arm64, runner: ubuntu-latest, pub: "-p:PublishSingleFile=true" }
           # - { platform: linux-musl-x64, runner: ubuntu-latest }
           # - { platform: linux-musl-arm, runner: ubuntu-latest }
           # - { platform: linux-musl-arm64, runner: ubuntu-latest }
@@ -33,7 +33,7 @@ jobs:
           dotnet workload restore
       - name: Build
         run: |
-          dotnet publish LoopMusicPlayer.Desktop -r ${{ matrix.config.platform }} -c Release -o publish --self-contained=true -p:UseAppHost=true -p:PublishSingleFile=true
+          dotnet publish LoopMusicPlayer.Desktop -r ${{ matrix.config.platform }} -c Release -o publish --self-contained=true -p:UseAppHost=true ${{ matrix.config.pub }}
       - name: Make .app
         if: ${{ startsWith(matrix.config.platform, 'osx') }}
         run: |
