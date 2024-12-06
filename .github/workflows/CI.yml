@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         config:
-          - { platform: win-x86, runner: windows-latest, pub: "-p:PublishSingleFile=true", arch: amd64_x86 }
+          - { platform: win-x86, runner: windows-latest, pub: "-p:PublishAOT=true", arch: amd64_x86 }
           - { platform: win-x64, runner: windows-latest, pub: "-p:PublishAOT=true", arch: amd64 }
           - { platform: win-arm64, runner: windows-latest, pub: "-p:PublishAOT=true", arch: amd64_arm64 }
           - { platform: osx-x64, runner: macos-latest, pub: "-p:PublishAOT=true" }
