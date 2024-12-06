@@ -54,7 +54,7 @@ jobs:
         shell: pwsh
         run: |
           cd publish
-          zip LoopMusicPlayer-${{ matrix.config.platform }}.zip -r *
+          Compress-Archive -Path "./*" -DestinationPath "./LoopMusicPlayer-${{ matrix.config.platform }}.zip"
           mv *.zip ..
       - name: Upload artifact
         uses: actions/upload-artifact@v4
