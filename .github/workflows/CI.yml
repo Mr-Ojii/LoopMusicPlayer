@@ -10,9 +10,9 @@ jobs:
     strategy:
       matrix:
         config:
-          - { platform: win-x86, runner: ubuntu-latest, pub: "-p:PublishSingleFile=true" }
-          - { platform: win-x64, runner: ubuntu-latest, pub: "-p:PublishAOT=true" }
-          - { platform: win-arm64, runner: ubuntu-latest, pub: "-p:PublishSingleFile=true" }
+          - { platform: win-x86, runner: ubuntu-latest, pub: "-p:PublishSingleFile=true", arch: amd64_x86 }
+          - { platform: win-x64, runner: ubuntu-latest, pub: "-p:PublishAOT=true", arch: amd64 }
+          - { platform: win-arm64, runner: ubuntu-latest, pub: "-p:PublishSingleFile=true", arch: amd64_arm64 }
           - { platform: osx-x64, runner: macos-latest, pub: "-p:PublishSingleFile=true" }
           - { platform: osx-arm64, runner: macos-latest, pub: "-p:PublishAOT=true" }
           - { platform: linux-x64, runner: ubuntu-latest, pub: "-p:PublishAOT=true" }
@@ -24,6 +24,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
+        if: ${{ startsWith(matrix.config.platform, 'win') }}
+        with:
+          arch: ${{ matrix.config.arch }}
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
