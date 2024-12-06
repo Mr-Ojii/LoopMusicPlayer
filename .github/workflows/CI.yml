@@ -10,13 +10,11 @@ jobs:
     strategy:
       matrix:
         config:
-          - { platform: win-x86, runner: ubuntu-latest }
           - { platform: win-x64, runner: ubuntu-latest }
           - { platform: win-arm64, runner: ubuntu-latest }
           - { platform: osx-x64, runner: macos-latest }
           - { platform: osx-arm64, runner: macos-latest }
           - { platform: linux-x64, runner: ubuntu-latest }
-          - { platform: linux-arm, runner: ubuntu-latest }
           - { platform: linux-arm64, runner: ubuntu-latest }
           # - { platform: linux-musl-x64, runner: ubuntu-latest }
           # - { platform: linux-musl-arm, runner: ubuntu-latest }

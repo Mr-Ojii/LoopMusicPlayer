@@ -80,9 +80,9 @@ Editor
 * Visual Studio Code
 
 ## 対応環境
-* Windows 10+ (x86, x64, arm64)
+* Windows 10+ (x64, arm64)
 * macOS 12+ (x64, arm64)
-* Linux (arm32, arm64, x64) (X11, glibc)
+* Linux (x64, arm64) (X11, glibc)
 * Android 8.0+ (armeabi-v7a, arm64-v8a)
 
 Linuxの各種ディストロ対応については[こちら](https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md)をご覧ください
