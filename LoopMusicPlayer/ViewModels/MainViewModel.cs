@@ -113,7 +113,7 @@ public partial class MainViewModel : ViewModelBase
 
     // About
     public string AppName => $"{Assembly.GetExecutingAssembly().GetName().Name}";
-    public string Copyright => "(c) 2021-2024 Mr-Ojii";
+    public string Copyright => "(c) 2021-2025 Mr-Ojii";
 
     public ObservableCollection<VersionItem> VersionList { get; }
 
