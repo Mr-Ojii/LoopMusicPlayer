@@ -16,8 +16,8 @@ jobs:
           - { platform: osx-x64, runner: macos-latest, pub: "-p:PublishAOT=true" }
           - { platform: osx-arm64, runner: macos-latest, pub: "-p:PublishAOT=true" }
           - { platform: linux-x64, runner: ubuntu-latest, pub: "-p:PublishAOT=true" }
-          - { platform: linux-arm, runner: ubuntu-latest, pub: "-p:PublishSingleFile=true" }
-          - { platform: linux-arm64, runner: ubuntu-latest, pub: "-p:PublishSingleFile=true" }
+          - { platform: linux-arm, runner: ubuntu-latest, pub: "-p:PublishAOT=true" }
+          - { platform: linux-arm64, runner: ubuntu-latest, pub: "-p:PublishAOT=true" }
           # - { platform: linux-musl-x64, runner: ubuntu-latest }
           # - { platform: linux-musl-arm, runner: ubuntu-latest }
           # - { platform: linux-musl-arm64, runner: ubuntu-latest }
