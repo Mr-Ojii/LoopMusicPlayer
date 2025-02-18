@@ -74,8 +74,8 @@
 ## 開発環境(動作確認環境)
 OS
 * Windows 11 (Ver.23H2) (x64)
-* macOS 14.5 (arm64)
-* Ubuntu 22.04 LTS (x64, WSL)
+* macOS 15.3 (arm64)
+* Ubuntu 24.04 LTS (x64, WSL)
 * Android 12 (arm64)
 
 Editor
@@ -84,11 +84,11 @@ Editor
 
 ## 対応環境
 * Windows 10+ (x86, x64, arm64)
-* macOS 12+ (x64, arm64)
+* macOS 13+ (x64, arm64)
 * Linux (arm32, arm64, x64) (X11, glibc)
 * Android 8.0+ (armeabi-v7a, arm64-v8a)
 
-Linuxの各種ディストロ対応については[こちら](https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md)をご覧ください
+Linuxの各種ディストロ対応については[こちら](https://github.com/dotnet/core/blob/main/release-notes/9.0/supported-os.md)をご覧ください
 
 ## 謝辞
 各依存パッケージを作成していただいてる方々に感謝を申し上げます。
@@ -114,6 +114,7 @@ PullRequest・Issue大歓迎です！
 |Ver.1.0.1.0|2024-11-04|オンメモリ再生の復活(内部処理はVer.0.xのものと異なる)                                 |
 |Ver.1.0.1.1|2024-11-07|Arm64なWindowsに対応・AboutにBASSのプラグイン情報も表記するように変更                 |
 |Ver.1.0.1.2|2024-11-23|アイテムが存在しない際のコンテキストメニュー操作で落ちる問題の修正                    |
+|Ver.1.0.2.0|2025-02-19|フレームワークを.NET 9に更新, linux-arm以外でNativeAOTを有効にするように変更          |
 
 <details><summary>旧版(GTK3版)</summary>
 
