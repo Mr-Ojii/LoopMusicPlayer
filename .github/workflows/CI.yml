@@ -57,7 +57,7 @@ jobs:
           Compress-Archive -Path "./*" -DestinationPath "./LoopMusicPlayer-${{ matrix.config.platform }}.zip"
           mv *.zip ..
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: ${{ !contains(matrix.config.platform, 'musl') }}
         with:
           name: LoopMusicPlayer-${{ matrix.config.platform }}
@@ -109,7 +109,7 @@ jobs:
           mv *Signed.apk LoopMusicPlayer-android-${{ matrix.config.abi }}.apk
           mv LoopMusicPlayer-android-${{ matrix.config.abi }}.apk ..
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: LoopMusicPlayer-android-${{ matrix.config.abi }}
           path: ${{ github.workspace }}/LoopMusicPlayer-android-${{ matrix.config.abi }}.apk
@@ -136,7 +136,7 @@ jobs:
   #         zip LoopMusicPlayer-ios.zip -r *
   #         mv *.zip ..
   #     - name: Upload artifact
-  #       uses: actions/upload-artifact@v4
+  #       uses: actions/upload-artifact@v5
   #       with:
   #         name: LoopMusicPlayer-ios
   #         path: ${{ github.workspace }}/*.zip
@@ -148,7 +148,7 @@ jobs:
     needs: [ desktop-build, android-build, ios-build ]
     steps:
     - uses: actions/checkout@v5
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v6
       with:
         path: artifacts
     - name: Create Release
