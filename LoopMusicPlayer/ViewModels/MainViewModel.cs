@@ -493,12 +493,15 @@ public partial class MainViewModel : ViewModelBase
         await UpdatePlayer(item.File);
     }
 
-    public async void DropCommandHandler(IEnumerable<IStorageItem> files)
+    public async void DropCommandHandler(IEnumerable<IDataTransferItem> items)
     {
-        foreach (var file in files)
+        foreach (var item in items)
         {
             try
             {
+                var file = item.TryGetFile();
+                if (file is null)
+                    continue;
                 var filesService = this.GetFilesService();
                 IStorageFile? s_file = await filesService.OpenFileAsync(file.Path);
                 if (s_file is not null)
