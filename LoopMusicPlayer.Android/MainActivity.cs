@@ -13,9 +13,4 @@ namespace LoopMusicPlayer.Android;
     ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.UiMode)]
 public class MainActivity : AvaloniaMainActivity
 {
-    protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
-    {
-        return base.CustomizeAppBuilder(builder)
-            .WithInterFont();
-    }
 }
