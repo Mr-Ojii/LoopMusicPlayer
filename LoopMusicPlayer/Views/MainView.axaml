@@ -20,7 +20,7 @@
 
     <TabItem ToolTip.Tip="{x:Static lang:Resources.Player}">
       <TabItem.Header>
-        <ic:SymbolIcon Symbol="Play" IsFilled="True" />
+        <ic:SymbolIcon Symbol="Play" IconVariant="Filled" />
       </TabItem.Header>
       <ScrollViewer>
         <StackPanel>
@@ -60,28 +60,28 @@
             <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding LoopTime}" />
             <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding FilePath}" />
             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LoopCount}" Grid.ColumnSpan="2" HorizontalAlignment="Center" />
-            <Button Grid.Row="2" Grid.Column="1" Command="{Binding MaxLoopDecrementCommand}"><ic:SymbolIcon Symbol="Subtract" IsFilled="True" /></Button>
-            <Button Grid.Row="2" Grid.Column="2" Command="{Binding MaxLoopIncrementCommand}"><ic:SymbolIcon Symbol="Add" IsFilled="True" /></Button>
+            <Button Grid.Row="2" Grid.Column="1" Command="{Binding MaxLoopDecrementCommand}"><ic:SymbolIcon Symbol="Subtract" IconVariant="Filled" /></Button>
+            <Button Grid.Row="2" Grid.Column="2" Command="{Binding MaxLoopIncrementCommand}"><ic:SymbolIcon Symbol="Add" IconVariant="Filled" /></Button>
           </Grid>
           <lc:SeekbarControl Height="30" Progress="{Binding Progress}" LoopStart="{Binding LoopStart}" LoopEnd="{Binding LoopEnd}" Player="{Binding Player}" />
           <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*,*,*,*,*" Margin="4">
             <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding PlayCommand}" ToolTip.Tip="{x:Static lang:Resources.Play}">
-              <ic:SymbolIcon Symbol="Play" IsFilled="True" />
+              <ic:SymbolIcon Symbol="Play" IconVariant="Filled" />
             </Button>
             <Button Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding PauseCommand}" ToolTip.Tip="{x:Static lang:Resources.Pause}">
-              <ic:SymbolIcon Symbol="Pause" IsFilled="True" />
+              <ic:SymbolIcon Symbol="Pause" IconVariant="Filled" />
             </Button>
             <Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding StopCommand}" ToolTip.Tip="{x:Static lang:Resources.Stop}">
-              <ic:SymbolIcon Symbol="Stop" IsFilled="True" />
+              <ic:SymbolIcon Symbol="Stop" IconVariant="Filled" />
             </Button>
             <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding PrevCommand}" ToolTip.Tip="{x:Static lang:Resources.Prev}">
-              <ic:SymbolIcon Symbol="Previous" IsFilled="True" />
+              <ic:SymbolIcon Symbol="Previous" IconVariant="Filled" />
             </Button>
             <Button Grid.Row="0" Grid.Column="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding NextCommand}" ToolTip.Tip="{x:Static lang:Resources.Next}">
-              <ic:SymbolIcon Symbol="Next" IsFilled="True" />
+              <ic:SymbolIcon Symbol="Next" IconVariant="Filled" />
             </Button>
             <Button Grid.Row="0" Grid.Column="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding RandomChoiceCommand}" ToolTip.Tip="{x:Static lang:Resources.Random}">
-              <ic:SymbolIcon Symbol="ArrowShuffle" IsFilled="True" />
+              <ic:SymbolIcon Symbol="ArrowShuffle" IconVariant="Filled" />
             </Button>
             <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Static lang:Resources.Volume}"/>
             <Slider Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Minimum="0" Maximum="1" Value="{Binding Volume}" />
@@ -93,7 +93,7 @@
 
     <TabItem ToolTip.Tip="{x:Static lang:Resources.Option}">
       <TabItem.Header>
-        <ic:SymbolIcon Symbol="Settings" IsFilled="True" />
+        <ic:SymbolIcon Symbol="Settings" IconVariant="Filled" />
       </TabItem.Header>
       <ScrollViewer>
         <StackPanel Margin="20">
@@ -162,7 +162,7 @@
 
     <TabItem ToolTip.Tip="{x:Static lang:Resources.DeviceInfo}">
       <TabItem.Header>
-        <ic:SymbolIcon Symbol="Headphones" IsFilled="True" />
+        <ic:SymbolIcon Symbol="Headphones" IconVariant="Filled" />
       </TabItem.Header>
       <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="4" HorizontalAlignment="Center">
         <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static lang:Resources.Name}"/>
@@ -178,7 +178,7 @@
 
     <TabItem ToolTip.Tip="{x:Static lang:Resources.ThirdPartyLicenses}">
       <TabItem.Header>
-        <ic:SymbolIcon Symbol="DocumentText" IsFilled="True" />
+        <ic:SymbolIcon Symbol="DocumentText" IconVariant="Filled" />
       </TabItem.Header>
       <ScrollViewer>
         <StackPanel>
@@ -198,7 +198,7 @@
 
     <TabItem ToolTip.Tip="{x:Static lang:Resources.About}">
       <TabItem.Header>
-        <ic:SymbolIcon Symbol="Info" IsFilled="True" />
+        <ic:SymbolIcon Symbol="Info" IconVariant="Filled" />
       </TabItem.Header>
       <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <Image Width="256" Height="256" HorizontalAlignment="Center" Source="avares://LoopMusicPlayer/Assets/icon.ico" />
