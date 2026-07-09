@@ -73,22 +73,21 @@
 
 ## 開発環境(動作確認環境)
 OS
-* Windows 11 (Ver.23H2) (x64)
-* macOS 15.3 (arm64)
+* Windows 11 (Ver.25H2) (x64)
+* macOS 26.5.2 (arm64)
 * Ubuntu 24.04 LTS (x64, WSL)
 * Android 12 (arm64)
 
 Editor
-* Visual Studio Community 2022
 * Visual Studio Code
 
 ## 対応環境
 * Windows 10+ (x86, x64, arm64)
-* macOS 13+ (x64, arm64)
+* macOS 14+ (x64, arm64)
 * Linux (arm32, arm64, x64) (X11, glibc)
 * Android 8.0+ (armeabi-v7a, arm64-v8a)
 
-Linuxの各種ディストロ対応については[こちら](https://github.com/dotnet/core/blob/main/release-notes/9.0/supported-os.md)をご覧ください
+Linuxの各種ディストロ対応については[こちら](https://github.com/dotnet/core/blob/main/release-notes/10.0/supported-os.md)をご覧ください
 
 ## 謝辞
 各依存パッケージを作成していただいてる方々に感謝を申し上げます。
