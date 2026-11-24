@@ -28,16 +28,31 @@ public partial class App : Application
         Assets.Resources.Culture = CultureInfo.CurrentCulture;
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
+            var model = new MainViewModel();
+            var mainWindow = new MainWindow
             {
-                DataContext = new MainViewModel()
+                DataContext = model
             };
+            desktop.MainWindow = mainWindow;
 
             var services = new ServiceCollection();
 
-            services.AddSingleton<IFilesService>(x => new FilesService(desktop.MainWindow));
+            services.AddSingleton<IFilesService>(x => new FilesService(mainWindow));
 
             Services = services.BuildServiceProvider();
+
+            if (desktop.Args is { Length: > 0 } args && mainWindow.Content is MainView mainView)
+            {
+                bool isOpened = false;
+                mainView.Loaded += async (_, _) =>
+                {
+                    if (isOpened)
+                        return;
+
+                    isOpened = true;
+                    await model.OpenFilesFromArgs(args);
+                };
+            }
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {

@@ -514,6 +514,38 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
+    public async Task OpenFilesFromArgs(IEnumerable<string> paths)
+    {
+        var filesService = GetFilesService();
+        bool isFirst = true;
+
+        foreach (var path in paths)
+        {
+            try
+            {
+                if (!File.Exists(path))
+                    continue;
+
+                var file = await filesService.OpenFileAsync(new Uri(Path.GetFullPath(path)));
+                if (file is null)
+                    continue;
+
+                await AddToPlayList(file);
+
+                if (isFirst)
+                {
+                    this._playingIndex = this.PlayList.Count - 1;
+                    await UpdatePlayer(file);
+                    isFirst = false;
+                }
+            }
+            catch (Exception e)
+            {
+                Errors.Add(e.ToString());
+            }
+        }
+    }
+
     private IFilesService GetFilesService()
     {
         var filesService = (IFilesService?)App.Current?.Services?.GetService(typeof(IFilesService));
