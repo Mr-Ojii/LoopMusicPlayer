@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Libs/**" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Libs/**" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>
 
   <ItemGroup>
